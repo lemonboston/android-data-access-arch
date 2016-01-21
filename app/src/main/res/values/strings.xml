@@ -1,0 +1,24 @@
+<resources>
+
+    <string name="app_name">Data Access PoC</string>
+
+    <string name="HomeActivity_label">Data Access Demo</string>
+
+    <string name="SecondActivity_label">Another screen..</string>
+
+    <string name="ServiceSelector_real">REAL SERVICE</string>
+    <string name="ServiceSelector_mock">MOCK SERVICE</string>
+    <string name="GetTemp_Button">Get Temp</string>
+    <string name="Result_Text">Result comes here</string>
+    <string name="GetTempDiff_Button">Get Temp Diff</string>
+    <string name="GetWarmestCityForecast_Button">Get Warmest city forecast</string>
+    <string name="GetTempStored_Button">Get Temp (Stored)</string>
+    <string name="Clear_Button">Clear</string>
+    <string name="StartSync_Button">Start background sync</string>
+    <string name="StopSync_Button">Stop background sync</string>
+    <string name="OtherScreen_Button">Go to other screen</string>
+
+    <string name="ErrorMessage_noInternet">No internet connection</string>
+    <string name="ErrorMessage_unknownError">Unknown error happened</string>
+    <string name="ErrorMessage_unknownHost">Server unreachable</string>
+</resources>
