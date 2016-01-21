@@ -112,7 +112,6 @@ public class HomeController implements OnCreate, OnDestroy {
         public void onGetTempStoreButton() {
             dataAccessInitiator.getTemperature_OfflineLocalStore("Budapest");
         }
-
     }
 
     public class EventHandler {
