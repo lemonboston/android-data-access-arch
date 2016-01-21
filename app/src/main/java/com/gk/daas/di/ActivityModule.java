@@ -10,6 +10,8 @@ import com.gk.daas.framework.access.Navigator;
 import com.gk.daas.framework.access.NavigatorImpl;
 import com.gk.daas.framework.access.StringResAccess;
 import com.gk.daas.framework.access.Toaster;
+import com.gk.daas.framework.access.ViewFactory;
+import com.gk.daas.framework.access.ViewFactoryImpl;
 import com.gk.daas.framework.access.ViewToolkit;
 import com.gk.daas.framework.access.ViewToolkitImpl;
 import com.gk.daas.log.LogFactory;
@@ -19,6 +21,7 @@ import com.gk.daas.screen.home.HomeController;
 import com.gk.daas.screen.home.HomeUi;
 import com.gk.daas.screen.home.HomeUiImpl;
 import com.gk.daas.util.TemperatureFormatter;
+import com.gk.daas.widget.HomeFragmentPagerAdapter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -53,17 +56,27 @@ public class ActivityModule {
 
     @ActivityScope
     @Provides
-    public HomeUi provideHomeUi(ViewToolkit viewToolkit) {
-        return new HomeUiImpl(viewToolkit);
+    public HomeUi provideHomeUi(ViewToolkit viewToolkit, HomeFragmentPagerAdapter homeFragmentPagerAdapter) {
+        return new HomeUiImpl(viewToolkit, homeFragmentPagerAdapter);
     }
 
     @Provides
-    public ViewToolkit provideViewToolkit() {
-        return new ViewToolkitImpl(activity);
+    public HomeFragmentPagerAdapter provideHomeFragmentPagerAdapter() {
+        return new HomeFragmentPagerAdapter(activity.getFragmentManager());
+    }
+
+    @Provides
+    public ViewToolkit provideViewToolkit(ViewFactory viewFactory) {
+        return new ViewToolkitImpl(activity, viewFactory);
     }
 
     @Provides
     public Navigator provideNavigator() {
         return new NavigatorImpl(activity);
+    }
+
+    @Provides
+    public ViewFactory provideViewFactory() {
+        return new ViewFactoryImpl(activity);
     }
 }

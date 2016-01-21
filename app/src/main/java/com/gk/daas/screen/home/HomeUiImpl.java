@@ -1,11 +1,13 @@
 package com.gk.daas.screen.home;
 
+import android.support.v4.view.ViewPager;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.gk.daas.R;
 import com.gk.daas.di.DevTweaks;
 import com.gk.daas.framework.access.ViewToolkit;
+import com.gk.daas.widget.HomeFragmentPagerAdapter;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -35,19 +37,26 @@ public class HomeUiImpl implements HomeUi {
     RadioButton mockServiceButton;
 
     private final ViewToolkit viewToolkit;
+    private final HomeFragmentPagerAdapter homeFragmentPagerAdapter;
 
     private UserActionListener listener;
 
-    public HomeUiImpl(ViewToolkit viewToolkit) {
+    public HomeUiImpl(ViewToolkit viewToolkit, HomeFragmentPagerAdapter homeFragmentPagerAdapter) {
         this.viewToolkit = viewToolkit;
+        this.homeFragmentPagerAdapter = homeFragmentPagerAdapter;
     }
 
     @Override
     public void init() {
-        viewToolkit.setContentView(R.layout.activity_home);
-        viewToolkit.injectViews(this);
+        ViewPager viewPager = viewToolkit.factory().newViewPager();
+        viewPager.setId(R.id.pager);
+        viewToolkit.setContentView(viewPager);
 
-        initServiceButton();
+        viewPager.setAdapter(homeFragmentPagerAdapter);
+
+//        viewToolkit.injectViews(this);
+
+//        initServiceButton();
     }
 
     @Override

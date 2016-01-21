@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/distance_default"
+        android:paddingRight="@dimen/distance_default">
+
+        <TextView
+            style="@style/TextTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Use-case / Requirement"/>
+
+        <TextView
+            style="@style/TextDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/UseCase_Basic_Description"/>
+
+        <TextView
+            style="@style/TextTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Implementation"/>
+
+        <TextView
+            style="@style/TextDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/UseCase_Basic_Implementation"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/distance_default"
+            android:layout_marginTop="@dimen/distance_default"
+            android:background="@drawable/simple_frame"
+            android:padding="@dimen/distance_default">
+
+            <TextView
+                android:id="@+id/Text_WeatherUseCase"
+                style="@style/TextDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/distance_default"
+                android:text="Get the current temperature in Budapest"/>
+
+            <Button
+                android:id="@+id/Button_Execute"
+                style="@style/ActionButtonStyle"
+                android:layout_below="@id/Text_WeatherUseCase"
+                android:text="@string/GetTemp_Button"/>
+
+            <TextView
+                android:id="@+id/GetTemp_ResultText"
+                style="@style/TextDescription"
+                android:layout_margin="@dimen/distance_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/Button_Execute"
+                android:layout_toRightOf="@id/Button_Execute"
+                android:freezesText="true"
+                android:gravity="center"
+                android:hint="@string/Result_Text"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</ScrollView>

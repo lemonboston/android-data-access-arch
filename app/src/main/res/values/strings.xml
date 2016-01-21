@@ -21,4 +21,19 @@
     <string name="ErrorMessage_noInternet">No internet connection</string>
     <string name="ErrorMessage_unknownError">Unknown error happened</string>
     <string name="ErrorMessage_unknownHost">Server unreachable</string>
+
+    <string name="UseCase_Basic_Description">
+        User initiates data access, receives the result on UI.
+        \nRequires a single network call.
+        \n
+        \n - Handle rotation (deliver result without restart on rotated screen)
+        \n - Display loading indicator during the call
+    </string>
+
+    <string name="UseCase_Basic_Implementation">
+        Retrofit with RxJava for the API call, and EventBus to deliver the results back to the presentation layer.
+        \nThe whole component is put in an Android Service which starts on-demand and stops when there is no more ongoing task.
+    </string>
+
+
 </resources>
