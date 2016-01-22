@@ -49,7 +49,6 @@ public class NetworkService extends Service implements TaskCounter.AllTasksFinis
         handler = new Handler(handlerThread.getLooper());
 
         taskCounter.setAllTaskFinishedListener(this);
-        taskCounter.setHandler(handler);
     }
 
     @Nullable

@@ -1,11 +1,13 @@
 package com.gk.daas.data.network;
 
-import android.os.Handler;
-
 import com.gk.daas.log.Log;
 import com.gk.daas.log.LogFactory;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import rx.Scheduler;
+import rx.schedulers.Schedulers;
 
 /**
  * @author Gabor_Keszthelyi
@@ -17,7 +19,6 @@ public class TaskCounterImpl implements TaskCounter {
     private final Log log;
 
     private AllTasksFinishedListener listener;
-    private Handler handler;
 
     public TaskCounterImpl(LogFactory logFactory) {
         this.log = logFactory.create(getClass());
@@ -35,8 +36,19 @@ public class TaskCounterImpl implements TaskCounter {
         log.d("Task counter decreased to: " + noOfOngoingTasks);
         if (noOfOngoingTasks == 0) {
             log.d("No tasks left, schedule double-check.");
-            handler.postDelayed(this::notifyListener, 1000);
+            scheduleNotifyListeners();
         }
+    }
+
+    // Schedule double-check for later to prevent shutting down while there is incoming data access request
+    private void scheduleNotifyListeners() {
+        Scheduler.Worker worker = Schedulers.io().createWorker();
+        worker.schedule(
+                () -> {
+                    notifyListener();
+                    worker.unsubscribe();
+                },
+                1, TimeUnit.SECONDS);
     }
 
     private void notifyListener() {
@@ -51,8 +63,4 @@ public class TaskCounterImpl implements TaskCounter {
         this.listener = listener;
     }
 
-    @Override
-    public void setHandler(Handler handler) {
-        this.handler = handler;
-    }
 }
