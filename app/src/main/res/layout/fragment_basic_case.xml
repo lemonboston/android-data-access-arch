@@ -10,30 +10,6 @@
         android:paddingLeft="@dimen/distance_default"
         android:paddingRight="@dimen/distance_default">
 
-        <TextView
-            style="@style/TextTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Use-case / Requirement"/>
-
-        <TextView
-            style="@style/TextDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/UseCase_Basic_Description"/>
-
-        <TextView
-            style="@style/TextTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Implementation"/>
-
-        <TextView
-            style="@style/TextDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/UseCase_Basic_Implementation"/>
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,16 +35,54 @@
             <TextView
                 android:id="@+id/GetTemp_ResultText"
                 style="@style/TextDescription"
-                android:layout_margin="@dimen/distance_default"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/Button_Execute"
+                android:layout_margin="@dimen/distance_default"
+                android:layout_toLeftOf="@+id/Button_Clear"
                 android:layout_toRightOf="@id/Button_Execute"
                 android:freezesText="true"
                 android:gravity="center"
                 android:hint="@string/Result_Text"/>
 
+            <Button
+                android:id="@+id/Button_Clear"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignBaseline="@id/GetTemp_ResultText"
+                android:layout_alignParentRight="true"
+                android:background="@android:drawable/ic_menu_close_clear_cancel"/>
+
         </RelativeLayout>
+
+        <TextView
+            style="@style/TextTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Use-case / Requirement"/>
+
+        <TextView
+            style="@style/TextDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/UseCase_Basic_Description"/>
+
+        <TextView
+            style="@style/TextTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Implementation"/>
+
+        <TextView
+            style="@style/TextDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/UseCase_Basic_Implementation"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/distance_default"/>
+
 
     </LinearLayout>
 </ScrollView>

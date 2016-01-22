@@ -53,14 +53,14 @@ public class HomeController implements OnCreate, OnDestroy {
     @Override
     public void onCreate() {
         ui.init();
-        ui.setUserActionListener(new UserActionHandler());
-        eventHandler = new EventHandler();
-        bus.register(eventHandler);
+//        ui.setUserActionListener(new UserActionHandler());
+//        eventHandler = new EventHandler();
+//        bus.register(eventHandler);
     }
 
     @Override
     public void onDestroy() {
-        bus.unregister(eventHandler);
+//        bus.unregister(eventHandler);
     }
 
     private class UserActionHandler implements HomeUi.UserActionListener {

@@ -2,6 +2,7 @@ package com.gk.daas.di;
 
 import com.gk.daas.core.BaseActivity;
 import com.gk.daas.screen.home.HomeActivity;
+import com.gk.daas.screen.usecases.basic.BasicCaseFragment;
 
 import dagger.Component;
 
@@ -14,10 +15,16 @@ public interface ActivityComponent {
 
     void inject(HomeActivity activity);
 
+    void inject(BasicCaseFragment basicCaseFragment);
+
     class Injector {
 
         public static void inject(HomeActivity homeActivity) {
             create(homeActivity).inject(homeActivity);
+        }
+
+        public static void inject(BasicCaseFragment basicCaseFragment) {
+            create((BaseActivity) basicCaseFragment.getActivity()).inject(basicCaseFragment);
         }
 
         private static ActivityComponent create(BaseActivity activity) {
