@@ -1,88 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/distance_default"
-        android:paddingRight="@dimen/distance_default">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/distance_default"
+            android:paddingRight="@dimen/distance_default">
 
-            android:layout_marginTop="@dimen/distance_default"
-            android:background="@drawable/simple_frame"
-            android:padding="@dimen/distance_default">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/distance_default"
+                android:background="@drawable/simple_frame"
+                android:padding="@dimen/distance_default">
+
+                <TextView
+                    android:id="@+id/Text_WeatherUseCase"
+                    style="@style/TextDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/distance_default"
+                    android:text="Get the current temperature in Budapest"/>
+
+                <Button
+                    android:id="@+id/Button_Execute"
+                    style="@style/ActionButtonStyle"
+                    android:layout_below="@id/Text_WeatherUseCase"
+                    android:text="@string/GetTemp_Button"/>
+
+                <TextView
+                    android:id="@+id/GetTemp_ResultText"
+                    style="@style/TextResult"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/Button_Execute"
+                    android:layout_margin="@dimen/distance_default"
+                    android:layout_toLeftOf="@+id/Button_Clear"
+                    android:layout_toRightOf="@id/Button_Execute"
+                    android:freezesText="true"
+                    android:gravity="center"
+                    android:hint="@string/Result_Text"/>
+
+                <Button
+                    android:id="@+id/Button_Clear"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignBaseline="@id/GetTemp_ResultText"
+                    android:layout_alignParentRight="true"
+                    android:background="@android:drawable/ic_menu_close_clear_cancel"/>
+
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/Text_WeatherUseCase"
+                style="@style/TextTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Use-case / Requirement"/>
+
+            <TextView
                 style="@style/TextDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/distance_default"
-                android:text="Get the current temperature in Budapest"/>
-
-            <Button
-                android:id="@+id/Button_Execute"
-                style="@style/ActionButtonStyle"
-                android:layout_below="@id/Text_WeatherUseCase"
-                android:text="@string/GetTemp_Button"/>
+                android:text="@string/UseCase_Basic_Description"/>
 
             <TextView
-                android:id="@+id/GetTemp_ResultText"
+                style="@style/TextTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Implementation"/>
+
+            <TextView
                 style="@style/TextDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/Button_Execute"
-                android:layout_margin="@dimen/distance_default"
-                android:layout_toLeftOf="@+id/Button_Clear"
-                android:layout_toRightOf="@id/Button_Execute"
-                android:freezesText="true"
-                android:gravity="center"
-                android:hint="@string/Result_Text"/>
+                android:text="@string/UseCase_Basic_Implementation"/>
 
-            <Button
-                android:id="@+id/Button_Clear"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignBaseline="@id/GetTemp_ResultText"
-                android:layout_alignParentRight="true"
-                android:background="@android:drawable/ic_menu_close_clear_cancel"/>
-
-        </RelativeLayout>
-
-        <TextView
-            style="@style/TextTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Use-case / Requirement"/>
-
-        <TextView
-            style="@style/TextDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/UseCase_Basic_Description"/>
-
-        <TextView
-            style="@style/TextTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Implementation"/>
-
-        <TextView
-            style="@style/TextDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/UseCase_Basic_Implementation"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/distance_default"/>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/distance_default"/>
 
 
-    </LinearLayout>
-</ScrollView>
+        </LinearLayout>
+    </ScrollView>
+
+    <com.gk.daas.widget.KeepVisibilityProgressBar
+        android:id="@+id/ProgressBar"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_centerInParent="true"
+        android:saveEnabled="true"
+        android:visibility="gone"/>
+
+</RelativeLayout>

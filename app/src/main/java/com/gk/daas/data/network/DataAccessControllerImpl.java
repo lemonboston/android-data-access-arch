@@ -94,7 +94,7 @@ public class DataAccessControllerImpl implements DataAccessController {
 
                 .subscribe(
                         (ForecastResponse response) -> {
-                            log.d("getForecastForWarmestCity call finised");
+                            log.d("getForecastForWarmestCity call finished");
                             double lastTemp = response.list.get(response.list.size() - 1).main.temp;
                             bus.post(new GetForecastForWarmestCitySuccessEvent(lastTemp));
                             taskCounter.taskFinished();

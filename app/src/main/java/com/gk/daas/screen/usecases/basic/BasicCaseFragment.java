@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.gk.daas.R;
@@ -40,6 +41,9 @@ public class BasicCaseFragment extends Fragment {
     @Bind(R.id.GetTemp_ResultText)
     TextView resultTextView;
 
+    @Bind(R.id.ProgressBar)
+    ProgressBar progressBar;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +68,7 @@ public class BasicCaseFragment extends Fragment {
 
     @OnClick(R.id.Button_Execute)
     void onExecuteButtonClick() {
+        progressBar.setVisibility(View.VISIBLE);
         dataAccessInitiator.getTemperature("Budapest");
     }
 
@@ -74,6 +79,7 @@ public class BasicCaseFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onGetTempSuccess(GetTempSuccessEvent event) {
+        progressBar.setVisibility(View.GONE);
         String temperature = temperatureFormatter.formatTempInKelvin(event.temp);
         resultTextView.setText(temperature);
     }

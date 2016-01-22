@@ -35,5 +35,4 @@
         \nThe whole component is put in an Android Service which starts on-demand and stops when there is no more ongoing task.
     </string>
 
-
 </resources>

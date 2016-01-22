@@ -19,7 +19,7 @@ import javax.inject.Inject;
 /**
  * @author Gabor_Keszthelyi
  */
-public class NetworkService extends Service implements TaskCounter.AllTasksFinishedListener {
+public class DataAccessService extends Service implements TaskCounter.AllTasksFinishedListener {
 
     @Inject
     DataAccessController dataAccessController;
