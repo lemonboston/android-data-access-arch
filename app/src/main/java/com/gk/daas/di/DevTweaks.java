@@ -13,7 +13,7 @@ public class DevTweaks {
     static {
 
         if (BuildConfig.DEBUG) {
-            MOCK_WEATHER_SERVICE = false;
+            MOCK_WEATHER_SERVICE = true;
 
 
         } else { // DON'T TOUCH, FOR RELEASE

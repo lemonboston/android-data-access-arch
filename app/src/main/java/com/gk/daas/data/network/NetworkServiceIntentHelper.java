@@ -20,7 +20,7 @@ public class NetworkServiceIntentHelper {
 
     public Intent createGetTempIntent(String city) {
         Intent intent = new Intent();
-        intent.setClassName(BuildConfig.APPLICATION_ID, NetworkService.class.getName());
+        intent.setClassName(BuildConfig.APPLICATION_ID, DataAccessService.class.getName());
         intent.setAction(NetworkUseCase.GET_TEMP.name());
         intent.putExtra(KEY_CITY, city);
         return intent;
@@ -28,7 +28,7 @@ public class NetworkServiceIntentHelper {
 
     public Intent createGetForecastForWarmestCity(String city1, String city2) {
         Intent intent = new Intent();
-        intent.setClassName(BuildConfig.APPLICATION_ID, NetworkService.class.getName());
+        intent.setClassName(BuildConfig.APPLICATION_ID, DataAccessService.class.getName());
         intent.setAction(NetworkUseCase.GET_FORECAST_FOR_WARMEST_CITY.name());
         intent.putExtra(KEY_CITY_1, city1);
         intent.putExtra(KEY_CITY_2, city2);
@@ -37,7 +37,7 @@ public class NetworkServiceIntentHelper {
 
     public Intent createGetTemperatureDiff(String city1, String city2) {
         Intent intent = new Intent();
-        intent.setClassName(BuildConfig.APPLICATION_ID, NetworkService.class.getName());
+        intent.setClassName(BuildConfig.APPLICATION_ID, DataAccessService.class.getName());
         intent.setAction(NetworkUseCase.GET_TEMPERATURE_DIFF.name());
         intent.putExtra(KEY_CITY_1, city1);
         intent.putExtra(KEY_CITY_2, city2);
@@ -58,7 +58,7 @@ public class NetworkServiceIntentHelper {
 
     public Intent createGetTempOfflineStoreIntent(String city) {
         Intent intent = new Intent();
-        intent.setClassName(BuildConfig.APPLICATION_ID, NetworkService.class.getName());
+        intent.setClassName(BuildConfig.APPLICATION_ID, DataAccessService.class.getName());
         intent.setAction(NetworkUseCase.GET_TEMP_OFFLINE_STORE.name());
         intent.putExtra(KEY_CITY, city);
         return intent;

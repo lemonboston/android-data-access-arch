@@ -8,6 +8,7 @@ import android.os.IBinder;
 import android.os.Process;
 import android.support.annotation.Nullable;
 
+import com.gk.daas.data.access.DataAccessController;
 import com.gk.daas.di.AppComponent;
 import com.gk.daas.di.ServiceComponent;
 import com.gk.daas.framework.access.Toaster;
@@ -18,10 +19,10 @@ import javax.inject.Inject;
 /**
  * @author Gabor_Keszthelyi
  */
-public class NetworkService extends Service implements TaskCounter.AllTasksFinishedListener {
+public class DataAccessService extends Service implements TaskCounter.AllTasksFinishedListener {
 
     @Inject
-    NetworkController networkController;
+    DataAccessController dataAccessController;
 
     @Inject
     NetworkServiceIntentHelper intentHelper;
@@ -93,24 +94,24 @@ public class NetworkService extends Service implements TaskCounter.AllTasksFinis
 
     private void processGetTemp(Intent intent) {
         String city = intentHelper.extractCity(intent);
-        networkController.getTemp(city);
+        dataAccessController.getTemperature(city);
     }
 
     private void processGetForecastForWarmer(Intent intent) {
         String city1 = intentHelper.extractCity1(intent);
         String city2 = intentHelper.extractCity2(intent);
-        networkController.getForecastForWarmestCity(city1, city2);
+        dataAccessController.getForecastForWarmestCity(city1, city2);
     }
 
     private void processGetTempDiff(Intent intent) {
         String city1 = intentHelper.extractCity1(intent);
         String city2 = intentHelper.extractCity2(intent);
-        networkController.getTemperatureDiff(city1, city2);
+        dataAccessController.getTemperatureDiff(city1, city2);
     }
 
     private void processGetTempOfflineStore(Intent intent) {
         String city = intentHelper.extractCity(intent);
-        networkController.getTemp_OfflineLocalStore(city);
+        dataAccessController.getTemperature_OfflineLocalStore(city);
     }
 
     @Override

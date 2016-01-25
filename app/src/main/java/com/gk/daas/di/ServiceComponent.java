@@ -1,6 +1,6 @@
 package com.gk.daas.di;
 
-import com.gk.daas.data.network.NetworkService;
+import com.gk.daas.data.network.DataAccessService;
 
 import dagger.Component;
 
@@ -11,16 +11,16 @@ import dagger.Component;
 @Component(dependencies = AppComponent.class, modules = ServiceModule.class)
 public interface ServiceComponent {
 
-    void inject(NetworkService networkService);
+    void inject(DataAccessService dataAccessService);
 
     class Injector {
 
-        public static void inject(NetworkService networkService) {
+        public static void inject(DataAccessService dataAccessService) {
             DaggerServiceComponent.builder()
                     .appComponent(AppComponent.Holder.getInstance())
                     .serviceModule(new ServiceModule())
                     .build()
-                    .inject(networkService);
+                    .inject(dataAccessService);
         }
     }
 }

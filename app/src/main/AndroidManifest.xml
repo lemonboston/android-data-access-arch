@@ -27,7 +27,7 @@
             android:label="@string/SecondActivity_label" />
 
         <service
-            android:name="com.gk.daas.data.network.NetworkService"
+            android:name=".data.network.DataAccessService"
             android:exported="false" />
 
         <receiver

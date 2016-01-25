@@ -5,8 +5,6 @@ import android.view.View;
 
 import com.gk.daas.core.BaseActivity;
 
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 
 /**
@@ -17,10 +15,11 @@ import butterknife.ButterKnife;
 public class ViewToolkitImpl implements ViewToolkit {
 
     private final BaseActivity activity;
+    private final ViewFactory viewFactory;
 
-    @Inject
-    public ViewToolkitImpl(BaseActivity activity) {
+    public ViewToolkitImpl(BaseActivity activity, ViewFactory viewFactory) {
         this.activity = activity;
+        this.viewFactory = viewFactory;
     }
 
     @Override
@@ -41,6 +40,11 @@ public class ViewToolkitImpl implements ViewToolkit {
     @Override
     public void injectViews(Object target) {
         ButterKnife.bind(target, activity);
+    }
+
+    @Override
+    public ViewFactory factory() {
+        return viewFactory;
     }
 
 }
