@@ -30,6 +30,7 @@ import de.greenrobot.event.ThreadMode;
  */
 // TODO add go to other screen button
 // TODO input text for city
+// TODO error handling?
 public class BasicCaseFragment extends Fragment {
 
     @Inject
