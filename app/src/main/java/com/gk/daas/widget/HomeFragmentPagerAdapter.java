@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 
+import com.gk.daas.screen.ParallelAndChainedCaseFragment;
 import com.gk.daas.screen.usecases.basic.BasicCaseFragment;
 
 /**
@@ -23,7 +24,7 @@ public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new BasicCaseFragment();
             case 1:
-                return new BasicCaseFragment();
+                return new ParallelAndChainedCaseFragment();
             default:
                 throw new IllegalArgumentException("No fragment for position: " + position);
         }

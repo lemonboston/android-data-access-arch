@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -28,13 +29,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/distance_default"
-                    android:text="Get the current temperature in Budapest"/>
+                    tools:text="@string/WeatherUseCase_GetTemp"/>
 
                 <Button
                     android:id="@+id/Button_Execute"
                     style="@style/ActionButtonStyle"
                     android:layout_below="@id/Text_WeatherUseCase"
-                    android:text="@string/GetTemp_Button"/>
+                    tools:text="@string/GetTemp_Button"/>
 
                 <TextView
                     android:id="@+id/GetTemp_ResultText"
@@ -67,10 +68,11 @@
                 android:text="Use-case / Requirement"/>
 
             <TextView
+                android:id="@+id/TechnicalUseCase_Description"
                 style="@style/TextDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/UseCase_Basic_Description"/>
+                tools:text="@string/UseCase_Basic_Description"/>
 
             <TextView
                 style="@style/TextTitle"
@@ -79,10 +81,11 @@
                 android:text="Implementation"/>
 
             <TextView
+                android:id="@+id/ImplementationDescription"
                 style="@style/TextDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/UseCase_Basic_Implementation"/>
+                tools:text="@string/UseCase_Basic_Implementation"/>
 
             <Space
                 android:layout_width="match_parent"

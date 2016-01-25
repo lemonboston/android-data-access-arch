@@ -1,4 +1,4 @@
-package com.gk.daas.screen.usecases.basic;
+package com.gk.daas.screen;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -7,14 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.gk.daas.Investigator;
 import com.gk.daas.R;
 import com.gk.daas.bus.Bus;
 import com.gk.daas.data.access.DataAccessInitiator;
-import com.gk.daas.data.event.GetTempSuccessEvent;
+import com.gk.daas.data.event.GetForecastProgressEvent;
+import com.gk.daas.data.event.GetForecastSuccessEvent;
 import com.gk.daas.di.ActivityComponent;
+import com.gk.daas.dialog.ProgressDialog;
 import com.gk.daas.util.TemperatureFormatter;
 
 import javax.inject.Inject;
@@ -28,9 +30,7 @@ import de.greenrobot.event.ThreadMode;
 /**
  * @author Gabor_Keszthelyi
  */
-// TODO add go to other screen button
-// TODO input text for city
-public class BasicCaseFragment extends Fragment {
+public class ParallelAndChainedCaseFragment extends Fragment {
 
     @Inject
     DataAccessInitiator dataAccessInitiator;
@@ -38,14 +38,8 @@ public class BasicCaseFragment extends Fragment {
     @Inject
     Bus bus;
 
-    @Inject
-    TemperatureFormatter temperatureFormatter;
-
     @Bind(R.id.GetTemp_ResultText)
     TextView resultTextView;
-
-    @Bind(R.id.ProgressBar)
-    ProgressBar progressBar;
 
     @Bind(R.id.Button_Execute)
     Button executeButton;
@@ -59,16 +53,22 @@ public class BasicCaseFragment extends Fragment {
     @Bind(R.id.ImplementationDescription)
     TextView implementationDescription;
 
+    @Inject
+    TemperatureFormatter temperatureFormatter;
+
+    @Inject
+    ProgressDialog progressDialog;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_use_case, container, false);
         ButterKnife.bind(this, view);
 
-        executeButton.setText(R.string.GetTemp_Button);
-        weatherUseCase.setText(R.string.WeatherUseCase_GetTemp);
-        technicalUseCase.setText(R.string.UseCase_Basic_Description);
-        implementationDescription.setText(R.string.UseCase_Basic_Implementation);
+        executeButton.setText(R.string.GetForecast_Button);
+        weatherUseCase.setText(R.string.WeatherUseCase_GetForecast);
+        technicalUseCase.setText(R.string.UseCase_ParallelChained_Description);
+        implementationDescription.setText(R.string.UseCase_ParallelChained_Implementation);
 
         ActivityComponent.Injector.inject(this);
         return view;
@@ -89,8 +89,7 @@ public class BasicCaseFragment extends Fragment {
 
     @OnClick(R.id.Button_Execute)
     void onExecuteButtonClick() {
-        progressBar.setVisibility(View.VISIBLE);
-        dataAccessInitiator.getTemperature("Budapest");
+        dataAccessInitiator.getForecastForWarmestCity("Budapest", "Vienna");
     }
 
     @OnClick(R.id.Button_Clear)
@@ -98,12 +97,28 @@ public class BasicCaseFragment extends Fragment {
         resultTextView.setText(null);
     }
 
+    // TODO maybe sticky is not needed any more that dialog fragment is fixed
+    @Subscribe(threadMode = ThreadMode.MainThread, sticky = true)
+    public void onGetForecastProgressUpdate(GetForecastProgressEvent progress) {
+        Investigator.log(this, "progress", progress);
+        switch (progress) {
+            case FIRST_STAGE_STARTED:
+                progressDialog.showMessage(getString(R.string.ForecastProgress_Step1));
+                break;
+            case SECOND_STAGE_STARTED:
+                progressDialog.showMessage(getString(R.string.ForecastProgress_Step2));
+                break;
+            case COMPLETED:
+                progressDialog.dismiss();
+                break;
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MainThread)
-    public void onGetTempSuccess(GetTempSuccessEvent event) {
-        progressBar.setVisibility(View.GONE);
-        String temperature = temperatureFormatter.formatTempInKelvin(event.temp);
+    public void onGetForecastSuccess(GetForecastSuccessEvent event) {
+        String temperature = temperatureFormatter.formatTempInKelvin(event.lastTemp);
         resultTextView.setText(temperature);
     }
 
-}
 
+}

@@ -10,27 +10,37 @@ import android.os.Bundle;
  */
 public class ProgressDialogFragment extends DialogFragment {
 
-    private static final String ARG_INITIAL_MESSAGE = "initialMessage";
+    private String message;
 
-    public static ProgressDialogFragment newInstance(String initialMessage) {
-        ProgressDialogFragment fragment = new ProgressDialogFragment();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        setRetainInstance(true);
+        setCancelable(false);
+        super.onCreate(savedInstanceState);
+    }
 
-        Bundle args = new Bundle();
-        args.putString(ARG_INITIAL_MESSAGE, initialMessage);
-        fragment.setArguments(args);
-
-        return fragment;
+    // To prevent dialog disappearing on rotation. http://stackoverflow.com/a/14016339/4247460
+    @Override
+    public void onDestroyView() {
+        if (getDialog() != null && getRetainInstance()) {
+            getDialog().setDismissMessage(null);
+        }
+        super.onDestroyView();
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        String initialMessage = getArguments().getString(ARG_INITIAL_MESSAGE);
         ProgressDialog progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage(initialMessage);
+        progressDialog.setMessage(message);
         return progressDialog;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public void updateMessage(String message) {
+        this.message = message;
         ((ProgressDialog) getDialog()).setMessage(message);
     }
 }

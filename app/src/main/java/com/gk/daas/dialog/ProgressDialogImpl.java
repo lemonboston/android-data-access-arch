@@ -15,28 +15,26 @@ public class ProgressDialogImpl implements ProgressDialog {
     }
 
     @Override
-    public void show(String message) {
-        ProgressDialogFragment dialog = ProgressDialogFragment.newInstance(message);
-        fragmentManager.beginTransaction().add(dialog, TAG_PROGRESS_DIALOG).commit();
-    }
-
-    @Override
-    public void updateMessage(String message) {
-        ProgressDialogFragment dialogFragment = findIt();
-        if (dialogFragment != null) {
+    public void showMessage(String message) {
+        ProgressDialogFragment dialogFragment = findFragment();
+        if (dialogFragment == null) {
+            ProgressDialogFragment newDialogFragment = new ProgressDialogFragment();
+            newDialogFragment.setMessage(message);
+            newDialogFragment.show(fragmentManager, TAG_PROGRESS_DIALOG);
+        } else {
             dialogFragment.updateMessage(message);
         }
     }
 
     @Override
     public void dismiss() {
-        ProgressDialogFragment dialogFragment = findIt();
+        ProgressDialogFragment dialogFragment = findFragment();
         if (dialogFragment != null) {
             dialogFragment.dismiss();
         }
     }
 
-    private ProgressDialogFragment findIt() {
+    private ProgressDialogFragment findFragment() {
         return (ProgressDialogFragment) fragmentManager.findFragmentByTag(TAG_PROGRESS_DIALOG);
     }
 }

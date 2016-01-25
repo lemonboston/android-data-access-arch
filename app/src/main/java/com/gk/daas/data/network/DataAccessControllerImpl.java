@@ -3,8 +3,8 @@ package com.gk.daas.data.network;
 import com.gk.daas.bus.Bus;
 import com.gk.daas.data.access.DataAccessController;
 import com.gk.daas.data.event.GetDiffSuccessEvent;
-import com.gk.daas.data.event.GetForecastFirstPartSuccessEvent;
-import com.gk.daas.data.event.GetForecastForWarmestCitySuccessEvent;
+import com.gk.daas.data.event.GetForecastProgressEvent;
+import com.gk.daas.data.event.GetForecastSuccessEvent;
 import com.gk.daas.data.event.GetTempStoreSuccessEvent;
 import com.gk.daas.data.event.GetTempSuccessEvent;
 import com.gk.daas.data.model.ForecastResponse;
@@ -81,12 +81,14 @@ public class DataAccessControllerImpl implements DataAccessController {
             return;
         }
 
+        bus.postSticky(GetForecastProgressEvent.FIRST_STAGE_STARTED);
+
         forecastSubscription = Single.zip(
                 weatherService.getWeather(city1, API_KEY).subscribeOn(Schedulers.newThread()),
                 weatherService.getWeather(city2, API_KEY).subscribeOn(Schedulers.newThread()),
                 (response1, response2) -> response1.main.temp > response2.main.temp ? city1 : city2)
 
-                .doOnSuccess(city -> bus.post(new GetForecastFirstPartSuccessEvent()))
+                .doOnSuccess(city -> bus.postSticky(GetForecastProgressEvent.SECOND_STAGE_STARTED))
 
                 .flatMap(city -> weatherService.getForecast(city, API_KEY))
 
@@ -96,7 +98,8 @@ public class DataAccessControllerImpl implements DataAccessController {
                         (ForecastResponse response) -> {
                             log.d("getForecastForWarmestCity call finished");
                             double lastTemp = response.list.get(response.list.size() - 1).main.temp;
-                            bus.post(new GetForecastForWarmestCitySuccessEvent(lastTemp));
+                            bus.post(new GetForecastSuccessEvent(lastTemp));
+                            bus.postSticky(GetForecastProgressEvent.COMPLETED);
                             taskCounter.taskFinished();
                         },
                         throwable -> {
