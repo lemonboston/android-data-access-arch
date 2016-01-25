@@ -27,6 +27,11 @@ public class MockData {
 
     public static ForecastResponse randomForecastResponse() {
         ForecastResponse forecastResponse = new ForecastResponse();
+
+        City city = new City();
+        city.name = "Budapest";
+        forecastResponse.city = city;
+
         List<WeatherResponse> weatherResponses = new ArrayList<>();
         weatherResponses.add(randomWeatherResponse());
         forecastResponse.list = weatherResponses;

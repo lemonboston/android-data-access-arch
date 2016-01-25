@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import com.gk.daas.Investigator;
 import com.gk.daas.R;
 import com.gk.daas.bus.Bus;
 import com.gk.daas.data.access.DataAccessInitiator;
@@ -38,7 +38,7 @@ public class ParallelAndChainedCaseFragment extends Fragment {
     @Inject
     Bus bus;
 
-    @Bind(R.id.GetTemp_ResultText)
+    @Bind(R.id.ResultText)
     TextView resultTextView;
 
     @Bind(R.id.Button_Execute)
@@ -52,6 +52,12 @@ public class ParallelAndChainedCaseFragment extends Fragment {
 
     @Bind(R.id.ImplementationDescription)
     TextView implementationDescription;
+
+    @Bind(R.id.EditText_City1)
+    EditText city1Text;
+
+    @Bind(R.id.EditText_City2)
+    EditText city2Text;
 
     @Inject
     TemperatureFormatter temperatureFormatter;
@@ -69,6 +75,7 @@ public class ParallelAndChainedCaseFragment extends Fragment {
         weatherUseCase.setText(R.string.WeatherUseCase_GetForecast);
         technicalUseCase.setText(R.string.UseCase_ParallelChained_Description);
         implementationDescription.setText(R.string.UseCase_ParallelChained_Implementation);
+        city2Text.setVisibility(View.VISIBLE);
 
         ActivityComponent.Injector.inject(this);
         return view;
@@ -89,7 +96,7 @@ public class ParallelAndChainedCaseFragment extends Fragment {
 
     @OnClick(R.id.Button_Execute)
     void onExecuteButtonClick() {
-        dataAccessInitiator.getForecastForWarmestCity("Budapest", "Vienna");
+        dataAccessInitiator.getForecastForWarmestCity(city1Text.getText().toString(), city2Text.getText().toString());
     }
 
     @OnClick(R.id.Button_Clear)
@@ -100,7 +107,6 @@ public class ParallelAndChainedCaseFragment extends Fragment {
     // TODO maybe sticky is not needed any more that dialog fragment is fixed
     @Subscribe(threadMode = ThreadMode.MainThread, sticky = true)
     public void onGetForecastProgressUpdate(GetForecastProgressEvent progress) {
-        Investigator.log(this, "progress", progress);
         switch (progress) {
             case FIRST_STAGE_STARTED:
                 progressDialog.showMessage(getString(R.string.ForecastProgress_Step1));
@@ -117,7 +123,7 @@ public class ParallelAndChainedCaseFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onGetForecastSuccess(GetForecastSuccessEvent event) {
         String temperature = temperatureFormatter.formatTempInKelvin(event.lastTemp);
-        resultTextView.setText(temperature);
+        resultTextView.setText(event.cityName + ": " + temperature);
     }
 
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -42,7 +43,7 @@ public class BasicCaseFragment extends Fragment {
     @Inject
     TemperatureFormatter temperatureFormatter;
 
-    @Bind(R.id.GetTemp_ResultText)
+    @Bind(R.id.ResultText)
     TextView resultTextView;
 
     @Bind(R.id.ProgressBar)
@@ -59,6 +60,9 @@ public class BasicCaseFragment extends Fragment {
 
     @Bind(R.id.ImplementationDescription)
     TextView implementationDescription;
+
+    @Bind(R.id.EditText_City1)
+    EditText cityText;
 
     @Nullable
     @Override
@@ -91,7 +95,7 @@ public class BasicCaseFragment extends Fragment {
     @OnClick(R.id.Button_Execute)
     void onExecuteButtonClick() {
         progressBar.setVisibility(View.VISIBLE);
-        dataAccessInitiator.getTemperature("Budapest");
+        dataAccessInitiator.getTemperature(cityText.getText().toString());
     }
 
     @OnClick(R.id.Button_Clear)

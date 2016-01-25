@@ -97,8 +97,10 @@ public class DataAccessControllerImpl implements DataAccessController {
                 .subscribe(
                         (ForecastResponse response) -> {
                             log.d("getForecastForWarmestCity call finished");
+                            // TODO converter/mapper
                             double lastTemp = response.list.get(response.list.size() - 1).main.temp;
-                            bus.post(new GetForecastSuccessEvent(lastTemp));
+                            String cityName = response.city.name;
+                            bus.post(new GetForecastSuccessEvent(lastTemp, cityName));
                             bus.postSticky(GetForecastProgressEvent.COMPLETED);
                             taskCounter.taskFinished();
                         },

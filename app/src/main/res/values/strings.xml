@@ -6,20 +6,17 @@
 
     <string name="SecondActivity_label">Another screen..</string>
 
-    <string name="ServiceSelector_real">REAL SERVICE</string>
-    <string name="ServiceSelector_mock">MOCK SERVICE</string>
-
     <!-- Basic use case-->
     <string name="UseCaseTitle_Basic">Basic Use-Case</string>
-    <string name="WeatherUseCase_GetTemp">Get the current temperature in Budapest</string>
+    <string name="WeatherUseCase_GetTemp">Get the current temperature</string>
     <string name="GetTemp_Button">Get Temp</string>
-    <string name="Result_Text">Result comes here</string>
+    <string name="Result_Text">[Result]</string>
     <string name="UseCase_Basic_Description">
         User initiates data access, receives the result on UI.
         \nRequires a single network call.
         \n
         \n - Displays loading indicator
-        \n - Handles rotation (keeps indicator, doesn't restart call)
+        \n - Handles rotation (keeps indicator, doesn\'t restart call)
     </string>
     <string name="UseCase_Basic_Implementation">
         Retrofit with RxJava for the API call, and EventBus to deliver the results back to the presentation layer.
@@ -28,13 +25,13 @@
 
     <!-- Parallel and Chained use case -->
     <string name="UseCaseTitle_ParallelChained">Parallel and Chained calls</string>
-    <string name="WeatherUseCase_GetForecast">Get the forecast for the city that is warmer currently</string>
+    <string name="WeatherUseCase_GetForecast">Get the 5 day forecast for the city that is warmer currently</string>
     <string name="GetForecast_Button">Get forecast</string>
     <string name="UseCase_ParallelChained_Description">
         User initiates data access, receives the result on UI.
-        \nRequires multiple network calls executed both parallel and chained.
+        \nRequires multiple network calls executed both parallel and chained (after previous one completed).
         \n - Progress dialog displays steps in progress
-        \n - Handles rotation (keeps dialog, doesn't restart call)
+        \n - Handles rotation (keeps dialog, doesn\'t restart call)
     </string>
     <string name="UseCase_ParallelChained_Implementation">Rx operator <i>zip</i> for parallel call, <i>flatMap</i> for chaining.
         \nProgress update events sent at any point of the chain to presentation layer.
@@ -49,6 +46,8 @@
     <string name="ErrorMessage_unknownHost">Server unreachable</string>
     <string name="Menu_RealService">Use Real Weather Service</string>
     <string name="Menu_MockService">Use Mock Weather Service</string>
+    <string name="City2_Default">London</string>
+    <string name="City1_Default">Budapest</string>
 
 
 </resources>

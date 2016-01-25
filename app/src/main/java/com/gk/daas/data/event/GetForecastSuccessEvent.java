@@ -6,9 +6,11 @@ package com.gk.daas.data.event;
 public class GetForecastSuccessEvent {
 
     public final double lastTemp;
+    public final String cityName;
 
-    public GetForecastSuccessEvent(double lastTemp) {
+    public GetForecastSuccessEvent(double lastTemp, String cityName) {
         this.lastTemp = lastTemp;
+        this.cityName = cityName;
     }
 
     @Override
