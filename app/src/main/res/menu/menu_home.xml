@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/Menu_RealService"
+        android:title="@string/Menu_RealService"/>
+    <item
+        android:id="@+id/Menu_MockService"
+        android:title="@string/Menu_MockService"/>
+
+</menu>

@@ -55,8 +55,10 @@
                     android:id="@+id/Button_Clear"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:padding="2dp"
                     android:layout_alignBaseline="@id/GetTemp_ResultText"
                     android:layout_alignParentRight="true"
+                    android:backgroundTint="@color/colorPrimary"
                     android:background="@android:drawable/ic_menu_close_clear_cancel"/>
 
             </RelativeLayout>

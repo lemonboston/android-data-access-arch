@@ -22,8 +22,11 @@
 
     <style name="TextDescription" parent="TextAppearance.AppCompat.Body1"/>
 
+    <style name="TabText" parent="TextAppearance.AppCompat.Widget.ActionBar.Subtitle"/>
+
     <style name="TextResult" parent="TextDescription">
         <item name="android:textSize">16sp</item>
+        <item name="android:textColorHint">@color/colorPrimaryLight</item>
     </style>
 
     <style name="ButtonTextStyle" parent="Widget.AppCompat.ActionButton">
@@ -37,6 +40,10 @@
 
     <style name="NavigationButtonStyle" parent="ButtonStyle">
         <item name="android:background">@android:color/holo_blue_dark</item>
+    </style>
+
+    <style name="TabStyle" parent="TextTitle">
+        <item name="android:background">@color/colorPrimaryLight</item>
     </style>
 
 </resources>

@@ -42,7 +42,7 @@ public class ActivityModule {
 
     @Provides
     public HomeFragmentPagerAdapter provideHomeFragmentPagerAdapter() {
-        return new HomeFragmentPagerAdapter(activity.getFragmentManager());
+        return new HomeFragmentPagerAdapter(activity.getFragmentManager(), activity);
     }
 
     @Provides
