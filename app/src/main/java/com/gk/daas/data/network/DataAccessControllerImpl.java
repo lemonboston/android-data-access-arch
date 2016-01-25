@@ -24,7 +24,7 @@ import static com.gk.daas.data.network.OpenWeatherService.API_KEY;
 /**
  * @author Gabor_Keszthelyi
  */
-// TODO add data mapping to chain (to Temperature from json object)
+// TODO add data mapping to chain (to Temperature from json object) - Temperature representation is not trivial
 public class DataAccessControllerImpl implements DataAccessController {
 
     private final OpenWeatherService weatherService;
