@@ -44,6 +44,8 @@
     <string name="ErrorMessage_noInternet">No internet connection</string>
     <string name="ErrorMessage_unknownError">Unknown error happened</string>
     <string name="ErrorMessage_unknownHost">Server unreachable</string>
+    <string name="ErrorMessage_noOfflineData">No internet connection and no offline data</string>
+
     <string name="Menu_RealService">Use Real Weather Service</string>
     <string name="Menu_MockService">Use Mock Weather Service</string>
     <string name="City2_Default">London</string>

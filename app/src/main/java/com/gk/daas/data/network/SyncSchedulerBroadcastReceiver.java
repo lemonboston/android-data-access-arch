@@ -29,7 +29,8 @@ public class SyncSchedulerBroadcastReceiver extends BroadcastReceiver {
 
         log.d("Sync broadcast received");
         syncScheduler.scheduleNext(intent);
-        dataAccessInitiator.getTemperature("Miami");
+        // TODO which method to use here
+        dataAccessInitiator.getTemperature_allInOne("Miami");
     }
 
     private void inject() {

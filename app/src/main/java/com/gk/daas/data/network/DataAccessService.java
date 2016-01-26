@@ -83,9 +83,6 @@ public class DataAccessService extends Service implements TaskCounter.AllTasksFi
             case GET_FORECAST_FOR_WARMEST_CITY:
                 processGetForecastForWarmer(intent);
                 break;
-            case GET_TEMPERATURE_DIFF:
-                processGetTempDiff(intent);
-                break;
             case GET_TEMP_OFFLINE_STORE:
                 processGetTempOfflineStore(intent);
                 break;
@@ -94,24 +91,18 @@ public class DataAccessService extends Service implements TaskCounter.AllTasksFi
 
     private void processGetTemp(Intent intent) {
         String city = intentHelper.extractCity(intent);
-        dataAccessController.getTemperature(city);
+        dataAccessController.getTemperature_allInOne(city);
     }
 
     private void processGetForecastForWarmer(Intent intent) {
         String city1 = intentHelper.extractCity1(intent);
         String city2 = intentHelper.extractCity2(intent);
-        dataAccessController.getForecastForWarmestCity(city1, city2);
-    }
-
-    private void processGetTempDiff(Intent intent) {
-        String city1 = intentHelper.extractCity1(intent);
-        String city2 = intentHelper.extractCity2(intent);
-        dataAccessController.getTemperatureDiff(city1, city2);
+        dataAccessController.getForecastForWarmerCity(city1, city2);
     }
 
     private void processGetTempOfflineStore(Intent intent) {
         String city = intentHelper.extractCity(intent);
-        dataAccessController.getTemperature_OfflineLocalStore(city);
+        dataAccessController.getTemperature_wOfflineLocalStore(city);
     }
 
     @Override

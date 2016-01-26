@@ -26,19 +26,10 @@ public class NetworkServiceIntentHelper {
         return intent;
     }
 
-    public Intent createGetForecastForWarmestCity(String city1, String city2) {
+    public Intent createGetForecastForWarmerCity(String city1, String city2) {
         Intent intent = new Intent();
         intent.setClassName(BuildConfig.APPLICATION_ID, DataAccessService.class.getName());
         intent.setAction(NetworkUseCase.GET_FORECAST_FOR_WARMEST_CITY.name());
-        intent.putExtra(KEY_CITY_1, city1);
-        intent.putExtra(KEY_CITY_2, city2);
-        return intent;
-    }
-
-    public Intent createGetTemperatureDiff(String city1, String city2) {
-        Intent intent = new Intent();
-        intent.setClassName(BuildConfig.APPLICATION_ID, DataAccessService.class.getName());
-        intent.setAction(NetworkUseCase.GET_TEMPERATURE_DIFF.name());
         intent.putExtra(KEY_CITY_1, city1);
         intent.putExtra(KEY_CITY_2, city2);
         return intent;

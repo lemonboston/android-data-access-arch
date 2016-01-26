@@ -2,6 +2,8 @@ package com.gk.daas.data.store;
 
 import com.gk.daas.data.model.WeatherResponse;
 
+import rx.Single;
+
 /**
  * @author Gabor_Keszthelyi
  */
@@ -9,7 +11,11 @@ public interface DataStore {
 
     <T> void save(Key<T> key, T data);
 
+    <T> void saveAsync(Key<T> key, T data);
+
     <T> T get(Key<T> key);
+
+    <T> Single<T> getAsSingle(Key<T> key);
 
     class Key<T> {
         public final String name;
@@ -21,8 +27,6 @@ public interface DataStore {
         }
     }
 
-    Key<WeatherResponse> GET_TEMP = new Key<>("GetTemp", WeatherResponse.class);
-    Key<Double> GET_TEMP_DIFF = new Key<>("GetTempDiff", Double.class);
-    Key<Double> GET_FORECAST = new Key<>("GetForecast", Double.class);
+    Key<WeatherResponse> GET_TEMP = new Key<>("GetWeather", WeatherResponse.class);
 
 }

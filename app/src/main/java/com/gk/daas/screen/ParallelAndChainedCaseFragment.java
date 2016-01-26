@@ -96,7 +96,7 @@ public class ParallelAndChainedCaseFragment extends Fragment {
 
     @OnClick(R.id.Button_Execute)
     void onExecuteButtonClick() {
-        dataAccessInitiator.getForecastForWarmestCity(city1Text.getText().toString(), city2Text.getText().toString());
+        dataAccessInitiator.getForecastForWarmerCity(city1Text.getText().toString(), city2Text.getText().toString());
     }
 
     @OnClick(R.id.Button_Clear)

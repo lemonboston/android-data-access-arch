@@ -14,8 +14,11 @@ import android.widget.TextView;
 import com.gk.daas.R;
 import com.gk.daas.bus.Bus;
 import com.gk.daas.data.access.DataAccessInitiator;
-import com.gk.daas.data.event.GetTempSuccessEvent;
+import com.gk.daas.data.event.GetTempStoreSuccessEvent;
+import com.gk.daas.data.network.DataAccessError;
 import com.gk.daas.di.ActivityComponent;
+import com.gk.daas.framework.access.Toaster;
+import com.gk.daas.screen.home.ErrorTranslator;
 import com.gk.daas.util.TemperatureFormatter;
 
 import javax.inject.Inject;
@@ -30,8 +33,6 @@ import de.greenrobot.event.ThreadMode;
  * @author Gabor_Keszthelyi
  */
 // TODO add go to other screen button
-// TODO input text for city
-// TODO error handling?
 public class BasicCaseFragment extends Fragment {
 
     @Inject
@@ -42,6 +43,12 @@ public class BasicCaseFragment extends Fragment {
 
     @Inject
     TemperatureFormatter temperatureFormatter;
+
+    @Inject
+    ErrorTranslator errorTranslator;
+
+    @Inject
+    Toaster toaster;
 
     @Bind(R.id.ResultText)
     TextView resultTextView;
@@ -95,7 +102,7 @@ public class BasicCaseFragment extends Fragment {
     @OnClick(R.id.Button_Execute)
     void onExecuteButtonClick() {
         progressBar.setVisibility(View.VISIBLE);
-        dataAccessInitiator.getTemperature(cityText.getText().toString());
+        dataAccessInitiator.getTemperature_allInOne(cityText.getText().toString());
     }
 
     @OnClick(R.id.Button_Clear)
@@ -104,10 +111,17 @@ public class BasicCaseFragment extends Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MainThread)
-    public void onGetTempSuccess(GetTempSuccessEvent event) {
+    public void onGetTempSuccess(GetTempStoreSuccessEvent event) {
         progressBar.setVisibility(View.GONE);
         String temperature = temperatureFormatter.formatTempInKelvin(event.temp);
         resultTextView.setText(temperature);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void onDataAccessFailure(DataAccessError error) {
+        String errorMessage = errorTranslator.translate(error);
+        progressBar.setVisibility(View.GONE);
+        toaster.showToast(errorMessage);
     }
 
 }

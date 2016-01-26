@@ -3,9 +3,6 @@ package com.gk.daas.data.network.connection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.gk.daas.data.network.DataAccessError;
-import com.gk.daas.data.network.ErrorHolderException;
-
 import rx.Single;
 
 /**
@@ -29,7 +26,7 @@ public class NetworkConnectionChecker {
             if (isNetworkAvailable()) {
                 singleSubscriber.onSuccess(null);
             } else {
-                singleSubscriber.onError(new ErrorHolderException(DataAccessError.NO_INTERNET_CONNECTION));
+                singleSubscriber.onError(new NoInternetException());
             }
         });
     }

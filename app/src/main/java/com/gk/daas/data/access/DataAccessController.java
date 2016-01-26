@@ -5,11 +5,15 @@ package com.gk.daas.data.access;
  */
 public interface DataAccessController {
 
-    void getTemperature(String city);
+    void getTemperature_basic(String city);
 
-    void getForecastForWarmestCity(String city1, String city2);
+    void getTemperature_wErrorHandling(String city);
 
-    void getTemperatureDiff(String city1, String city2);
+    void getTemperature_wOngoingHandling(String city);
 
-    void getTemperature_OfflineLocalStore(String city);
+    void getTemperature_wOfflineLocalStore(String city);
+
+    void getTemperature_allInOne(String city);
+
+    void getForecastForWarmerCity(String city1, String city2);
 }

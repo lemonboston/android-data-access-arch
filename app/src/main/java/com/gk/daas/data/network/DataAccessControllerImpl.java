@@ -2,7 +2,6 @@ package com.gk.daas.data.network;
 
 import com.gk.daas.bus.Bus;
 import com.gk.daas.data.access.DataAccessController;
-import com.gk.daas.data.event.GetDiffSuccessEvent;
 import com.gk.daas.data.event.GetForecastProgressEvent;
 import com.gk.daas.data.event.GetForecastSuccessEvent;
 import com.gk.daas.data.event.GetTempStoreSuccessEvent;
@@ -15,7 +14,6 @@ import com.gk.daas.log.Log;
 import com.gk.daas.log.LogFactory;
 
 import rx.Single;
-import rx.SingleSubscriber;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
 
@@ -35,8 +33,8 @@ public class DataAccessControllerImpl implements DataAccessController {
     private final TaskCounter taskCounter;
     private final ErrorInterpreter errorInterpreter;
 
-    private Subscription forecastSubscription;
-    private Subscription getTempDiffSubscription;
+    private Subscription getTempWithOngoingHandlingSubscription;
+    private Subscription getTempAllInOneSubscription;
 
     public DataAccessControllerImpl(OpenWeatherService weatherService, LogFactory logFactory, Bus bus, NetworkConnectionChecker connectionChecker, DataStore dataStore, TaskCounter taskCounter, ErrorInterpreter errorInterpreter) {
         this.weatherService = weatherService;
@@ -49,41 +47,147 @@ public class DataAccessControllerImpl implements DataAccessController {
     }
 
     @Override
-    public void getTemperature(String city) {
-        log.d("GetTemp call starting, city: " + city);
+    public void getTemperature_basic(String city) {
+        String tag = "getTemperature_basic | ";
+        log.d(tag + "Starting, city: " + city);
 
-        connectionChecker.checkNetwork()
-
-                .flatMap(aVoid -> weatherService.getWeather(city, API_KEY))
-
+        weatherService.getWeather(city, API_KEY)
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;
-                            log.d("Temp returned: " + temp);
+                            log.d(tag + "Finished, temp returned: " + temp);
+                            bus.post(new GetTempSuccessEvent(temp));
+                            taskCounter.taskFinished();
+                        });
+    }
+
+
+    @Override
+    public void getTemperature_wErrorHandling(String city) {
+        String tag = "getTemperature_wErrorHandling | ";
+        log.d(tag + "Starting, city: " + city);
+
+        connectionChecker.checkNetwork()
+                .flatMap(aVoid -> weatherService.getWeather(city, API_KEY))
+                .subscribe(
+                        (WeatherResponse weatherResponse) -> {
+                            double temp = weatherResponse.main.temp;
+                            log.d(tag + "Finished, temp returned: " + temp);
                             bus.post(new GetTempSuccessEvent(temp));
                             taskCounter.taskFinished();
                         },
                         throwable -> {
                             DataAccessError dataAccessError = errorInterpreter.interpret(throwable);
                             bus.post(dataAccessError);
-                            log.e("Get temp failed", throwable);
+                            log.w(tag + "Error: " + throwable);
                             taskCounter.taskFinished();
                         });
     }
 
     @Override
-    public void getForecastForWarmestCity(String city1, String city2) {
-        log.d("getForecastForWarmestCity call started");
+    public void getTemperature_wOngoingHandling(String city) {
+        String tag = "getTemperature_wOngoingHandling |";
+        log.d(tag + "Starting, city: " + city);
 
-        if (isOngoing(forecastSubscription)) {
-            log.d("Getting forecast is already ongoing, ignoring request.");
+        if (isOngoing(getTempWithOngoingHandlingSubscription)) {
+            log.d(tag + "Is already ongoing, ignoring request.");
             taskCounter.taskFinished();
             return;
         }
 
+        getTempWithOngoingHandlingSubscription = weatherService.getWeather(city, API_KEY)
+                .subscribe(
+                        (WeatherResponse weatherResponse) -> {
+                            double temp = weatherResponse.main.temp;
+                            log.d(tag + "Finished, temp returned: " + temp);
+                            bus.post(new GetTempSuccessEvent(temp));
+                            taskCounter.taskFinished();
+                        });
+    }
+
+    @Override
+    public void getTemperature_wOfflineLocalStore(String city) {
+        String tag = "getTemperature_wOfflineLocalStore | ";
+        log.d(tag + "Starting, city: " + city);
+
+        weatherService.getWeather(city, API_KEY)
+
+                .doOnSuccess((WeatherResponse weatherResponse) -> {
+                    log.d(tag + "Saving temp to data store");
+                    dataStore.saveAsync(DataStore.GET_TEMP, weatherResponse);
+                })
+
+                .toObservable()
+                .onErrorResumeNext(throwable -> {
+                    log.w(tag + "Error getting temp through API: " + throwable);
+                    return dataStore.getAsSingle(DataStore.GET_TEMP).toObservable();
+                })
+                .toSingle()
+
+                .subscribe(
+                        (WeatherResponse weatherResponse) -> {
+                            double temp = weatherResponse.main.temp;
+                            log.d(tag + "Temp retrieved (from API or local store), temp: " + temp);
+                            bus.post(new GetTempStoreSuccessEvent(temp));
+                            taskCounter.taskFinished();
+                        },
+                        throwable -> {
+                            log.w(tag + "Error: " + throwable);
+                            taskCounter.taskFinished();
+                        });
+
+    }
+
+    public void getTemperature_allInOne(String city) {
+        String tag = "getTemperature_allInOne | ";
+        log.d(tag + "Starting, city: " + city);
+
+        if (isOngoing(getTempAllInOneSubscription)) {
+            log.d(tag + " is already ongoing, ignoring request.");
+            taskCounter.taskFinished();
+            return;
+        }
+
+        getTempAllInOneSubscription =
+                connectionChecker.checkNetwork()
+
+                        .flatMap(aVoid -> weatherService.getWeather(city, API_KEY))
+
+                        .doOnSuccess((WeatherResponse weatherResponse) -> {
+                            log.d(tag + "Saving temp to data store");
+                            dataStore.saveAsync(DataStore.GET_TEMP, weatherResponse);
+                        })
+
+                        .toObservable()
+                        .onErrorResumeNext(throwable -> {
+                            log.w(tag + "Error getting temp through API: " + throwable);
+                            return dataStore.getAsSingle(DataStore.GET_TEMP).toObservable();
+                        })
+                        .toSingle()
+
+                        .subscribe(
+                                (WeatherResponse weatherResponse) -> {
+                                    double temp = weatherResponse.main.temp;
+                                    log.d(tag + "Temp retrieved (from API or local store), temp: " + temp);
+                                    bus.post(new GetTempStoreSuccessEvent(temp));
+                                    taskCounter.taskFinished();
+                                },
+                                throwable -> {
+                                    DataAccessError dataAccessError = errorInterpreter.interpret(throwable);
+                                    bus.post(dataAccessError);
+                                    log.w(tag + "Error: " + throwable);
+                                    taskCounter.taskFinished();
+                                });
+    }
+
+    @Override
+    // TODO review
+    public void getForecastForWarmerCity(String city1, String city2) {
+        String tag = "getForecastForWarmerCity | ";
+        log.d(tag + "Started");
         bus.postSticky(GetForecastProgressEvent.FIRST_STAGE_STARTED);
 
-        forecastSubscription = Single.zip(
+        Single.zip(
                 weatherService.getWeather(city1, API_KEY).subscribeOn(Schedulers.newThread()),
                 weatherService.getWeather(city2, API_KEY).subscribeOn(Schedulers.newThread()),
                 (response1, response2) -> response1.main.temp > response2.main.temp ? city1 : city2)
@@ -96,80 +200,20 @@ public class DataAccessControllerImpl implements DataAccessController {
 
                 .subscribe(
                         (ForecastResponse response) -> {
-                            log.d("getForecastForWarmestCity call finished");
                             // TODO converter/mapper
                             double lastTemp = response.list.get(response.list.size() - 1).main.temp;
                             String cityName = response.city.name;
+                            log.d(tag + "Finished, city: " + cityName + " , lastTemp: " + lastTemp);
                             bus.post(new GetForecastSuccessEvent(lastTemp, cityName));
                             bus.postSticky(GetForecastProgressEvent.COMPLETED);
                             taskCounter.taskFinished();
                         },
                         throwable -> {
-                            log.e("GetForecastForWarmestCity error", throwable);
+                            log.w(tag + "Error: " + throwable);
                             taskCounter.taskFinished();
                         }
                 );
 
-    }
-
-    @Override
-    public void getTemperatureDiff(String city1, String city2) {
-        log.d("Get diff chain starting");
-
-        if (isOngoing(getTempDiffSubscription)) {
-            log.d("Getting temp diff is already ongoing, ignoring request.");
-            taskCounter.taskFinished();
-            return;
-        }
-
-        // How to make them parallel http://stackoverflow.com/a/21208440/4247460
-        getTempDiffSubscription = Single.zip(
-                weatherService.getWeather(city1, API_KEY).subscribeOn(Schedulers.newThread()),
-                weatherService.getWeather(city2, API_KEY).subscribeOn(Schedulers.newThread()),
-                (response1, response2) -> response1.main.temp - response2.main.temp)
-
-                .subscribe(new SingleSubscriber<Double>() {
-                    @Override
-                    public void onSuccess(Double value) {
-                        log.d("Get diff chain finished");
-                        bus.post(new GetDiffSuccessEvent(value));
-                        taskCounter.taskFinished();
-                    }
-
-                    @Override
-                    public void onError(Throwable error) {
-                        log.e("Get diff chain error", error);
-                        taskCounter.taskFinished();
-                    }
-                });
-    }
-
-    @Override
-    public void getTemperature_OfflineLocalStore(String city) {
-        if (connectionChecker.isNetworkAvailable()) {
-            weatherService.getWeather(city, API_KEY)
-                    .doOnSuccess(weatherResponse -> {
-                        double temp = weatherResponse.main.temp;
-                        log.d("Temp returned: " + temp);
-                        bus.post(new GetTempStoreSuccessEvent(temp));
-                        taskCounter.taskFinished();
-                    })
-                    .doOnError(throwable1 -> {
-                        log.e("Get temp (offline support) failed");
-                        taskCounter.taskFinished();
-                    })
-                    .doOnSuccess(weatherResponse -> {
-                        log.d("Saving to store");
-                        dataStore.save(DataStore.GET_TEMP, weatherResponse);
-                    })
-                    .subscribe();
-        } else {
-            WeatherResponse weatherResponse = dataStore.get(DataStore.GET_TEMP);
-            if (weatherResponse != null) {
-                bus.post(new GetTempStoreSuccessEvent(weatherResponse.main.temp));
-            }
-            taskCounter.taskFinished();
-        }
     }
 
     private boolean isOngoing(Subscription subscription) {

@@ -26,11 +26,8 @@ public class MockWeatherService implements OpenWeatherService {
         return Single.create(new Single.OnSubscribe<WeatherResponse>() {
             @Override
             public void call(SingleSubscriber<? super WeatherResponse> singleSubscriber) {
-                log.d("Mock gettemp request start. Query:" + queryString);
                 sleep(3000);
-                log.d("Mock gettemp request finish. Query:" + queryString);
                 singleSubscriber.onSuccess(MockData.randomWeatherResponse());
-
             }
         });
     }
@@ -40,9 +37,7 @@ public class MockWeatherService implements OpenWeatherService {
         return Single.create(new Single.OnSubscribe<ForecastResponse>() {
             @Override
             public void call(SingleSubscriber<? super ForecastResponse> singleSubscriber) {
-                log.d("Mock forecast request start. Query:" + queryString);
                 sleep(4000);
-                log.d("Mock forecast request finish. Query:" + queryString);
                 singleSubscriber.onSuccess(MockData.randomForecastResponse());
 
             }
