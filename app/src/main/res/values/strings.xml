@@ -34,7 +34,7 @@
         \n - Handles rotation (keeps dialog, doesn\'t restart call)
     </string>
     <string name="UseCase_ParallelChained_Implementation">Rx operator <i>zip</i> for parallel call, <i>flatMap</i> for chaining.
-        \nProgress update events sent at any point of the chain to presentation layer.
+        \nProgress update events sent with EventBus at any point in Rx chain to presentation layer.
         \nRetained DialogFragment for the dialog.
     </string>
     <string name="ForecastProgress_Step1">Step 1: Getting current temperatures…</string>

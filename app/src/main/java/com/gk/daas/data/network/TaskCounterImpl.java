@@ -6,7 +6,7 @@ import com.gk.daas.log.LogFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import rx.Scheduler;
+import rx.Observable;
 import rx.schedulers.Schedulers;
 
 /**
@@ -42,13 +42,8 @@ public class TaskCounterImpl implements TaskCounter {
 
     // Schedule double-check for later to prevent shutting down while there is incoming data access request
     private void scheduleNotifyListeners() {
-        Scheduler.Worker worker = Schedulers.io().createWorker();
-        worker.schedule(
-                () -> {
-                    notifyListener();
-                    worker.unsubscribe();
-                },
-                1, TimeUnit.SECONDS);
+        Observable.timer(1, TimeUnit.SECONDS, Schedulers.io())
+                .subscribe(aLong -> notifyListener());
     }
 
     private void notifyListener() {
