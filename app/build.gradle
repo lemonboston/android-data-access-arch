@@ -56,5 +56,6 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta3'
     // Unit tests
     testCompile 'junit:junit:4.12'
+    compile 'io.reactivex:rxjava-async-util:0.21.0'
 }
 

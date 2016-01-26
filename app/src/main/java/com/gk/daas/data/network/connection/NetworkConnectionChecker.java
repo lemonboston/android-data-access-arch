@@ -7,7 +7,6 @@ import com.gk.daas.data.network.DataAccessError;
 import com.gk.daas.data.network.ErrorHolderException;
 
 import rx.Single;
-import rx.SingleSubscriber;
 
 /**
  * @author Gabor_Keszthelyi
@@ -26,14 +25,11 @@ public class NetworkConnectionChecker {
     }
 
     public Single<Void> checkNetwork() {
-        return Single.create(new Single.OnSubscribe<Void>() {
-            @Override
-            public void call(SingleSubscriber<? super Void> singleSubscriber) {
-                if (isNetworkAvailable()) {
-                    singleSubscriber.onSuccess(null);
-                } else {
-                    singleSubscriber.onError(new ErrorHolderException(DataAccessError.NO_INTERNET_CONNECTION));
-                }
+        return Single.create(singleSubscriber -> {
+            if (isNetworkAvailable()) {
+                singleSubscriber.onSuccess(null);
+            } else {
+                singleSubscriber.onError(new ErrorHolderException(DataAccessError.NO_INTERNET_CONNECTION));
             }
         });
     }
