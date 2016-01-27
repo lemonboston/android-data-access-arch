@@ -24,7 +24,7 @@
     </string>
 
     <!-- Parallel and Chained use case -->
-    <string name="UseCaseTitle_ParallelChained">Parallel and Chained calls</string>
+    <string name="UseCaseTitle_ParallelChained">Parallel&amp;Chained calls</string>
     <string name="WeatherUseCase_GetForecast">Get the 5 day forecast for the city that is warmer currently</string>
     <string name="GetForecast_Button">Get forecast</string>
     <string name="UseCase_ParallelChained_Description">
@@ -48,8 +48,14 @@
 
     <string name="Menu_RealService">Use Real Weather Service</string>
     <string name="Menu_MockService">Use Mock Weather Service</string>
-    <string name="City2_Default">London</string>
     <string name="City1_Default">Budapest</string>
+    <string name="City2_Default">London</string>
+
+    <string name="UseCase_Choose">[Choose use case…]</string>
+    <string name="UseCase_Combined">Combined use case</string>
+    <string name="UseCaseTitle_OfflineStorage">Offline Storage</string>
+    <string name="RequirementTitle">Use-case / Requirement</string>
+    <string name="ImplementationTitle">Implementation</string>
 
 
 </resources>

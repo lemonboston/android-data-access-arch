@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusableInTouchMode="true">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/distance_default"
+            android:paddingRight="@dimen/distance_default">
+
+            <Spinner
+                android:id="@+id/UseCase_Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/distance_default"
+                android:theme="@style/AppTheme"/>
+
+            <RelativeLayout
+                android:id="@+id/ExecuteArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/distance_default"
+                android:background="@drawable/simple_frame"
+                android:padding="@dimen/distance_default"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/Text_WeatherUseCase"
+                    style="@style/TextDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/distance_default"
+                    tools:text="@string/WeatherUseCase_GetTemp"/>
+
+                <EditText
+                    android:id="@+id/EditText_City1"
+                    style="@style/TextDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/Text_WeatherUseCase"
+                    android:text="@string/City1_Default"/>
+
+                <EditText
+                    android:id="@+id/EditText_City2"
+                    style="@style/TextDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/EditText_City1"
+                    android:text="@string/City2_Default"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/Button_Execute"
+                    style="@style/ActionButtonStyle"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/EditText_City1"
+                    android:layout_marginTop="@dimen/distance_default"
+                    tools:text="@string/GetTemp_Button"/>
+
+                <TextView
+                    android:id="@+id/ResultText"
+                    style="@style/TextResult"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/EditText_City1"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_toLeftOf="@+id/Button_Clear"
+                    android:layout_toRightOf="@id/EditText_City1"
+                    android:freezesText="true"
+                    android:gravity="center"
+                    android:hint="@string/Result_Text"/>
+
+                <Button
+                    android:id="@+id/Button_Clear"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignBaseline="@id/ResultText"
+                    android:layout_alignParentRight="true"
+                    android:background="@android:drawable/ic_menu_close_clear_cancel"
+                    android:backgroundTint="@color/colorPrimary"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/RequirementArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    style="@style/TextTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/RequirementTitle"/>
+
+                <TextView
+                    android:id="@+id/TechnicalUseCase_Description"
+                    style="@style/TextDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/UseCase_Basic_Description"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ImplementationArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    style="@style/TextTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ImplementationTitle"/>
+
+                <TextView
+                    android:id="@+id/ImplementationDescription"
+                    style="@style/TextDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/UseCase_Basic_Implementation"/>
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/distance_default"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.gk.daas.widget.KeepVisibilityProgressBar
+        android:id="@+id/ProgressBar"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_centerInParent="true"
+        android:saveEnabled="true"
+        android:visibility="gone"/>
+
+</RelativeLayout>

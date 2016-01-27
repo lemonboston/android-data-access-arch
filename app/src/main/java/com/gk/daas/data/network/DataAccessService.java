@@ -75,15 +75,15 @@ public class DataAccessService extends Service implements TaskCounter.AllTasksFi
     }
 
     private void handleIntent(Intent intent) {
-        NetworkUseCase useCase = intentHelper.extractNetworkUseCase(intent);
+        UseCase useCase = intentHelper.extractNetworkUseCase(intent);
         switch (useCase) {
-            case GET_TEMP:
+            case COMBINED:
                 processGetTemp(intent);
                 break;
-            case GET_FORECAST_FOR_WARMEST_CITY:
+            case PARALLEL_AND_CHAINED:
                 processGetForecastForWarmer(intent);
                 break;
-            case GET_TEMP_OFFLINE_STORE:
+            case OFFLINE_STORAGE:
                 processGetTempOfflineStore(intent);
                 break;
         }

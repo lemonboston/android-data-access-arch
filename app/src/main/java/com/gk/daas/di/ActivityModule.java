@@ -13,6 +13,8 @@ import com.gk.daas.framework.access.ViewToolkitImpl;
 import com.gk.daas.log.LogFactory;
 import com.gk.daas.screen.home.ErrorTranslator;
 import com.gk.daas.screen.home.ErrorTranslatorImpl;
+import com.gk.daas.screen.main.MainView;
+import com.gk.daas.screen.main.MainViewImpl;
 import com.gk.daas.widget.HomeFragmentPagerAdapter;
 
 import dagger.Module;
@@ -58,5 +60,11 @@ public class ActivityModule {
     @Provides
     public ViewFactory provideViewFactory() {
         return new ViewFactoryImpl(activity);
+    }
+
+    @ActivityScope
+    @Provides
+    public MainView provideMainView(ViewToolkit viewToolkit) {
+        return new MainViewImpl(viewToolkit);
     }
 }
