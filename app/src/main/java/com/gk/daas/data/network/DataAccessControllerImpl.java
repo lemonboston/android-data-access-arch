@@ -138,6 +138,12 @@ public class DataAccessControllerImpl implements DataAccessController {
 
     }
 
+    // TODO Case with retry
+    // http://reactivex.io/documentation/operators/retry.html
+    // check the delay example
+
+    // TODO Case with cancel
+
     public void getTemperature_allInOne(String city) {
         String tag = "getTemperature_allInOne | ";
         log.d(tag + "Starting, city: " + city);
