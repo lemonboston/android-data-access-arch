@@ -1,5 +1,6 @@
 package com.gk.daas.screen.main;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,7 +16,6 @@ import com.gk.daas.data.network.DataAccessError;
 import com.gk.daas.data.network.UseCase;
 import com.gk.daas.di.ActivityComponent;
 import com.gk.daas.di.DebugOptions;
-import com.gk.daas.framework.access.Toaster;
 import com.gk.daas.screen.home.ErrorTranslator;
 import com.gk.daas.screen.second.SecondActivity;
 import com.gk.daas.util.TemperatureFormatter;
@@ -41,9 +41,6 @@ public class MainActivity extends BaseActivity {
 
     @Inject
     ErrorTranslator errorTranslator;
-
-    @Inject
-    Toaster toaster;
 
     @Inject
     MainView view;
@@ -111,7 +108,12 @@ public class MainActivity extends BaseActivity {
         public void onDataAccessFailure(DataAccessError error) {
             view.hideProgressBar();
             String errorMessage = errorTranslator.translate(error);
-            toaster.showToast(errorMessage);
+            new AlertDialog.Builder(MainActivity.this)
+                    .setMessage(errorMessage)
+                    .setPositiveButton(R.string.dismiss, null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+            view.hideProgressBar();
         }
 
     }
@@ -122,17 +124,22 @@ public class MainActivity extends BaseActivity {
         public void onUseCaseSelected(int position) {
             MainActivity.this.currentUseCase = UseCase.get(position);
 
+            view.hideEverything();
+
             if (currentUseCase == UseCase.EMPTY_PLACEHOLDER) {
-                view.hideEverything();
                 view.showGeneralDescription();
             } else {
-                view.showEverything();
+                view.setExecuteButtonText(R.string.GetTemp_Button);
+                view.setWeatherUseCaseDesc(R.string.WeatherUseCase_GetTemp);
                 switch (currentUseCase) {
                     case BASIC:
                         view.showOtherScreenButton();
-                        view.setTechincalUseCaseDesc(R.string.UseCase_Basic_Description);
+                        view.setTechnicalUseCaseDesc(R.string.UseCase_Basic_Description);
                         break;
                     case ERROR_HANDLING:
+                        view.setTechnicalUseCaseDesc(R.string.UseCase_ErrorHandling_Desc);
+                        view.setImplementationDesc(R.string.UseCase_ErrorHandling_Implementation);
+                        view.setHowToTestDesc(R.string.UseCase_ErrorHandling_HowToTest);
                         break;
                     case ONGOING_CALL_HANDLING:
                         break;

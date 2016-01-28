@@ -86,7 +86,7 @@ public class DataAccessControllerImpl implements DataAccessController {
         log.d(tag + "Starting, city: " + city);
 
         connectionChecker.checkNetwork()
-                .flatMap(aVoid -> weatherService.getWeather(city, API_KEY))
+                .flatMap(aVoid -> weatherService.getWeather(city, "an invalid api key"))
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;

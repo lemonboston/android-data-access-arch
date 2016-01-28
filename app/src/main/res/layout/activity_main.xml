@@ -80,8 +80,9 @@
                     style="@style/ActionButtonStyle.Secondary"
                     android:layout_alignParentRight="true"
                     android:layout_below="@id/Button_Execute"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/distance_default"
-                    android:text="Check on another screen"/>
+                    android:text="@string/OtherScreenButton"/>
 
                 <TextView
                     android:id="@+id/ResultText"
@@ -151,6 +152,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="@string/UseCase_Basic_Implementation"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/HowToTestArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    style="@style/TextTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/HowToTest_Title"/>
+
+                <TextView
+                    android:id="@+id/HowToTest_Desc"
+                    style="@style/TextDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Rotate the phone while download is in progress"/>
 
             </LinearLayout>
 

@@ -66,6 +66,12 @@ public class MainViewImpl implements MainView {
     @Bind(R.id.Button_OtherScreen)
     Button otherScreenButton;
 
+    @Bind(R.id.HowToTest_Desc)
+    TextView howToTestDesc;
+
+    @Bind(R.id.HowToTestArea)
+    ViewGroup howToTestArea;
+
     private final ViewToolkit viewToolkit;
     private UserActionListener listener;
 
@@ -109,15 +115,7 @@ public class MainViewImpl implements MainView {
         implementationArea.setVisibility(View.GONE);
         emptyPageText.setVisibility(View.GONE);
         otherScreenButton.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showEverything() {
-        executeArea.setVisibility(View.VISIBLE);
-        requirementArea.setVisibility(View.VISIBLE);
-
-        emptyPageText.setVisibility(View.GONE);
-        otherScreenButton.setVisibility(View.GONE);
+        howToTestArea.setVisibility(View.GONE);
     }
 
     @Override
@@ -171,8 +169,33 @@ public class MainViewImpl implements MainView {
     }
 
     @Override
-    public void setTechincalUseCaseDesc(@StringRes int stringResId) {
+    public void setTechnicalUseCaseDesc(@StringRes int stringResId) {
+        requirementArea.setVisibility(View.VISIBLE);
         technicalUseCase.setText(stringResId);
+    }
+
+    @Override
+    public void setHowToTestDesc(@StringRes int stringResId) {
+        howToTestArea.setVisibility(View.VISIBLE);
+        howToTestDesc.setText(stringResId);
+    }
+
+    @Override
+    public void setExecuteButtonText(@StringRes int stringResId) {
+        executeArea.setVisibility(View.VISIBLE);
+        executeButton.setText(stringResId);
+    }
+
+    @Override
+    public void setWeatherUseCaseDesc(@StringRes int stringResId) {
+        executeArea.setVisibility(View.VISIBLE);
+        weatherUseCase.setText(stringResId);
+    }
+
+    @Override
+    public void setImplementationDesc(@StringRes int stringResId) {
+        implementationArea.setVisibility(View.VISIBLE);
+        implementationDescription.setText(stringResId);
     }
 
     @OnClick(R.id.Button_Clear)

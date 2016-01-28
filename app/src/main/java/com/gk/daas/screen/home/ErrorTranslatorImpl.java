@@ -29,6 +29,8 @@ public class ErrorTranslatorImpl implements ErrorTranslator {
                 return stringResAccess.getString(R.string.ErrorMessage_unknownHost);
             case NO_OFFLINE_DATA:
                 return stringResAccess.getString(R.string.ErrorMessage_noOfflineData);
+            case UNAUTHORIZED:
+                return stringResAccess.getString(R.string.ErrorMessage_unauthorized);
             case UNKNOWN:
                 return stringResAccess.getString(R.string.ErrorMessage_unknownError);
             default:

@@ -8,5 +8,6 @@ public enum DataAccessError {
     NO_INTERNET_CONNECTION,
     UNKNOWN_HOST,
     NO_OFFLINE_DATA,
+    UNAUTHORIZED,
     UNKNOWN
 }

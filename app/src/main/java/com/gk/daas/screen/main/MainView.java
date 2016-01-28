@@ -15,8 +15,6 @@ public interface MainView {
 
     void hideEverything();
 
-    void showEverything();
-
     void setUserActionListener(UserActionListener listener);
 
     String getCity1();
@@ -33,7 +31,15 @@ public interface MainView {
 
     void showOtherScreenButton();
 
-    void setTechincalUseCaseDesc(@StringRes int stringResId);
+    void setTechnicalUseCaseDesc(@StringRes int stringResId);
+
+    void setHowToTestDesc(@StringRes int stringResId);
+
+    void setExecuteButtonText(@StringRes int stringResId);
+
+    void setWeatherUseCaseDesc(@StringRes int stringResId);
+
+    void setImplementationDesc(@StringRes int stringResId);
 
     interface UserActionListener {
 

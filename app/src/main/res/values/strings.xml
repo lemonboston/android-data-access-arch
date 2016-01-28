@@ -7,7 +7,7 @@
     <string name="SecondActivity_label">Another screen..</string>
 
     <!-- TODO maybe add note on DataAccessControllerImpl -->
-    <string name="AppDescription">The general networking / data access structure used in this sample app:
+    <string name="AppDescription">The networking / data access structure used in this sample app:
         \n\nRetrofit with RxJava for the REST API calls, and EventBus to deliver the results back to the presentation layer.
         \nRx features to handle errors, multiple calls, fallback to offline store, and more.
         \nThe whole component is placed in a Android Service which starts on-demand and stops when there are no more ongoing tasks.
@@ -66,6 +66,21 @@
     <string name="ImplementationTitle">Implementation</string>
     <string name="UseCaseTitle_ErrorHandling">Error Handling</string>
     <string name="UseCaseTitle_OnGoingCall">Ongoing call handling</string>
+    <string name="UseCase_ErrorHandling_Desc">
+        User initiates data access, receives the result on UI. Requires a single network call.
+        \n
+        \n - Error message displayed if something went wrong
+        \n - Different messages for different errors
+    </string>
+    <string name="HowToTest_Title">How to test</string>
+    <string name="UseCase_ErrorHandling_HowToTest">
+        1. Use Real Weather Service (invalid API key used here -> error dialog)
+        \n2. Disconnect from internet (no internet error message)
+        \n3. Use Mock Weather service (completes successfully)</string>
+    <string name="OtherScreenButton">Check on another screen</string>
+    <string name="UseCase_ErrorHandling_Implementation">Errors propagate through the Rx chain and interpreted at single place at the end. Event sent to presentation layer where message is decided.</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="ErrorMessage_unauthorized">API key unauthorized. A custom message can come here…</string>
 
 
 </resources>
