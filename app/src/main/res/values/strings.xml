@@ -82,5 +82,7 @@
     <string name="dismiss">Dismiss</string>
     <string name="ErrorMessage_unauthorized">API key unauthorized. A custom message can come here…</string>
 
+    <!-- TODO add notes on real, mock service usage on landing page -->
+
 
 </resources>
