@@ -36,9 +36,12 @@
     </style>
 
     <style name="ActionButtonStyle" parent="ButtonStyle">
-
-        <!--<item name="android:background">@android:color/holo_green_dark</item>-->
         <item name="android:background">@drawable/action_button_background</item>
+        <item name="android:backgroundTint">@color/colorAccent</item>
+    </style>
+
+    <style name="ActionButtonStyle.Secondary">
+        <item name="android:backgroundTint">@color/colorPrimaryLight</item>
     </style>
 
     <style name="NavigationButtonStyle" parent="ButtonStyle">
@@ -52,10 +55,12 @@
     <style name="SpinnerItemStyle" parent="@style/Widget.AppCompat.TextView.SpinnerItem">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:background">@drawable/action_button_background</item>
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
+        <item name="android:background">@drawable/action_button_background</item>
+        <item name="android:backgroundTint">@color/colorAccent</item>
     </style>
+
     <!--
          Spinner styles
         <item name="spinnerStyle">@style/Widget.AppCompat.Spinner</item>

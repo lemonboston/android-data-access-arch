@@ -1,5 +1,7 @@
 package com.gk.daas.screen.main;
 
+import android.support.annotation.StringRes;
+
 import java.util.List;
 
 /**
@@ -29,11 +31,16 @@ public interface MainView {
 
     void showGeneralDescription();
 
+    void showOtherScreenButton();
+
+    void setTechincalUseCaseDesc(@StringRes int stringResId);
 
     interface UserActionListener {
 
         void onUseCaseSelected(int position);
 
         void onExecuteButtonClick();
+
+        void onOtherScreenButtonClick();
     }
 }

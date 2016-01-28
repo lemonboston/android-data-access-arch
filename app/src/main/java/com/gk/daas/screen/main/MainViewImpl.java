@@ -1,5 +1,6 @@
 package com.gk.daas.screen.main;
 
+import android.support.annotation.StringRes;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -62,6 +63,9 @@ public class MainViewImpl implements MainView {
     @Bind(R.id.EmptyPage_Text)
     TextView emptyPageText;
 
+    @Bind(R.id.Button_OtherScreen)
+    Button otherScreenButton;
+
     private final ViewToolkit viewToolkit;
     private UserActionListener listener;
 
@@ -104,14 +108,16 @@ public class MainViewImpl implements MainView {
         requirementArea.setVisibility(View.GONE);
         implementationArea.setVisibility(View.GONE);
         emptyPageText.setVisibility(View.GONE);
+        otherScreenButton.setVisibility(View.GONE);
     }
 
     @Override
     public void showEverything() {
         executeArea.setVisibility(View.VISIBLE);
         requirementArea.setVisibility(View.VISIBLE);
-        implementationArea.setVisibility(View.VISIBLE);
+
         emptyPageText.setVisibility(View.GONE);
+        otherScreenButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -127,6 +133,11 @@ public class MainViewImpl implements MainView {
     @OnClick(R.id.Button_Execute)
     void onExecuteButtonClick() {
         listener.onExecuteButtonClick();
+    }
+
+    @OnClick(R.id.Button_OtherScreen)
+    void onOtherScreenButtonClick() {
+        listener.onOtherScreenButtonClick();
     }
 
     @Override
@@ -152,6 +163,16 @@ public class MainViewImpl implements MainView {
     @Override
     public void showGeneralDescription() {
         emptyPageText.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showOtherScreenButton() {
+        otherScreenButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setTechincalUseCaseDesc(@StringRes int stringResId) {
+        technicalUseCase.setText(stringResId);
     }
 
     @OnClick(R.id.Button_Clear)

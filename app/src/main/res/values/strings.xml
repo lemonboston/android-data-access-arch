@@ -17,14 +17,14 @@
     <!-- Basic use case-->
     <string name="UseCaseTitle_Basic">Basic Use-Case</string>
     <string name="WeatherUseCase_GetTemp">Get the current temperature</string>
-    <string name="GetTemp_Button">Get Temp</string>
+    <string name="GetTemp_Button">Get Temperature</string>
     <string name="Result_Text">[Result]</string>
     <string name="UseCase_Basic_Description">
-        User initiates data access, receives the result on UI.
-        \nRequires a single network call.
+        User initiates data access, receives the result on UI. Requires a single network call.
         \n
         \n - Displays loading indicator
         \n - Handles rotation (keeps indicator, doesn\'t restart call)
+        \n - Can deliver result to different screen
     </string>
     <string name="UseCase_Basic_Implementation">
         Retrofit with RxJava for the API call, and EventBus to deliver the results back to the presentation layer.
@@ -62,7 +62,7 @@
     <string name="UseCase_Choose">[Choose use case…]</string>
     <string name="UseCase_Combined">Combined use case</string>
     <string name="UseCaseTitle_OfflineStorage">Offline Storage</string>
-    <string name="RequirementTitle">Use-case / Requirement</string>
+    <string name="RequirementTitle">Requirement / Use-case</string>
     <string name="ImplementationTitle">Implementation</string>
     <string name="UseCaseTitle_ErrorHandling">Error Handling</string>
     <string name="UseCaseTitle_OnGoingCall">Ongoing call handling</string>

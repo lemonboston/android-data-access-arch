@@ -27,7 +27,7 @@
                 android:id="@+id/EmptyPage_Text"
                 style="@style/TextDescription"
                 android:text="@string/AppDescription"
-                android:paddingTop="@dimen/distance_default"
+                android:paddingTop="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"/>
@@ -47,7 +47,7 @@
                     style="@style/TextDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/distance_default"
+                    android:layout_marginBottom="8dp"
                     tools:text="@string/WeatherUseCase_GetTemp"/>
 
                 <EditText
@@ -74,6 +74,14 @@
                     android:layout_below="@id/EditText_City1"
                     android:layout_marginTop="@dimen/distance_default"
                     tools:text="@string/GetTemp_Button"/>
+
+                <Button
+                    android:id="@+id/Button_OtherScreen"
+                    style="@style/ActionButtonStyle.Secondary"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/Button_Execute"
+                    android:layout_marginTop="@dimen/distance_default"
+                    android:text="Check on another screen"/>
 
                 <TextView
                     android:id="@+id/ResultText"

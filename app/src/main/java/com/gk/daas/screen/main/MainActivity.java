@@ -1,5 +1,6 @@
 package com.gk.daas.screen.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,13 +10,14 @@ import com.gk.daas.R;
 import com.gk.daas.bus.Bus;
 import com.gk.daas.core.BaseActivity;
 import com.gk.daas.data.access.DataAccessInitiator;
-import com.gk.daas.data.event.GetTempStoreSuccessEvent;
+import com.gk.daas.data.event.GetTempSuccessEvent;
 import com.gk.daas.data.network.DataAccessError;
 import com.gk.daas.data.network.UseCase;
 import com.gk.daas.di.ActivityComponent;
 import com.gk.daas.di.DebugOptions;
 import com.gk.daas.framework.access.Toaster;
 import com.gk.daas.screen.home.ErrorTranslator;
+import com.gk.daas.screen.second.SecondActivity;
 import com.gk.daas.util.TemperatureFormatter;
 
 import javax.inject.Inject;
@@ -99,7 +101,7 @@ public class MainActivity extends BaseActivity {
     public class DataAccessEventHandler {
 
         @Subscribe(threadMode = ThreadMode.MainThread)
-        public void onGetTempSuccess(GetTempStoreSuccessEvent event) {
+        public void onGetTempSuccess(GetTempSuccessEvent event) {
             view.hideProgressBar();
             String temperature = temperatureFormatter.formatTempInKelvin(event.temp);
             view.setResultText(temperature);
@@ -126,32 +128,22 @@ public class MainActivity extends BaseActivity {
             } else {
                 view.showEverything();
                 switch (currentUseCase) {
-                    case EMPTY_PLACEHOLDER:
-                        view.hideEverything();
-                        break;
                     case BASIC:
-                        view.showEverything();
+                        view.showOtherScreenButton();
+                        view.setTechincalUseCaseDesc(R.string.UseCase_Basic_Description);
                         break;
                     case ERROR_HANDLING:
-                        view.showEverything();
                         break;
                     case ONGOING_CALL_HANDLING:
-                        view.showEverything();
                         break;
                     case OFFLINE_STORAGE:
-                        view.showEverything();
                         break;
                     case COMBINED:
-                        view.showEverything();
                         break;
                     case PARALLEL_AND_CHAINED:
-                        view.showEverything();
                         break;
                 }
-
-
             }
-
         }
 
         @Override
@@ -164,6 +156,11 @@ public class MainActivity extends BaseActivity {
             } else {
                 dataAccessInitiator.getWeather(currentUseCase, city);
             }
+        }
+
+        @Override
+        public void onOtherScreenButtonClick() {
+            startActivity(new Intent(MainActivity.this, SecondActivity.class));
         }
     }
 }
