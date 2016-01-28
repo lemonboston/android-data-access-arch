@@ -1,6 +1,5 @@
 package com.gk.daas.screen.main;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +15,7 @@ import com.gk.daas.data.network.DataAccessError;
 import com.gk.daas.data.network.UseCase;
 import com.gk.daas.di.ActivityComponent;
 import com.gk.daas.di.DebugOptions;
+import com.gk.daas.dialog.ErrorDialog;
 import com.gk.daas.screen.home.ErrorTranslator;
 import com.gk.daas.screen.second.SecondActivity;
 import com.gk.daas.util.TemperatureFormatter;
@@ -44,6 +44,9 @@ public class MainActivity extends BaseActivity {
 
     @Inject
     MainView view;
+
+    @Inject
+    ErrorDialog errorDialog;
 
     private DataAccessEventHandler eventHandler = new DataAccessEventHandler();
 
@@ -108,12 +111,7 @@ public class MainActivity extends BaseActivity {
         public void onDataAccessFailure(DataAccessError error) {
             view.hideProgressBar();
             String errorMessage = errorTranslator.translate(error);
-            new AlertDialog.Builder(MainActivity.this)
-                    .setMessage(errorMessage)
-                    .setPositiveButton(R.string.dismiss, null)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-            view.hideProgressBar();
+            errorDialog.show(errorMessage);
         }
 
     }

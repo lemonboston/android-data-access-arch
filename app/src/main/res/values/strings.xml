@@ -80,7 +80,7 @@
     <string name="OtherScreenButton">Check on another screen</string>
     <string name="UseCase_ErrorHandling_Implementation">Errors propagate through the Rx chain and interpreted at single place at the end. Event sent to presentation layer where message is decided.</string>
     <string name="dismiss">Dismiss</string>
-    <string name="ErrorMessage_unauthorized">API key unauthorized. A custom message can come here…</string>
+    <string name="ErrorMessage_unauthorized">API key unauthorized. A custom message can come here..</string>
 
     <!-- TODO add notes on real, mock service usage on landing page -->
 
