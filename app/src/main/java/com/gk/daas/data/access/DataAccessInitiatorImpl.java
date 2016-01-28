@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.gk.daas.data.network.NetworkServiceIntentHelper;
+import com.gk.daas.data.network.UseCase;
 
 /**
  * @author Gabor_Keszthelyi
  */
-// TODO update intent helper after re-organize complete
 public class DataAccessInitiatorImpl implements DataAccessInitiator {
 
     private final Context context;
@@ -20,14 +20,8 @@ public class DataAccessInitiatorImpl implements DataAccessInitiator {
     }
 
     @Override
-    public void getTemperature_allInOne(String city) {
-        Intent intent = intentHelper.createGetTempIntent(city);
-        context.startService(intent);
-    }
-
-    @Override
-    public void getTemperature_wOfflineLocalStore(String city) {
-        Intent intent = intentHelper.createGetTempOfflineStoreIntent(city);
+    public void getWeather(UseCase useCase, String city) {
+        Intent intent = intentHelper.createGetWeatherIntent(useCase, city);
         context.startService(intent);
     }
 
@@ -37,18 +31,4 @@ public class DataAccessInitiatorImpl implements DataAccessInitiator {
         context.startService(intent);
     }
 
-    @Override
-    public void getTemperature_basic(String city) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void getTemperature_wErrorHandling(String city) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void getTemperature_wOngoingHandling(String city) {
-        throw new UnsupportedOperationException();
-    }
 }

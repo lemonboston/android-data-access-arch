@@ -18,10 +18,10 @@ public class NetworkServiceIntentHelper {
         return UseCase.valueOf(intent.getAction());
     }
 
-    public Intent createGetTempIntent(String city) {
+    public Intent createGetWeatherIntent(UseCase useCase, String city) {
         Intent intent = new Intent();
         intent.setClassName(BuildConfig.APPLICATION_ID, DataAccessService.class.getName());
-        intent.setAction(UseCase.COMBINED.name());
+        intent.setAction(useCase.name());
         intent.putExtra(KEY_CITY, city);
         return intent;
     }
@@ -47,11 +47,4 @@ public class NetworkServiceIntentHelper {
         return intent.getStringExtra(KEY_CITY_2);
     }
 
-    public Intent createGetTempOfflineStoreIntent(String city) {
-        Intent intent = new Intent();
-        intent.setClassName(BuildConfig.APPLICATION_ID, DataAccessService.class.getName());
-        intent.setAction(UseCase.OFFLINE_STORAGE.name());
-        intent.putExtra(KEY_CITY, city);
-        return intent;
-    }
 }

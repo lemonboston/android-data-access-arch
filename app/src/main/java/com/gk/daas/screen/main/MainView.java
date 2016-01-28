@@ -13,17 +13,22 @@ public interface MainView {
 
     void hideEverything();
 
+    void showEverything();
+
     void setUserActionListener(UserActionListener listener);
 
     String getCity1();
 
+    String getCity2();
+
     void setResultText(String result);
 
-    void showEverything();
+    void showProgressBar();
 
     void hideProgressBar();
 
-    void showProgressBar();
+    void showGeneralDescription();
+
 
     interface UserActionListener {
 

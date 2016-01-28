@@ -13,7 +13,7 @@ import com.gk.daas.data.event.GetTempStoreSuccessEvent;
 import com.gk.daas.data.network.DataAccessError;
 import com.gk.daas.data.network.UseCase;
 import com.gk.daas.di.ActivityComponent;
-import com.gk.daas.di.DevTweaks;
+import com.gk.daas.di.DebugOptions;
 import com.gk.daas.framework.access.Toaster;
 import com.gk.daas.screen.home.ErrorTranslator;
 import com.gk.daas.util.TemperatureFormatter;
@@ -79,11 +79,11 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.Menu_RealService:
-                DevTweaks.MOCK_WEATHER_SERVICE = false;
+                DebugOptions.MOCK_WEATHER_SERVICE = false;
                 restartActivity();
                 return true;
             case R.id.Menu_MockService:
-                DevTweaks.MOCK_WEATHER_SERVICE = true;
+                DebugOptions.MOCK_WEATHER_SERVICE = true;
                 restartActivity();
                 return true;
             default:
@@ -96,7 +96,7 @@ public class MainActivity extends BaseActivity {
         startActivity(getIntent());
     }
 
-    private class DataAccessEventHandler {
+    public class DataAccessEventHandler {
 
         @Subscribe(threadMode = ThreadMode.MainThread)
         public void onGetTempSuccess(GetTempStoreSuccessEvent event) {
@@ -120,39 +120,50 @@ public class MainActivity extends BaseActivity {
         public void onUseCaseSelected(int position) {
             MainActivity.this.currentUseCase = UseCase.get(position);
 
-            switch (currentUseCase) {
-                case EMPTY_PLACEHOLDER:
-                    view.hideEverything();
-                    break;
-                case COMBINED:
-                    view.showEverything();
-                    break;
-                case OFFLINE_STORAGE:
-                    view.showEverything();
-                    break;
-                case PARALLEL_AND_CHAINED:
-                    view.showEverything();
-                    break;
+            if (currentUseCase == UseCase.EMPTY_PLACEHOLDER) {
+                view.hideEverything();
+                view.showGeneralDescription();
+            } else {
+                view.showEverything();
+                switch (currentUseCase) {
+                    case EMPTY_PLACEHOLDER:
+                        view.hideEverything();
+                        break;
+                    case BASIC:
+                        view.showEverything();
+                        break;
+                    case ERROR_HANDLING:
+                        view.showEverything();
+                        break;
+                    case ONGOING_CALL_HANDLING:
+                        view.showEverything();
+                        break;
+                    case OFFLINE_STORAGE:
+                        view.showEverything();
+                        break;
+                    case COMBINED:
+                        view.showEverything();
+                        break;
+                    case PARALLEL_AND_CHAINED:
+                        view.showEverything();
+                        break;
+                }
+
+
             }
+
         }
 
         @Override
         public void onExecuteButtonClick() {
             view.showProgressBar();
             String city = view.getCity1();
-            dataAccessInitiator.getTemperature_allInOne(city);
-
-            switch (currentUseCase) {
-                case EMPTY_PLACEHOLDER:
-                    break;
-                case COMBINED:
-                    break;
-                case OFFLINE_STORAGE:
-                    break;
-                case PARALLEL_AND_CHAINED:
-                    break;
+            if (currentUseCase == UseCase.PARALLEL_AND_CHAINED) {
+                String city2 = view.getCity2();
+                dataAccessInitiator.getForecastForWarmerCity(city, city2);
+            } else {
+                dataAccessInitiator.getWeather(currentUseCase, city);
             }
-
         }
     }
 }

@@ -16,6 +16,7 @@ import com.gk.daas.bus.Bus;
 import com.gk.daas.data.access.DataAccessInitiator;
 import com.gk.daas.data.event.GetTempStoreSuccessEvent;
 import com.gk.daas.data.network.DataAccessError;
+import com.gk.daas.data.network.UseCase;
 import com.gk.daas.di.ActivityComponent;
 import com.gk.daas.framework.access.Toaster;
 import com.gk.daas.screen.home.ErrorTranslator;
@@ -102,7 +103,7 @@ public class BasicCaseFragment extends Fragment {
     @OnClick(R.id.Button_Execute)
     void onExecuteButtonClick() {
         progressBar.setVisibility(View.VISIBLE);
-        dataAccessInitiator.getTemperature_allInOne(cityText.getText().toString());
+        dataAccessInitiator.getWeather(UseCase.BASIC, cityText.getText().toString());
     }
 
     @OnClick(R.id.Button_Clear)

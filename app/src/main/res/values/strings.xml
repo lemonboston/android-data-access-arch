@@ -6,6 +6,14 @@
 
     <string name="SecondActivity_label">Another screen..</string>
 
+    <!-- TODO maybe add note on DataAccessControllerImpl -->
+    <string name="AppDescription">The general networking / data access structure used in this sample app:
+        \n\nRetrofit with RxJava for the REST API calls, and EventBus to deliver the results back to the presentation layer.
+        \nRx features to handle errors, multiple calls, fallback to offline store, and more.
+        \nThe whole component is placed in a Android Service which starts on-demand and stops when there are no more ongoing tasks.
+        \n\nMore info at each use-case.
+    </string>
+
     <!-- Basic use case-->
     <string name="UseCaseTitle_Basic">Basic Use-Case</string>
     <string name="WeatherUseCase_GetTemp">Get the current temperature</string>
@@ -56,6 +64,8 @@
     <string name="UseCaseTitle_OfflineStorage">Offline Storage</string>
     <string name="RequirementTitle">Use-case / Requirement</string>
     <string name="ImplementationTitle">Implementation</string>
+    <string name="UseCaseTitle_ErrorHandling">Error Handling</string>
+    <string name="UseCaseTitle_OnGoingCall">Ongoing call handling</string>
 
 
 </resources>

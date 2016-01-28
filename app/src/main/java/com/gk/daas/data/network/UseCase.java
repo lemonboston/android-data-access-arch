@@ -14,9 +14,11 @@ import java.util.List;
 public enum UseCase {
 
     EMPTY_PLACEHOLDER(R.string.UseCase_Choose),
-
-    COMBINED(R.string.UseCase_Combined),
+    BASIC(R.string.UseCaseTitle_Basic),
+    ERROR_HANDLING(R.string.UseCaseTitle_ErrorHandling),
+    ONGOING_CALL_HANDLING(R.string.UseCaseTitle_OnGoingCall),
     OFFLINE_STORAGE(R.string.UseCaseTitle_OfflineStorage),
+    COMBINED(R.string.UseCase_Combined),
     PARALLEL_AND_CHAINED(R.string.UseCaseTitle_ParallelChained);
 
     @StringRes

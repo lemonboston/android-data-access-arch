@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import com.gk.daas.R;
 import com.gk.daas.core.BaseActivity;
 import com.gk.daas.di.ActivityComponent;
-import com.gk.daas.di.DevTweaks;
+import com.gk.daas.di.DebugOptions;
 import com.gk.daas.widget.HomeFragmentPagerAdapter;
 
 import javax.inject.Inject;
@@ -49,11 +49,11 @@ public class HomeActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.Menu_RealService:
-                DevTweaks.MOCK_WEATHER_SERVICE = false;
+                DebugOptions.MOCK_WEATHER_SERVICE = false;
                 restartActivity();
                 return true;
             case R.id.Menu_MockService:
-                DevTweaks.MOCK_WEATHER_SERVICE = true;
+                DebugOptions.MOCK_WEATHER_SERVICE = true;
                 restartActivity();
                 return true;
             default:

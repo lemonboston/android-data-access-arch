@@ -77,32 +77,20 @@ public class DataAccessService extends Service implements TaskCounter.AllTasksFi
     private void handleIntent(Intent intent) {
         UseCase useCase = intentHelper.extractNetworkUseCase(intent);
         switch (useCase) {
+            case BASIC:
+            case ERROR_HANDLING:
+            case ONGOING_CALL_HANDLING:
+            case OFFLINE_STORAGE:
             case COMBINED:
-                processGetTemp(intent);
+                String city = intentHelper.extractCity(intent);
+                dataAccessController.getWeather(useCase, city);
                 break;
             case PARALLEL_AND_CHAINED:
-                processGetForecastForWarmer(intent);
-                break;
-            case OFFLINE_STORAGE:
-                processGetTempOfflineStore(intent);
+                String city1 = intentHelper.extractCity1(intent);
+                String city2 = intentHelper.extractCity2(intent);
+                dataAccessController.getForecastForWarmerCity(city1, city2);
                 break;
         }
-    }
-
-    private void processGetTemp(Intent intent) {
-        String city = intentHelper.extractCity(intent);
-        dataAccessController.getTemperature_allInOne(city);
-    }
-
-    private void processGetForecastForWarmer(Intent intent) {
-        String city1 = intentHelper.extractCity1(intent);
-        String city2 = intentHelper.extractCity2(intent);
-        dataAccessController.getForecastForWarmerCity(city1, city2);
-    }
-
-    private void processGetTempOfflineStore(Intent intent) {
-        String city = intentHelper.extractCity(intent);
-        dataAccessController.getTemperature_wOfflineLocalStore(city);
     }
 
     @Override

@@ -44,6 +44,9 @@ public class MainViewImpl implements MainView {
     @Bind(R.id.EditText_City1)
     EditText city1Text;
 
+    @Bind(R.id.EditText_City2)
+    EditText city2Text;
+
     @Bind(R.id.UseCase_Spinner)
     Spinner useCaseSpinner;
 
@@ -55,6 +58,9 @@ public class MainViewImpl implements MainView {
 
     @Bind(R.id.ImplementationArea)
     ViewGroup implementationArea;
+
+    @Bind(R.id.EmptyPage_Text)
+    TextView emptyPageText;
 
     private final ViewToolkit viewToolkit;
     private UserActionListener listener;
@@ -90,7 +96,6 @@ public class MainViewImpl implements MainView {
 
             }
         });
-
     }
 
     @Override
@@ -98,6 +103,7 @@ public class MainViewImpl implements MainView {
         executeArea.setVisibility(View.GONE);
         requirementArea.setVisibility(View.GONE);
         implementationArea.setVisibility(View.GONE);
+        emptyPageText.setVisibility(View.GONE);
     }
 
     @Override
@@ -105,6 +111,7 @@ public class MainViewImpl implements MainView {
         executeArea.setVisibility(View.VISIBLE);
         requirementArea.setVisibility(View.VISIBLE);
         implementationArea.setVisibility(View.VISIBLE);
+        emptyPageText.setVisibility(View.GONE);
     }
 
     @Override
@@ -133,8 +140,18 @@ public class MainViewImpl implements MainView {
     }
 
     @Override
+    public String getCity2() {
+        return city2Text.getText().toString();
+    }
+
+    @Override
     public void setResultText(String result) {
         resultTextView.setText(result);
+    }
+
+    @Override
+    public void showGeneralDescription() {
+        emptyPageText.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.Button_Clear)

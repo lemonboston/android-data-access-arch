@@ -23,6 +23,15 @@
                 android:layout_marginTop="@dimen/distance_default"
                 android:theme="@style/AppTheme"/>
 
+            <TextView
+                android:id="@+id/EmptyPage_Text"
+                style="@style/TextDescription"
+                android:text="@string/AppDescription"
+                android:paddingTop="@dimen/distance_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
             <RelativeLayout
                 android:id="@+id/ExecuteArea"
                 android:layout_width="match_parent"

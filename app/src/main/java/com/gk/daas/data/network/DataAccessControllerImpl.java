@@ -47,7 +47,27 @@ public class DataAccessControllerImpl implements DataAccessController {
     }
 
     @Override
-    public void getTemperature_basic(String city) {
+    public void getWeather(UseCase useCase, String city) {
+        switch (useCase) {
+            case BASIC:
+                getTemperature_basic(city);
+                break;
+            case ERROR_HANDLING:
+                getTemperature_wErrorHandling(city);
+                break;
+            case ONGOING_CALL_HANDLING:
+                getTemperature_wOngoingHandling(city);
+                break;
+            case OFFLINE_STORAGE:
+                getTemperature_wOfflineLocalStore(city);
+                break;
+            case COMBINED:
+                getTemperature_allInOne(city);
+                break;
+        }
+    }
+
+    private void getTemperature_basic(String city) {
         String tag = "getTemperature_basic | ";
         log.d(tag + "Starting, city: " + city);
 
@@ -61,9 +81,7 @@ public class DataAccessControllerImpl implements DataAccessController {
                         });
     }
 
-
-    @Override
-    public void getTemperature_wErrorHandling(String city) {
+    private void getTemperature_wErrorHandling(String city) {
         String tag = "getTemperature_wErrorHandling | ";
         log.d(tag + "Starting, city: " + city);
 
@@ -84,8 +102,7 @@ public class DataAccessControllerImpl implements DataAccessController {
                         });
     }
 
-    @Override
-    public void getTemperature_wOngoingHandling(String city) {
+    private void getTemperature_wOngoingHandling(String city) {
         String tag = "getTemperature_wOngoingHandling |";
         log.d(tag + "Starting, city: " + city);
 
@@ -105,8 +122,7 @@ public class DataAccessControllerImpl implements DataAccessController {
                         });
     }
 
-    @Override
-    public void getTemperature_wOfflineLocalStore(String city) {
+    private void getTemperature_wOfflineLocalStore(String city) {
         String tag = "getTemperature_wOfflineLocalStore | ";
         log.d(tag + "Starting, city: " + city);
 

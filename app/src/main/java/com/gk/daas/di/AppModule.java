@@ -92,7 +92,7 @@ public class AppModule {
 
     @Provides
     public OpenWeatherService provideWeatherService(LogFactory logFactory, OkHttpClient okHttpClient) {
-        if (DevTweaks.MOCK_WEATHER_SERVICE) {
+        if (DebugOptions.MOCK_WEATHER_SERVICE) {
             return new MockWeatherService(logFactory);
         } else {
             return createWeatherService(okHttpClient);

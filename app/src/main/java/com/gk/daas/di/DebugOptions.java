@@ -6,7 +6,7 @@ import com.gk.daas.BuildConfig;
 /**
  * @author Gabor_Keszthelyi
  */
-public class DevTweaks {
+public class DebugOptions {
 
     public static boolean MOCK_WEATHER_SERVICE;
 

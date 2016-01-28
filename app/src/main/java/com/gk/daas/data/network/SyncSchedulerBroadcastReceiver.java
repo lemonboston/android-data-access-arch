@@ -7,6 +7,7 @@ import android.content.Intent;
 import com.gk.daas.data.access.DataAccessInitiator;
 import com.gk.daas.di.AppComponent;
 import com.gk.daas.log.Log;
+import com.gk.daas.log.LogFactory;
 
 import javax.inject.Inject;
 
@@ -15,26 +16,21 @@ import javax.inject.Inject;
  */
 public class SyncSchedulerBroadcastReceiver extends BroadcastReceiver {
 
+    Log log = LogFactory.createLog(SyncSchedulerBroadcastReceiver.class);
+
     @Inject
     SyncScheduler syncScheduler;
 
     @Inject
     DataAccessInitiator dataAccessInitiator;
 
-    Log log;
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        inject();
+        AppComponent.Holder.getInstance().inject(this);
 
         log.d("Sync broadcast received");
         syncScheduler.scheduleNext(intent);
-        // TODO which method to use here
-        dataAccessInitiator.getTemperature_allInOne("Miami");
+        dataAccessInitiator.getWeather(UseCase.BASIC, "London");
     }
 
-    private void inject() {
-        AppComponent.Holder.getInstance().inject(this);
-        this.log = AppComponent.Holder.getInstance().getLogFactory().create(getClass());
-    }
 }
