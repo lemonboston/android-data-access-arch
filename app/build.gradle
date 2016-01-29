@@ -41,9 +41,11 @@ dependencies {
     compile 'com.android.support:support-v13:23.1.1'
     // RxAndroid
     compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxjava-async-util:0.21.0'
     // Retrofit 2
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta3'
     compile 'com.squareup.okhttp3:logging-interceptor:3.0.0-RC1'
     // Dagger 2
     compile 'com.google.dagger:dagger:2.0.2'
@@ -53,9 +55,8 @@ dependencies {
     compile 'de.greenrobot:eventbus:3.0.0-beta1'
     compile 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta3'
     // Unit tests
     testCompile 'junit:junit:4.12'
-    compile 'io.reactivex:rxjava-async-util:0.21.0'
+    // Unsorted
 }
 

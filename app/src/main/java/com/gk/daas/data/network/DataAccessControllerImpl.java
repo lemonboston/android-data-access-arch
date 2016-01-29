@@ -72,6 +72,7 @@ public class DataAccessControllerImpl implements DataAccessController {
         log.d(tag + "Starting, city: " + city);
 
         weatherService.getWeather(city, API_KEY)
+                .subscribeOn(Schedulers.io())
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;
@@ -87,6 +88,7 @@ public class DataAccessControllerImpl implements DataAccessController {
 
         connectionChecker.checkNetwork()
                 .flatMap(aVoid -> weatherService.getWeather(city, "an invalid api key"))
+                .subscribeOn(Schedulers.io())
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;
@@ -113,6 +115,7 @@ public class DataAccessControllerImpl implements DataAccessController {
         }
 
         getTempWithOngoingHandlingSubscription = weatherService.getWeather(city, API_KEY)
+                .subscribeOn(Schedulers.io())
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;
@@ -139,6 +142,8 @@ public class DataAccessControllerImpl implements DataAccessController {
                     return dataStore.getAsSingle(DataStore.GET_TEMP).toObservable();
                 })
                 .toSingle()
+
+                .subscribeOn(Schedulers.io())
 
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
@@ -187,6 +192,8 @@ public class DataAccessControllerImpl implements DataAccessController {
                         })
                         .toSingle()
 
+                        .subscribeOn(Schedulers.io())
+
                         .subscribe(
                                 (WeatherResponse weatherResponse) -> {
                                     double temp = weatherResponse.main.temp;
@@ -218,7 +225,7 @@ public class DataAccessControllerImpl implements DataAccessController {
 
                 .flatMap(city -> weatherService.getForecast(city, API_KEY))
 
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
 
                 .subscribe(
                         (ForecastResponse response) -> {

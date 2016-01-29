@@ -116,6 +116,7 @@ public class MainViewImpl implements MainView {
         emptyPageText.setVisibility(View.GONE);
         otherScreenButton.setVisibility(View.GONE);
         howToTestArea.setVisibility(View.GONE);
+        onClearButtonClick();
     }
 
     @Override

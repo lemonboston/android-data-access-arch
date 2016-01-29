@@ -45,7 +45,7 @@ public class DataAccessService extends Service implements TaskCounter.AllTasksFi
         ServiceComponent.Injector.inject(this);
         log = AppComponent.Holder.getInstance().getLogFactory().create(getClass());
 
-        handlerThread = new HandlerThread(getClass().getSimpleName(), Process.THREAD_PRIORITY_MORE_FAVORABLE);
+        handlerThread = new HandlerThread(getClass().getSimpleName() + "-thread", Process.THREAD_PRIORITY_MORE_FAVORABLE);
         handlerThread.start();
         handler = new Handler(handlerThread.getLooper());
 

@@ -82,6 +82,11 @@
     <string name="dismiss">Dismiss</string>
     <string name="ErrorMessage_unauthorized">API key unauthorized. A custom message can come here..</string>
 
+    <string name="UseCase_OngoingCall_Desc">User initiates data access, receives the result on UI. Requires a single network call.
+    \n\nThere is only one call at a time, initiating again is ignored.</string>
+    <string name="UseCase_OngoingCall_Implementation">Rx Subscription is kept in field and checked if subscribed.</string>
+    <string name="UseCase_OngoingCall_HowToTest">Use Mock service (real one is too fast) and tap the button multiple times. Try basic use-case in comparison.</string>
+
     <!-- TODO add notes on real, mock service usage on landing page -->
 
 
