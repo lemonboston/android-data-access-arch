@@ -2,6 +2,7 @@ package com.gk.daas.data.store;
 
 import com.gk.daas.data.model.WeatherResponse;
 
+import rx.Observable;
 import rx.Single;
 
 /**
@@ -16,6 +17,8 @@ public interface DataStore {
     <T> T get(Key<T> key);
 
     <T> Single<T> getAsSingle(Key<T> key);
+
+    <T> Observable<T> getAsObservable(Key<T> key);
 
     class Key<T> {
         public final String name;

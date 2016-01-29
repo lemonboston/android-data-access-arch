@@ -145,6 +145,9 @@ public class MainActivity extends BaseActivity {
                         view.setHowToTestDesc(R.string.UseCase_OngoingCall_HowToTest);
                         break;
                     case OFFLINE_STORAGE:
+                        view.setTechnicalUseCaseDesc(R.string.UseCase_OfflineStorage_Requirement);
+                        view.setImplementationDesc(R.string.UseCase_OfflineStorage_Implementation);
+                        view.setHowToTestDesc(R.string.UseCase_OfflineStorage_HowToTest);
                         break;
                     case COMBINED:
                         break;

@@ -139,7 +139,7 @@ public class DataAccessControllerImpl implements DataAccessController {
                 .toObservable()
                 .onErrorResumeNext(throwable -> {
                     log.w(tag + "Error getting temp through API: " + throwable);
-                    return dataStore.getAsSingle(DataStore.GET_TEMP).toObservable();
+                    return dataStore.getAsObservable(DataStore.GET_TEMP);
                 })
                 .toSingle()
 
@@ -148,11 +148,13 @@ public class DataAccessControllerImpl implements DataAccessController {
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;
-                            log.d(tag + "Temp retrieved (from API or local store), temp: " + temp);
-                            bus.post(new GetTempStoreSuccessEvent(temp));
+                            log.d(tag + "Temp retrieved (from server or local store), temp: " + temp);
+                            bus.post(new GetTempSuccessEvent(temp));
                             taskCounter.taskFinished();
                         },
                         throwable -> {
+                            DataAccessError dataAccessError = errorInterpreter.interpret(throwable);
+                            bus.post(dataAccessError);
                             log.w(tag + "Error: " + throwable);
                             taskCounter.taskFinished();
                         });

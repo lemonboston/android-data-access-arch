@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import com.gk.daas.bus.Bus;
 import com.gk.daas.bus.BusImpl;
 import com.gk.daas.core.App;
-import com.gk.daas.core.Config;
 import com.gk.daas.data.access.DataAccessInitiator;
 import com.gk.daas.data.access.DataAccessInitiatorImpl;
 import com.gk.daas.data.network.ErrorInterpreter;
@@ -26,17 +25,12 @@ import com.gk.daas.log.LogFactoryImpl;
 import com.gk.daas.util.TemperatureFormatter;
 import com.google.gson.Gson;
 
-import java.io.File;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import de.greenrobot.event.EventBus;
-import okhttp3.Cache;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
@@ -105,22 +99,22 @@ public class AppModule {
         HttpLoggingInterceptor logger = new HttpLoggingInterceptor();
         logger.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        File httpCacheDirectory = new File(app.getCacheDir(), Config.Cache.CACHE_SUB_DIR);
-        Cache cache = new Cache(httpCacheDirectory, Config.Cache.CACHE_MAX_SIZE);
+//        File httpCacheDirectory = new File(app.getCacheDir(), Config.Cache.CACHE_SUB_DIR);
+//        Cache cache = new Cache(httpCacheDirectory, Config.Cache.CACHE_MAX_SIZE);
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(logger)
 
                         // https://github.com/square/okhttp/wiki/Interceptors
                         // http://stackoverflow.com/questions/23429046/can-retrofit-with-okhttp-use-cache-data-when-offline
-                .addNetworkInterceptor((Interceptor.Chain chain) -> {
-                    Response response = chain.proceed(chain.request());
-                    return response.newBuilder()
-                            .header("Cache-Control", "private, max-age=20")
-                            .build();
-
-                })
-                .cache(cache)
+//                .addNetworkInterceptor((Interceptor.Chain chain) -> {
+//                    Response response = chain.proceed(chain.request());
+//                    return response.newBuilder()
+//                            .header("Cache-Control", "private, max-age=20")
+//                            .build();
+//
+//                })
+//                .cache(cache)
                 .build();
 
         return client;

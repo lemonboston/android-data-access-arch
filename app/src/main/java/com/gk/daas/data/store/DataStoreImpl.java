@@ -7,10 +7,11 @@ import com.gk.daas.log.Log;
 import com.gk.daas.log.LogFactory;
 import com.google.gson.Gson;
 
+import rx.Observable;
+import rx.Scheduler;
 import rx.Single;
 import rx.SingleSubscriber;
 import rx.schedulers.Schedulers;
-import rx.util.async.Async;
 
 /**
  * @author Gabor_Keszthelyi
@@ -36,7 +37,11 @@ public class DataStoreImpl implements DataStore {
 
     @Override
     public <T> void saveAsync(Key<T> key, T data) {
-        Async.toAsync(() -> save(key, data), Schedulers.io());
+        Scheduler.Worker worker = Schedulers.io().createWorker();
+        worker.schedule(() -> {
+            save(key, data);
+            worker.unsubscribe();
+        });
     }
 
     @Override
@@ -59,5 +64,10 @@ public class DataStoreImpl implements DataStore {
                 }
             }
         });
+    }
+
+    @Override
+    public <T> Observable<T> getAsObservable(Key<T> key) {
+        return getAsSingle(key).toObservable();
     }
 }

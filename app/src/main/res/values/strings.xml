@@ -87,7 +87,16 @@
     <string name="UseCase_OngoingCall_Implementation">Rx Subscription is kept in field and checked if subscribed.</string>
     <string name="UseCase_OngoingCall_HowToTest">Use Mock service (real one is too fast) and tap the button multiple times. Try basic use-case in comparison.</string>
 
+    <string name="UseCase_OfflineStorage_Requirement">User initiates data access, receives the result on UI.
+        \n - When online, network call is executed and result is displayed and saved
+        \n - When offline, data is loaded from offline store (custom cache)
+    </string>
+    <string name="UseCase_OfflineStorage_Implementation">Rx operators <i>doOnSuccess</i> and <i>onErrorResumeNext</i> are used to construct the appropriate chain.</string>
+    <string name="UseCase_OfflineStorage_HowToTest">Go offline and tap the button</string>
+
     <!-- TODO add notes on real, mock service usage on landing page -->
+
+    <!-- TODO use-case for http cache? -->
 
 
 </resources>
