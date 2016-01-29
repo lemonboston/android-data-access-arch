@@ -108,6 +108,8 @@ public class MainViewImpl implements MainView {
         });
     }
 
+    // TODO fix result text disappearing on rotation
+
     @Override
     public void hideEverything() {
         executeArea.setVisibility(View.GONE);
@@ -116,6 +118,7 @@ public class MainViewImpl implements MainView {
         emptyPageText.setVisibility(View.GONE);
         otherScreenButton.setVisibility(View.GONE);
         howToTestArea.setVisibility(View.GONE);
+        city2Text.setVisibility(View.GONE);
         onClearButtonClick();
     }
 
@@ -197,6 +200,11 @@ public class MainViewImpl implements MainView {
     public void setImplementationDesc(@StringRes int stringResId) {
         implementationArea.setVisibility(View.VISIBLE);
         implementationDescription.setText(stringResId);
+    }
+
+    @Override
+    public void showCity2() {
+        city2Text.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.Button_Clear)

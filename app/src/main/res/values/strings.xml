@@ -94,11 +94,19 @@
     <string name="UseCase_OfflineStorage_Implementation">Rx operators <i>doOnSuccess</i> and <i>onErrorResumeNext</i> are used to construct the appropriate chain.</string>
     <string name="UseCase_OfflineStorage_HowToTest">Go offline and tap the button</string>
 
-    <string name="UseCase_Combined_Requirement">User initiates data access, receives the result on UI.
+    <string name="UseCase_Combined_Requirement">User initiates data access, receives the result on UI. Requires a single network call.
         \n\n - Progress dialog
         \n - Error handling
         \n - Offline store
         \n - Ongoing call handling
+    </string>
+
+    <string name="UseCase_ParallelAndChained_Requirement">User initiates data access, receives the result on UI.
+        \nRequires multiple network calls. Both parallel and sequential executions are needed.
+        \n\nShows dialog about the progress steps
+    </string>
+    <string name="UseCase_ParallelAndChained_Implementation">Rx operator <i>zip</i> for parallel execution and <i>flatMap</i> for sequential execution.
+        \nProgress update events sent to presentation layer at any point in Rx chain.
     </string>
 
     <!-- TODO add notes on real, mock service usage on landing page -->

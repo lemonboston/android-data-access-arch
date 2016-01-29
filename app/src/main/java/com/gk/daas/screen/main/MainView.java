@@ -41,6 +41,8 @@ public interface MainView {
 
     void setImplementationDesc(@StringRes int stringResId);
 
+    void showCity2();
+
     interface UserActionListener {
 
         void onUseCaseSelected(int position);

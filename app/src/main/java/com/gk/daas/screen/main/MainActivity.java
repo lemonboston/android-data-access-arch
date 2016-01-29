@@ -10,12 +10,15 @@ import com.gk.daas.R;
 import com.gk.daas.bus.Bus;
 import com.gk.daas.core.BaseActivity;
 import com.gk.daas.data.access.DataAccessInitiator;
+import com.gk.daas.data.event.GetForecastProgressEvent;
+import com.gk.daas.data.event.GetForecastSuccessEvent;
 import com.gk.daas.data.event.GetTempSuccessEvent;
 import com.gk.daas.data.network.DataAccessError;
 import com.gk.daas.data.network.UseCase;
 import com.gk.daas.di.ActivityComponent;
 import com.gk.daas.di.DebugOptions;
 import com.gk.daas.dialog.ErrorDialog;
+import com.gk.daas.dialog.ProgressDialog;
 import com.gk.daas.screen.home.ErrorTranslator;
 import com.gk.daas.screen.second.SecondActivity;
 import com.gk.daas.util.TemperatureFormatter;
@@ -47,6 +50,9 @@ public class MainActivity extends BaseActivity {
 
     @Inject
     ErrorDialog errorDialog;
+
+    @Inject
+    ProgressDialog progressDialog;
 
     private DataAccessEventHandler eventHandler = new DataAccessEventHandler();
 
@@ -114,6 +120,27 @@ public class MainActivity extends BaseActivity {
             errorDialog.show(errorMessage);
         }
 
+        @Subscribe(threadMode = ThreadMode.MainThread, sticky = true)
+        public void onProgressUpdate(GetForecastProgressEvent progress) {
+            switch (progress) {
+                case FIRST_STAGE_STARTED:
+                    progressDialog.showMessage(getString(R.string.ForecastProgress_Step1));
+                    break;
+                case SECOND_STAGE_STARTED:
+                    progressDialog.showMessage(getString(R.string.ForecastProgress_Step2));
+                    break;
+                case COMPLETED:
+                    progressDialog.dismiss();
+                    break;
+            }
+        }
+
+        @Subscribe(threadMode = ThreadMode.MainThread)
+        public void onForecastSuccess(GetForecastSuccessEvent event) {
+            String temperature = temperatureFormatter.formatTempInKelvin(event.lastTemp);
+            String resultText = event.cityName + ": " + temperature;
+            view.setResultText(resultText);
+        }
     }
 
     private class UserActionHandler implements MainView.UserActionListener {
@@ -153,6 +180,11 @@ public class MainActivity extends BaseActivity {
                         view.setTechnicalUseCaseDesc(R.string.UseCase_Combined_Requirement);
                         break;
                     case PARALLEL_AND_CHAINED:
+                        view.setExecuteButtonText(R.string.GetForecast_Button);
+                        view.setWeatherUseCaseDesc(R.string.WeatherUseCase_GetForecast);
+                        view.setTechnicalUseCaseDesc(R.string.UseCase_ParallelAndChained_Requirement);
+                        view.setImplementationDesc(R.string.UseCase_ParallelAndChained_Implementation);
+                        view.showCity2();
                         break;
                 }
             }
@@ -160,12 +192,12 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public void onExecuteButtonClick() {
-            view.showProgressBar();
             String city = view.getCity1();
             if (currentUseCase == UseCase.PARALLEL_AND_CHAINED) {
                 String city2 = view.getCity2();
                 dataAccessInitiator.getForecastForWarmerCity(city, city2);
             } else {
+                view.showProgressBar();
                 dataAccessInitiator.getWeather(currentUseCase, city);
             }
         }
