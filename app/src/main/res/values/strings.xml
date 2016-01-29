@@ -94,6 +94,13 @@
     <string name="UseCase_OfflineStorage_Implementation">Rx operators <i>doOnSuccess</i> and <i>onErrorResumeNext</i> are used to construct the appropriate chain.</string>
     <string name="UseCase_OfflineStorage_HowToTest">Go offline and tap the button</string>
 
+    <string name="UseCase_Combined_Requirement">User initiates data access, receives the result on UI.
+        \n\n - Progress dialog
+        \n - Error handling
+        \n - Offline store
+        \n - Ongoing call handling
+    </string>
+
     <!-- TODO add notes on real, mock service usage on landing page -->
 
     <!-- TODO use-case for http cache? -->

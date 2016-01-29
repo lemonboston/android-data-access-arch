@@ -150,6 +150,7 @@ public class MainActivity extends BaseActivity {
                         view.setHowToTestDesc(R.string.UseCase_OfflineStorage_HowToTest);
                         break;
                     case COMBINED:
+                        view.setTechnicalUseCaseDesc(R.string.UseCase_Combined_Requirement);
                         break;
                     case PARALLEL_AND_CHAINED:
                         break;
