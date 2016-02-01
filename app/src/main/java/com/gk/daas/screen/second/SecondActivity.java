@@ -7,7 +7,7 @@ import com.gk.daas.R;
 import com.gk.daas.bus.Bus;
 import com.gk.daas.core.BaseActivity;
 import com.gk.daas.data.event.GetTempSuccessEvent;
-import com.gk.daas.di.AppComponent;
+import com.gk.daas.di.Injector;
 import com.gk.daas.util.TemperatureFormatter;
 
 import javax.inject.Inject;
@@ -33,7 +33,7 @@ public class SecondActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AppComponent.Holder.getInstance().inject(this);
+        Injector.satisfy(this);
         super.onCreate(savedInstanceState);
         bus.register(this);
 

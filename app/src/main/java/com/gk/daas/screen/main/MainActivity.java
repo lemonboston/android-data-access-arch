@@ -16,8 +16,8 @@ import com.gk.daas.data.event.GetTempSuccessEvent;
 import com.gk.daas.data.network.DataAccessError;
 import com.gk.daas.data.network.UseCase;
 import com.gk.daas.data.store.DataStore;
-import com.gk.daas.di.ActivityComponent;
 import com.gk.daas.di.DebugOptions;
+import com.gk.daas.di.Injector;
 import com.gk.daas.dialog.ErrorDialog;
 import com.gk.daas.dialog.ProgressDialog;
 import com.gk.daas.screen.ErrorTranslator;
@@ -64,7 +64,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityComponent.Injector.inject(this);
+        Injector.satisfy(this);
 
         view.init();
         view.setUseCaseTitles(UseCase.getTitles(this));

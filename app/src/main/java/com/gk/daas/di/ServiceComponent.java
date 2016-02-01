@@ -11,16 +11,6 @@ import dagger.Component;
 @Component(dependencies = AppComponent.class, modules = ServiceModule.class)
 public interface ServiceComponent {
 
-    void inject(DataAccessService dataAccessService);
+    void satisfy(DataAccessService dataAccessService);
 
-    class Injector {
-
-        public static void inject(DataAccessService dataAccessService) {
-            DaggerServiceComponent.builder()
-                    .appComponent(AppComponent.Holder.getInstance())
-                    .serviceModule(new ServiceModule())
-                    .build()
-                    .inject(dataAccessService);
-        }
-    }
 }

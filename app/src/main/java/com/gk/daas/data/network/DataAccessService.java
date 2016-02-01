@@ -9,10 +9,10 @@ import android.os.Process;
 import android.support.annotation.Nullable;
 
 import com.gk.daas.data.access.DataAccessController;
-import com.gk.daas.di.AppComponent;
-import com.gk.daas.di.ServiceComponent;
+import com.gk.daas.di.Injector;
 import com.gk.daas.framework.access.Toaster;
 import com.gk.daas.log.Log;
+import com.gk.daas.log.LogFactory;
 
 import javax.inject.Inject;
 
@@ -33,6 +33,9 @@ public class DataAccessService extends Service implements TaskCounter.AllTasksFi
     @Inject
     TaskCounter taskCounter;
 
+    @Inject
+    LogFactory logFactory;
+
     Log log;
 
     private HandlerThread handlerThread;
@@ -42,8 +45,8 @@ public class DataAccessService extends Service implements TaskCounter.AllTasksFi
     @Override
     public void onCreate() {
         super.onCreate();
-        ServiceComponent.Injector.inject(this);
-        log = AppComponent.Holder.getInstance().getLogFactory().create(getClass());
+        Injector.satisfy(this);
+        log = logFactory.create(getClass());
 
         handlerThread = new HandlerThread(getClass().getSimpleName() + "-thread", Process.THREAD_PRIORITY_MORE_FAVORABLE);
         handlerThread.start();
