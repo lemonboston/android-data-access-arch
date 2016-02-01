@@ -31,20 +31,9 @@
         \nThe whole component is put in an Android Service which starts on-demand and stops when there is no more ongoing task.
     </string>
 
-    <!-- Parallel and Chained use case -->
     <string name="UseCaseTitle_ParallelChained">Parallel&amp;Chained calls</string>
     <string name="WeatherUseCase_GetForecast">Get the 5 day forecast for the city that is warmer currently</string>
     <string name="GetForecast_Button">Get forecast</string>
-    <string name="UseCase_ParallelChained_Description">
-        User initiates data access, receives the result on UI.
-        \nRequires multiple network calls executed both parallel and chained (after previous one completed).
-        \n - Progress dialog displays steps in progress
-        \n - Handles rotation (keeps dialog, doesn\'t restart call)
-    </string>
-    <string name="UseCase_ParallelChained_Implementation">Rx operator <i>zip</i> for parallel call, <i>flatMap</i> for chaining.
-        \nProgress update events sent with EventBus at any point in Rx chain to presentation layer.
-        \nRetained DialogFragment for the dialog.
-    </string>
     <string name="ForecastProgress_Step1">Step 1: Getting current temperatures…</string>
     <string name="ForecastProgress_Step2">Step 2: Getting forecast…</string>
 
@@ -62,10 +51,13 @@
     <string name="City2_Default">London</string>
 
     <string name="UseCase_Choose">[Choose use case…]</string>
+
+    <!-- Combined use-case -->
     <string name="UseCase_Combined">Combined use case</string>
     <string name="UseCaseTitle_OfflineStorage">Offline Storage</string>
     <string name="RequirementTitle">Requirement / Use-case</string>
     <string name="ImplementationTitle">Implementation</string>
+
     <string name="UseCaseTitle_ErrorHandling">Error Handling</string>
     <string name="UseCaseTitle_OnGoingCall">Ongoing call handling</string>
     <string name="UseCase_ErrorHandling_Desc">
@@ -112,8 +104,6 @@
     </string>
 
     <!-- TODO add notes on real, mock service usage on landing page -->
-
-    <!-- TODO use-case for http cache? -->
 
 
 </resources>

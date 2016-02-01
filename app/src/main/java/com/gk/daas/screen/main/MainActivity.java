@@ -20,7 +20,7 @@ import com.gk.daas.di.ActivityComponent;
 import com.gk.daas.di.DebugOptions;
 import com.gk.daas.dialog.ErrorDialog;
 import com.gk.daas.dialog.ProgressDialog;
-import com.gk.daas.screen.home.ErrorTranslator;
+import com.gk.daas.screen.ErrorTranslator;
 import com.gk.daas.screen.second.SecondActivity;
 import com.gk.daas.util.TemperatureFormatter;
 

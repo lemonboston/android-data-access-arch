@@ -3,7 +3,6 @@ package com.gk.daas.util;
 /**
  * @author Gabor_Keszthelyi
  */
-// TODO add support for fahrenheit
 public class TemperatureFormatter {
 
     private static final double ZERO_CELSIUS_IN_KELVIN = 273.15;

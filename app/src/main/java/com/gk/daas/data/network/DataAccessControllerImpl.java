@@ -170,6 +170,8 @@ public class DataAccessControllerImpl implements DataAccessController {
 
     // TODO Case with cancel
 
+    // TODO Case for http cache?
+
     public void getTemperature_allInOne(String city) {
         String tag = "getTemperature_allInOne | ";
         log.d(tag + "Starting, city: " + city);
@@ -215,7 +217,6 @@ public class DataAccessControllerImpl implements DataAccessController {
     }
 
     @Override
-    // TODO review
     public void getForecastForWarmerCity(String city1, String city2) {
         String tag = "getForecastForWarmerCity | ";
         log.d(tag + "Started");

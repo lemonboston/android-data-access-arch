@@ -1,4 +1,4 @@
-package com.gk.daas.screen.home;
+package com.gk.daas.screen;
 
 import com.gk.daas.data.network.DataAccessError;
 

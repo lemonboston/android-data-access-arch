@@ -12,11 +12,10 @@ import com.gk.daas.framework.access.ViewFactoryImpl;
 import com.gk.daas.framework.access.ViewToolkit;
 import com.gk.daas.framework.access.ViewToolkitImpl;
 import com.gk.daas.log.LogFactory;
-import com.gk.daas.screen.home.ErrorTranslator;
-import com.gk.daas.screen.home.ErrorTranslatorImpl;
+import com.gk.daas.screen.ErrorTranslator;
+import com.gk.daas.screen.ErrorTranslatorImpl;
 import com.gk.daas.screen.main.MainView;
 import com.gk.daas.screen.main.MainViewImpl;
-import com.gk.daas.widget.HomeFragmentPagerAdapter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -41,11 +40,6 @@ public class ActivityModule {
     @Provides
     public ErrorTranslator provideErrorTranslator(StringResAccess stringResAccess, LogFactory logFactory) {
         return new ErrorTranslatorImpl(stringResAccess, logFactory);
-    }
-
-    @Provides
-    public HomeFragmentPagerAdapter provideHomeFragmentPagerAdapter() {
-        return new HomeFragmentPagerAdapter(activity.getFragmentManager(), activity);
     }
 
     @Provides
