@@ -68,4 +68,9 @@ public class DataStoreImpl implements DataStore {
     public Observable<Double> getTemperatureAsObservable(String city) {
         return getTemperatureAsSingle(city).toObservable();
     }
+
+    @Override
+    public void clearStore() {
+        prefs.edit().clear().apply();
+    }
 }

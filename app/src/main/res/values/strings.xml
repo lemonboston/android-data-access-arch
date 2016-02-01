@@ -56,6 +56,8 @@
 
     <string name="Menu_RealService">Use Real Weather Service</string>
     <string name="Menu_MockService">Use Mock Weather Service</string>
+    <string name="Menu_ClearDataStore">Clear data store</string>
+
     <string name="City1_Default">Budapest</string>
     <string name="City2_Default">London</string>
 

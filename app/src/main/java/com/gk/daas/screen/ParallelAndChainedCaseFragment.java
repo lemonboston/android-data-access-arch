@@ -122,8 +122,7 @@ public class ParallelAndChainedCaseFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onGetForecastSuccess(GetForecastSuccessEvent event) {
-        String temperature = temperatureFormatter.formatTempInKelvin(event.lastTemp);
-        resultTextView.setText(event.cityName + ": " + temperature);
+        resultTextView.setText(event.cityName + ": " + event.lastTemp);
     }
 
 

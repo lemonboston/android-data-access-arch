@@ -1,21 +1,22 @@
 package com.gk.daas.data.event;
 
+import com.gk.daas.data.model.Temperature;
+
 /**
  * @author Gabor_Keszthelyi
  */
 public class GetTempStoreSuccessEvent {
 
-    public final double temp;
+    public final Temperature temperature;
 
-    public GetTempStoreSuccessEvent(double temp) {
-        this.temp = temp;
+    public GetTempStoreSuccessEvent(Temperature temperature) {
+        this.temperature = temperature;
     }
-
 
     @Override
     public String toString() {
         return "GetTempStoreSuccessEvent{" +
-                "temp=" + temp +
+                "temp=" + temperature +
                 '}';
     }
 }

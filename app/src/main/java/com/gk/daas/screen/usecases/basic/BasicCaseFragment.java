@@ -114,8 +114,7 @@ public class BasicCaseFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onGetTempSuccess(GetTempStoreSuccessEvent event) {
         progressBar.setVisibility(View.GONE);
-        String temperature = temperatureFormatter.formatTempInKelvin(event.temp);
-        resultTextView.setText(temperature);
+        resultTextView.setText(event.temperature.toString());
     }
 
     @Subscribe(threadMode = ThreadMode.MainThread)

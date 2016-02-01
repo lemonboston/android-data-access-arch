@@ -15,6 +15,7 @@ import com.gk.daas.data.event.GetForecastSuccessEvent;
 import com.gk.daas.data.event.GetTempSuccessEvent;
 import com.gk.daas.data.network.DataAccessError;
 import com.gk.daas.data.network.UseCase;
+import com.gk.daas.data.store.DataStore;
 import com.gk.daas.di.ActivityComponent;
 import com.gk.daas.di.DebugOptions;
 import com.gk.daas.dialog.ErrorDialog;
@@ -54,8 +55,10 @@ public class MainActivity extends BaseActivity {
     @Inject
     ProgressDialog progressDialog;
 
-    private DataAccessEventHandler eventHandler = new DataAccessEventHandler();
+    @Inject
+    DataStore dataStore;
 
+    private DataAccessEventHandler eventHandler = new DataAccessEventHandler();
     private UseCase currentUseCase = UseCase.EMPTY_PLACEHOLDER;
 
     @Override
@@ -94,6 +97,9 @@ public class MainActivity extends BaseActivity {
                 DebugOptions.MOCK_WEATHER_SERVICE = true;
                 restartActivity();
                 return true;
+            case R.id.Menu_ClearDataStore:
+                dataStore.clearStore();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -109,8 +115,7 @@ public class MainActivity extends BaseActivity {
         @Subscribe(threadMode = ThreadMode.MainThread)
         public void onGetTempSuccess(GetTempSuccessEvent event) {
             view.hideProgressBar();
-            String temperature = temperatureFormatter.formatTempInKelvin(event.temp);
-            view.setResultText(temperature);
+            view.setResultText(event.temperature.toString());
         }
 
         @Subscribe(threadMode = ThreadMode.MainThread)
@@ -137,8 +142,7 @@ public class MainActivity extends BaseActivity {
 
         @Subscribe(threadMode = ThreadMode.MainThread)
         public void onForecastSuccess(GetForecastSuccessEvent event) {
-            String temperature = temperatureFormatter.formatTempInKelvin(event.lastTemp);
-            String resultText = event.cityName + ": " + temperature;
+            String resultText = event.cityName + ": " + event.lastTemp.toString();
             view.setResultText(resultText);
         }
     }

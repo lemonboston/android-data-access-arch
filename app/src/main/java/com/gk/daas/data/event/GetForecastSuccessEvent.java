@@ -1,14 +1,16 @@
 package com.gk.daas.data.event;
 
+import com.gk.daas.data.model.Temperature;
+
 /**
  * @author Gabor_Keszthelyi
  */
 public class GetForecastSuccessEvent {
 
-    public final double lastTemp;
+    public final Temperature lastTemp;
     public final String cityName;
 
-    public GetForecastSuccessEvent(double lastTemp, String cityName) {
+    public GetForecastSuccessEvent(Temperature lastTemp, String cityName) {
         this.lastTemp = lastTemp;
         this.cityName = cityName;
     }
@@ -17,6 +19,7 @@ public class GetForecastSuccessEvent {
     public String toString() {
         return "GetForecastSuccessEvent{" +
                 "lastTemp=" + lastTemp +
+                ", cityName='" + cityName + '\'' +
                 '}';
     }
 }

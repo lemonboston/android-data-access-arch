@@ -3,7 +3,6 @@ package com.gk.daas.screen.second;
 import android.os.Bundle;
 import android.widget.TextView;
 
-
 import com.gk.daas.R;
 import com.gk.daas.bus.Bus;
 import com.gk.daas.core.BaseActivity;
@@ -44,7 +43,7 @@ public class SecondActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onGetTempSuccess(GetTempSuccessEvent event) {
-        resultText.setText(temperatureFormatter.formatTempInKelvin(event.temp));
+        resultText.setText(event.temperature.toString());
     }
 
     @Override

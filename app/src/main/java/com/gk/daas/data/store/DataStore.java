@@ -8,7 +8,6 @@ import rx.Single;
  *
  * @author Gabor_Keszthelyi
  */
-// TODO implement clearing the store, add to UI settings
 public interface DataStore {
 
     void save(String city, double temperature);
@@ -20,5 +19,7 @@ public interface DataStore {
     Single<Double> getTemperatureAsSingle(String city);
 
     Observable<Double> getTemperatureAsObservable(String city);
+
+    void clearStore();
 
 }

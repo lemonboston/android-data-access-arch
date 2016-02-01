@@ -7,6 +7,7 @@ import com.gk.daas.data.event.GetForecastSuccessEvent;
 import com.gk.daas.data.event.GetTempStoreSuccessEvent;
 import com.gk.daas.data.event.GetTempSuccessEvent;
 import com.gk.daas.data.model.ForecastResponse;
+import com.gk.daas.data.model.Temperature;
 import com.gk.daas.data.model.WeatherResponse;
 import com.gk.daas.data.network.connection.NetworkConnectionChecker;
 import com.gk.daas.data.store.DataStore;
@@ -77,7 +78,7 @@ public class DataAccessControllerImpl implements DataAccessController {
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;
                             log.d(tag + "Finished, temp returned: " + temp);
-                            bus.post(new GetTempSuccessEvent(temp));
+                            bus.post(new GetTempSuccessEvent(new Temperature(temp)));
                             taskCounter.taskFinished();
                         });
     }
@@ -93,7 +94,7 @@ public class DataAccessControllerImpl implements DataAccessController {
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;
                             log.d(tag + "Finished, temp returned: " + temp);
-                            bus.post(new GetTempSuccessEvent(temp));
+                            bus.post(new GetTempSuccessEvent(new Temperature(temp)));
                             taskCounter.taskFinished();
                         },
                         throwable -> {
@@ -120,7 +121,7 @@ public class DataAccessControllerImpl implements DataAccessController {
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;
                             log.d(tag + "Finished, temp returned: " + temp);
-                            bus.post(new GetTempSuccessEvent(temp));
+                            bus.post(new GetTempSuccessEvent(new Temperature(temp)));
                             taskCounter.taskFinished();
                         });
     }
@@ -149,7 +150,7 @@ public class DataAccessControllerImpl implements DataAccessController {
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;
                             log.d(tag + "Temp retrieved (from server or local store), temp: " + temp);
-                            bus.post(new GetTempSuccessEvent(temp));
+                            bus.post(new GetTempSuccessEvent(new Temperature(temp)));
                             taskCounter.taskFinished();
                         },
                         throwable -> {
@@ -200,7 +201,7 @@ public class DataAccessControllerImpl implements DataAccessController {
                                 (WeatherResponse weatherResponse) -> {
                                     double temp = weatherResponse.main.temp;
                                     log.d(tag + "Temp retrieved (from API or local store), temp: " + temp);
-                                    bus.post(new GetTempStoreSuccessEvent(temp));
+                                    bus.post(new GetTempStoreSuccessEvent(new Temperature(temp)));
                                     taskCounter.taskFinished();
                                 },
                                 throwable -> {
@@ -235,7 +236,7 @@ public class DataAccessControllerImpl implements DataAccessController {
                             double lastTemp = response.list.get(response.list.size() - 1).main.temp;
                             String cityName = response.city.name;
                             log.d(tag + "Finished, city: " + cityName + " , lastTemp: " + lastTemp);
-                            bus.post(new GetForecastSuccessEvent(lastTemp, cityName));
+                            bus.post(new GetForecastSuccessEvent(new Temperature(lastTemp), cityName));
                             bus.postSticky(GetForecastProgressEvent.COMPLETED);
                             taskCounter.taskFinished();
                         },
