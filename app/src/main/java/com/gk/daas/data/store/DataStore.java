@@ -1,35 +1,24 @@
 package com.gk.daas.data.store;
 
-import com.gk.daas.data.model.WeatherResponse;
-
 import rx.Observable;
 import rx.Single;
 
 /**
+ * Very simple and specific data store for saving last temperature for a city just for the PoC. Real solutions would be much more generic.
+ *
  * @author Gabor_Keszthelyi
  */
+// TODO implement clearing the store, add to UI settings
 public interface DataStore {
 
-    <T> void save(Key<T> key, T data);
+    void save(String city, double temperature);
 
-    <T> void saveAsync(Key<T> key, T data);
+    void saveAsync(String city, double temperature);
 
-    <T> T get(Key<T> key);
+    Double getTemperature(String city);
 
-    <T> Single<T> getAsSingle(Key<T> key);
+    Single<Double> getTemperatureAsSingle(String city);
 
-    <T> Observable<T> getAsObservable(Key<T> key);
-
-    class Key<T> {
-        public final String name;
-        public final Class<T> dataClass;
-
-        public Key(String name, Class<T> dataClass) {
-            this.name = name;
-            this.dataClass = dataClass;
-        }
-    }
-
-    Key<WeatherResponse> GET_TEMP = new Key<>("GetWeather", WeatherResponse.class);
+    Observable<Double> getTemperatureAsObservable(String city);
 
 }

@@ -23,7 +23,6 @@ import com.gk.daas.framework.access.ToasterImpl;
 import com.gk.daas.log.LogFactory;
 import com.gk.daas.log.LogFactoryImpl;
 import com.gk.daas.util.TemperatureFormatter;
-import com.google.gson.Gson;
 
 import javax.inject.Singleton;
 
@@ -64,13 +63,8 @@ public class AppModule {
     }
 
     @Provides
-    public DataStore provideDataStore(Gson gson, LogFactory logFactory) {
-        return new DataStoreImpl(app, gson, logFactory);
-    }
-
-    @Provides
-    public Gson provideGson() {
-        return new Gson();
+    public DataStore provideDataStore(LogFactory logFactory) {
+        return new DataStoreImpl(app, logFactory);
     }
 
     @Provides

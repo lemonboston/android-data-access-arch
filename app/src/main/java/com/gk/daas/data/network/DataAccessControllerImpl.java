@@ -133,13 +133,13 @@ public class DataAccessControllerImpl implements DataAccessController {
 
                 .doOnSuccess((WeatherResponse weatherResponse) -> {
                     log.d(tag + "Saving temp to data store");
-                    dataStore.saveAsync(DataStore.GET_TEMP, weatherResponse);
+                    dataStore.saveAsync(city, weatherResponse.main.temp);
                 })
 
                 .toObservable()
                 .onErrorResumeNext(throwable -> {
                     log.w(tag + "Error getting temp through API: " + throwable);
-                    return dataStore.getAsObservable(DataStore.GET_TEMP);
+                    return dataStore.getTemperatureAsObservable(city).map(WeatherResponse::createFromTemp);
                 })
                 .toSingle()
 
@@ -184,13 +184,13 @@ public class DataAccessControllerImpl implements DataAccessController {
 
                         .doOnSuccess((WeatherResponse weatherResponse) -> {
                             log.d(tag + "Saving temp to data store");
-                            dataStore.saveAsync(DataStore.GET_TEMP, weatherResponse);
+                            dataStore.saveAsync(city, weatherResponse.main.temp);
                         })
 
                         .toObservable()
                         .onErrorResumeNext(throwable -> {
                             log.w(tag + "Error getting temp through API: " + throwable);
-                            return dataStore.getAsSingle(DataStore.GET_TEMP).toObservable();
+                            return dataStore.getTemperatureAsObservable(city).map(WeatherResponse::createFromTemp);
                         })
                         .toSingle()
 

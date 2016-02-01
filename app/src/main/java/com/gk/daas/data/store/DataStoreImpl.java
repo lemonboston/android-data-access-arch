@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 
 import com.gk.daas.log.Log;
 import com.gk.daas.log.LogFactory;
-import com.google.gson.Gson;
 
 import rx.Observable;
 import rx.Scheduler;
@@ -14,50 +13,49 @@ import rx.SingleSubscriber;
 import rx.schedulers.Schedulers;
 
 /**
+ * Uses SharedPreferences just for the sake of simplicity of the PoC.
+ *
  * @author Gabor_Keszthelyi
  */
 public class DataStoreImpl implements DataStore {
 
     private final SharedPreferences prefs;
-    private final Gson gson;
     private final Log log;
 
-    public DataStoreImpl(Context context, Gson gson, LogFactory logFactory) {
+    public DataStoreImpl(Context context, LogFactory logFactory) {
         this.prefs = context.getSharedPreferences("DataStore", Context.MODE_PRIVATE);
-        this.gson = gson;
         this.log = logFactory.create(getClass());
     }
 
     @Override
-    public <T> void save(Key<T> key, T data) {
-        String json = gson.toJson(data);
-        log.d(String.format("Saving json. Key: %s | Type: %s | JSON: %s", key.name, key.dataClass.getSimpleName(), json));
-        prefs.edit().putString(key.name, json).apply();
+    public void save(String city, double temperature) {
+        log.d(String.format("Saving temperature. City: %s | Temperature: %s", city, temperature));
+        prefs.edit().putFloat(city, (float) temperature).apply();
     }
 
     @Override
-    public <T> void saveAsync(Key<T> key, T data) {
+    public void saveAsync(String city, double temperature) {
         Scheduler.Worker worker = Schedulers.io().createWorker();
         worker.schedule(() -> {
-            save(key, data);
+            save(city, temperature);
             worker.unsubscribe();
         });
     }
 
     @Override
-    public <T> T get(Key<T> key) {
-        String json = prefs.getString(key.name, null);
-        log.d(String.format("Retrieving json. Key: %s | Type: %s | JSON: %s", key.name, key.dataClass.getSimpleName(), json));
-        return gson.fromJson(json, key.dataClass);
+    public Double getTemperature(String city) {
+        float temperature = prefs.getFloat(city, 0);
+        log.d(String.format("Retrieving saved temperature.City: %s | Temperature: %s", city, temperature));
+        return (double) temperature;
     }
 
     @Override
-    public <T> Single<T> getAsSingle(Key<T> key) {
-        return Single.create(new Single.OnSubscribe<T>() {
+    public Single<Double> getTemperatureAsSingle(String city) {
+        return Single.create(new Single.OnSubscribe<Double>() {
             @Override
-            public void call(SingleSubscriber<? super T> singleSubscriber) {
-                T value = get(key);
-                if (value != null) {
+            public void call(SingleSubscriber<? super Double> singleSubscriber) {
+                Double value = getTemperature(city);
+                if (value != 0) {
                     singleSubscriber.onSuccess(value);
                 } else {
                     singleSubscriber.onError(new NoOfflineDataException());
@@ -67,7 +65,7 @@ public class DataStoreImpl implements DataStore {
     }
 
     @Override
-    public <T> Observable<T> getAsObservable(Key<T> key) {
-        return getAsSingle(key).toObservable();
+    public Observable<Double> getTemperatureAsObservable(String city) {
+        return getTemperatureAsSingle(city).toObservable();
     }
 }
