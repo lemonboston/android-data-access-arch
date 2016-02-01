@@ -1,7 +1,7 @@
 package com.gk.daas.data.network;
 
-import com.gk.daas.data.model.ForecastResponse;
-import com.gk.daas.data.model.WeatherResponse;
+import com.gk.daas.data.model.server.ForecastResponse;
+import com.gk.daas.data.model.server.WeatherResponse;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;

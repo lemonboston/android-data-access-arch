@@ -1,8 +1,8 @@
 package com.gk.daas.data.network;
 
-import com.gk.daas.data.model.ForecastResponse;
-import com.gk.daas.data.model.MockData;
-import com.gk.daas.data.model.WeatherResponse;
+import com.gk.daas.data.model.server.ForecastResponse;
+import com.gk.daas.data.model.server.MockData;
+import com.gk.daas.data.model.server.WeatherResponse;
 import com.gk.daas.log.Log;
 import com.gk.daas.log.LogFactory;
 

@@ -6,9 +6,10 @@ import com.gk.daas.data.event.GetForecastProgressEvent;
 import com.gk.daas.data.event.GetForecastSuccessEvent;
 import com.gk.daas.data.event.GetTempStoreSuccessEvent;
 import com.gk.daas.data.event.GetTempSuccessEvent;
-import com.gk.daas.data.model.ForecastResponse;
-import com.gk.daas.data.model.Temperature;
-import com.gk.daas.data.model.WeatherResponse;
+import com.gk.daas.data.model.client.Forecast;
+import com.gk.daas.data.model.client.Temperature;
+import com.gk.daas.data.model.converter.ForecastConverter;
+import com.gk.daas.data.model.server.WeatherResponse;
 import com.gk.daas.data.network.connection.NetworkConnectionChecker;
 import com.gk.daas.data.store.DataStore;
 import com.gk.daas.log.Log;
@@ -23,7 +24,6 @@ import static com.gk.daas.data.network.OpenWeatherService.API_KEY;
 /**
  * @author Gabor_Keszthelyi
  */
-// TODO add data mapping to chain (to Temperature from json object) - Temperature representation is not trivial
 public class DataAccessControllerImpl implements DataAccessController {
 
     private final OpenWeatherService weatherService;
@@ -33,17 +33,19 @@ public class DataAccessControllerImpl implements DataAccessController {
     private final DataStore dataStore;
     private final TaskCounter taskCounter;
     private final ErrorInterpreter errorInterpreter;
+    private final ForecastConverter forecastConverter;
 
     private Subscription getTempWithOngoingHandlingSubscription;
     private Subscription getTempAllInOneSubscription;
 
-    public DataAccessControllerImpl(OpenWeatherService weatherService, LogFactory logFactory, Bus bus, NetworkConnectionChecker connectionChecker, DataStore dataStore, TaskCounter taskCounter, ErrorInterpreter errorInterpreter) {
+    public DataAccessControllerImpl(OpenWeatherService weatherService, LogFactory logFactory, Bus bus, NetworkConnectionChecker connectionChecker, DataStore dataStore, TaskCounter taskCounter, ErrorInterpreter errorInterpreter, ForecastConverter forecastConverter) {
         this.weatherService = weatherService;
         this.bus = bus;
         this.connectionChecker = connectionChecker;
         this.dataStore = dataStore;
         this.taskCounter = taskCounter;
         this.errorInterpreter = errorInterpreter;
+        this.forecastConverter = forecastConverter;
         this.log = logFactory.create(getClass());
     }
 
@@ -228,19 +230,21 @@ public class DataAccessControllerImpl implements DataAccessController {
 
                 .flatMap(city -> weatherService.getForecast(city, API_KEY))
 
+                .map(forecastConverter::convert)
+
                 .subscribeOn(Schedulers.io())
 
                 .subscribe(
-                        (ForecastResponse response) -> {
-                            // TODO converter/mapper
-                            double lastTemp = response.list.get(response.list.size() - 1).main.temp;
-                            String cityName = response.city.name;
-                            log.d(tag + "Finished, city: " + cityName + " , lastTemp: " + lastTemp);
-                            bus.post(new GetForecastSuccessEvent(new Temperature(lastTemp), cityName));
+                        (Forecast forecast) -> {
+                            log.d(tag + "Finished, forecast:" + forecast);
+                            bus.post(new GetForecastSuccessEvent(forecast));
                             bus.postSticky(GetForecastProgressEvent.COMPLETED);
                             taskCounter.taskFinished();
                         },
                         throwable -> {
+                            bus.postSticky(GetForecastProgressEvent.COMPLETED);
+                            DataAccessError dataAccessError = errorInterpreter.interpret(throwable);
+                            bus.post(dataAccessError);
                             log.w(tag + "Error: " + throwable);
                             taskCounter.taskFinished();
                         }

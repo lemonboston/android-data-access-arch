@@ -142,8 +142,7 @@ public class MainActivity extends BaseActivity {
 
         @Subscribe(threadMode = ThreadMode.MainThread)
         public void onForecastSuccess(GetForecastSuccessEvent event) {
-            String resultText = event.cityName + ": " + event.lastTemp.toString();
-            view.setResultText(resultText);
+            view.setResultText(event.forecast.toString());
         }
     }
 

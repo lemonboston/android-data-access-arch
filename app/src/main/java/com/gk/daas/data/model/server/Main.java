@@ -1,4 +1,4 @@
-package com.gk.daas.data.model;
+package com.gk.daas.data.model.server;
 
 /**
  * @author Gabor_Keszthelyi

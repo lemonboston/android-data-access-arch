@@ -1,4 +1,4 @@
-package com.gk.daas.data.model;
+package com.gk.daas.data.model.server;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

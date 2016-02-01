@@ -1,6 +1,6 @@
 package com.gk.daas.data.event;
 
-import com.gk.daas.data.model.Temperature;
+import com.gk.daas.data.model.client.Temperature;
 
 /**
  * @author Gabor_Keszthelyi

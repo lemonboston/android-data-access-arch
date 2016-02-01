@@ -122,7 +122,7 @@ public class ParallelAndChainedCaseFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onGetForecastSuccess(GetForecastSuccessEvent event) {
-        resultTextView.setText(event.cityName + ": " + event.lastTemp);
+        resultTextView.setText(event.forecast.toString());
     }
 
 
