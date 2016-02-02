@@ -112,6 +112,12 @@
     \n- Try with real service (retries and fails with invalid api key message)
     \n- Try with mock service (succeeds)</string>
 
+    <string name="UseCase_Cancellable_Title">Cancellable</string>
+    <string name="UseCase_Cancellable_Requirement">User can cancel the ongoing network call.</string>
+    <string name="UseCase_Cancellable_Implementation">Retrofit fortunately supports cancelling the call down to the network layer through the returned Observable/Single\'s unsubscribe() method.</string>
+    <string name="UseCase_Cancellable_HowToTest">To be able to cancel during the very fast network call, tapping the button initiates the call and the cancel as well right away in the next looper round.
+        \nCheck the code and the logs to see that the call does not complete.</string>
+
     <!-- TODO add notes on real, mock service usage on landing page -->
 
 

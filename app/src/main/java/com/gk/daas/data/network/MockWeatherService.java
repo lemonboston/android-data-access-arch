@@ -50,7 +50,7 @@ public class MockWeatherService implements OpenWeatherService {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
-            log.e("Sleep interrupted", e);
+            log.w("Sleep interrupted");
         }
     }
 }

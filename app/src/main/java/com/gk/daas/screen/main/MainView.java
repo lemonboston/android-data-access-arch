@@ -43,6 +43,8 @@ public interface MainView {
 
     void showCity2();
 
+    void clearResultText();
+
     interface UserActionListener {
 
         void onUseCaseSelected(int position);
@@ -50,5 +52,7 @@ public interface MainView {
         void onExecuteButtonClick();
 
         void onOtherScreenButtonClick();
+
+        void onXbuttonClick();
     }
 }

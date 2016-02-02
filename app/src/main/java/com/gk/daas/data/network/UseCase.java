@@ -19,6 +19,7 @@ public enum UseCase {
     ONGOING_CALL_HANDLING(R.string.UseCaseTitle_OnGoingCall),
     OFFLINE_STORAGE(R.string.UseCaseTitle_OfflineStorage),
     RETRY(R.string.UseCase_Retry_Title),
+    CANCELLABLE(R.string.UseCase_Cancellable_Title),
     COMBINED(R.string.UseCase_Combined),
     PARALLEL_AND_CHAINED(R.string.UseCaseTitle_ParallelChained);
 

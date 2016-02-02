@@ -206,6 +206,11 @@ public class MainViewImpl implements MainView {
 
     @OnClick(R.id.Button_Clear)
     void onClearButtonClick() {
+        listener.onXbuttonClick();
+    }
+
+    @Override
+    public void clearResultText() {
         resultTextView.setText(null);
     }
 }

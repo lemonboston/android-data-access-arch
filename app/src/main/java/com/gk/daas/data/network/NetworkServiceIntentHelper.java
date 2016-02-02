@@ -14,6 +14,8 @@ public class NetworkServiceIntentHelper {
     public static final String KEY_CITY_1 = "key_city_1";
     public static final String KEY_CITY_2 = "key_city_2";
 
+    private static final String ACTION_CANCEL = "cancel action";
+
     public UseCase extractNetworkUseCase(Intent intent) {
         return UseCase.valueOf(intent.getAction());
     }
@@ -35,6 +37,13 @@ public class NetworkServiceIntentHelper {
         return intent;
     }
 
+    public Intent createCancelIntent() {
+        Intent intent = new Intent();
+        intent.setClassName(BuildConfig.APPLICATION_ID, DataAccessService.class.getName());
+        intent.setAction(ACTION_CANCEL);
+        return intent;
+    }
+
     public String extractCity(Intent intent) {
         return intent.getStringExtra(KEY_CITY);
     }
@@ -47,4 +56,7 @@ public class NetworkServiceIntentHelper {
         return intent.getStringExtra(KEY_CITY_2);
     }
 
+    public boolean isCancelRequest(Intent intent) {
+        return intent.getAction().equals(ACTION_CANCEL);
+    }
 }

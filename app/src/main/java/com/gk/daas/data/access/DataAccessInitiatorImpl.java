@@ -31,4 +31,10 @@ public class DataAccessInitiatorImpl implements DataAccessInitiator {
         context.startService(intent);
     }
 
+    @Override
+    public void cancelCall() {
+        Intent intent = intentHelper.createCancelIntent();
+        context.startService(intent);
+    }
+
 }

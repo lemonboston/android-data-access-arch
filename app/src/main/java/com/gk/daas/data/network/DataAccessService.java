@@ -78,22 +78,27 @@ public class DataAccessService extends Service implements TaskCounter.AllTasksFi
     }
 
     private void handleIntent(Intent intent) {
-        UseCase useCase = intentHelper.extractNetworkUseCase(intent);
-        switch (useCase) {
-            case BASIC:
-            case ERROR_HANDLING:
-            case ONGOING_CALL_HANDLING:
-            case OFFLINE_STORAGE:
-            case RETRY:
-            case COMBINED:
-                String city = intentHelper.extractCity(intent);
-                dataAccessController.getWeather(useCase, city);
-                break;
-            case PARALLEL_AND_CHAINED:
-                String city1 = intentHelper.extractCity1(intent);
-                String city2 = intentHelper.extractCity2(intent);
-                dataAccessController.getForecastForWarmerCity(city1, city2);
-                break;
+        if (intentHelper.isCancelRequest(intent)) {
+            dataAccessController.cancelCall();
+        } else {
+            UseCase useCase = intentHelper.extractNetworkUseCase(intent);
+            switch (useCase) {
+                case BASIC:
+                case ERROR_HANDLING:
+                case ONGOING_CALL_HANDLING:
+                case OFFLINE_STORAGE:
+                case RETRY:
+                case CANCELLABLE:
+                case COMBINED:
+                    String city = intentHelper.extractCity(intent);
+                    dataAccessController.getWeather(useCase, city);
+                    break;
+                case PARALLEL_AND_CHAINED:
+                    String city1 = intentHelper.extractCity1(intent);
+                    String city2 = intentHelper.extractCity2(intent);
+                    dataAccessController.getForecastForWarmerCity(city1, city2);
+                    break;
+            }
         }
     }
 

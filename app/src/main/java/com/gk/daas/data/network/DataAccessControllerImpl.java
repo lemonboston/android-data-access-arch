@@ -44,6 +44,7 @@ public class DataAccessControllerImpl implements DataAccessController {
 
     private Subscription getTempWithOngoingHandlingSubscription;
     private Subscription getTempAllInOneSubscription;
+    private Subscription cancellableSubscription;
 
     public DataAccessControllerImpl(OpenWeatherService weatherService, LogFactory logFactory, Bus bus, NetworkConnectionChecker connectionChecker, DataStore dataStore, TaskCounter taskCounter, ErrorInterpreter errorInterpreter, ForecastConverter forecastConverter) {
         this.weatherService = weatherService;
@@ -74,6 +75,9 @@ public class DataAccessControllerImpl implements DataAccessController {
             case RETRY:
                 getTemperatureWithRetry(city);
                 break;
+            case CANCELLABLE:
+                getTemperatureCancellable(city);
+                break;
             case COMBINED:
                 getTemperatureCombined(city);
                 break;
@@ -103,19 +107,18 @@ public class DataAccessControllerImpl implements DataAccessController {
 
         connectionChecker.checkNetwork()
                 .flatMap(aVoid -> weatherService.getWeather(city, "an invalid api key"))
+                .toObservable().doOnUnsubscribe(taskCounter::taskFinished)
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;
                             log.d(tag + "Finished, temp returned: " + temp);
                             bus.post(new GetTempSuccessEvent(new Temperature(temp)));
-                            taskCounter.taskFinished();
                         },
                         throwable -> {
                             DataAccessError dataAccessError = errorInterpreter.interpret(throwable);
                             bus.post(dataAccessError);
                             log.w(tag + "Error: " + throwable);
-                            taskCounter.taskFinished();
                         });
     }
 
@@ -130,13 +133,13 @@ public class DataAccessControllerImpl implements DataAccessController {
         }
 
         getTempWithOngoingHandlingSubscription = weatherService.getWeather(city, API_KEY)
+                .toObservable().doOnUnsubscribe(taskCounter::taskFinished)
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;
                             log.d(tag + "Finished, temp returned: " + temp);
                             bus.post(new GetTempSuccessEvent(new Temperature(temp)));
-                            taskCounter.taskFinished();
                         });
     }
 
@@ -156,7 +159,8 @@ public class DataAccessControllerImpl implements DataAccessController {
                     log.w(tag + "Error getting temp through API: " + throwable);
                     return dataStore.getTemperatureAsObservable(city).map(WeatherResponse::createFromTemp);
                 })
-                .toSingle()
+
+                .doOnUnsubscribe(taskCounter::taskFinished)
 
                 .subscribeOn(Schedulers.io())
 
@@ -165,13 +169,11 @@ public class DataAccessControllerImpl implements DataAccessController {
                             double temp = weatherResponse.main.temp;
                             log.d(tag + "Temp retrieved (from server or local store), temp: " + temp);
                             bus.post(new GetTempSuccessEvent(new Temperature(temp)));
-                            taskCounter.taskFinished();
                         },
                         throwable -> {
                             DataAccessError dataAccessError = errorInterpreter.interpret(throwable);
                             bus.post(dataAccessError);
                             log.w(tag + "Error: " + throwable);
-                            taskCounter.taskFinished();
                         });
 
     }
@@ -185,7 +187,8 @@ public class DataAccessControllerImpl implements DataAccessController {
 
                 .toObservable()
                 .retryWhen(retryFunc(tag))
-                .toSingle()
+
+                .doOnUnsubscribe(taskCounter::taskFinished)
 
                 .subscribeOn(Schedulers.io())
                 .subscribe(
@@ -193,13 +196,11 @@ public class DataAccessControllerImpl implements DataAccessController {
                             double temp = weatherResponse.main.temp;
                             log.d(tag + "Finished, temp returned: " + temp);
                             bus.post(new GetTempSuccessEvent(new Temperature(temp)));
-                            taskCounter.taskFinished();
                         },
                         throwable -> {
                             DataAccessError dataAccessError = errorInterpreter.interpret(throwable);
                             bus.post(dataAccessError);
                             log.w(tag + "Error: " + throwable);
-                            taskCounter.taskFinished();
                         });
     }
 
@@ -220,7 +221,29 @@ public class DataAccessControllerImpl implements DataAccessController {
                         .concatMap(nullableThrowable -> nullableThrowable == null ? Observable.timer(RETRY_DELAY_SECONDS, TimeUnit.SECONDS) : Observable.error(nullableThrowable));
     }
 
-    // TODO Case with cancel
+    // http://stackoverflow.com/a/30730934/4247460
+    private void getTemperatureCancellable(String city) {
+        String tag = "getTemperatureCancellable | ";
+        log.d(tag + "Starting, city: " + city);
+
+        cancellableSubscription = weatherService.getWeather(city, API_KEY)
+
+                .toObservable().doOnUnsubscribe(taskCounter::taskFinished)
+
+                .subscribeOn(Schedulers.io())
+
+                .subscribe(
+                        (WeatherResponse weatherResponse) -> {
+                            double temp = weatherResponse.main.temp;
+                            log.d(tag + "Finished, temp returned: " + temp);
+                            bus.post(new GetTempSuccessEvent(new Temperature(temp)));
+                        },
+                        throwable -> {
+                            DataAccessError dataAccessError = errorInterpreter.interpret(throwable);
+                            bus.post(dataAccessError);
+                            log.w(tag + "Error: " + throwable);
+                        });
+    }
 
     // TODO Case for http cache?
 
@@ -251,7 +274,8 @@ public class DataAccessControllerImpl implements DataAccessController {
                         })
 
                         .retryWhen(retryFunc(tag))
-                        .toSingle()
+
+                        .doOnUnsubscribe(taskCounter::taskFinished)
 
                         .subscribeOn(Schedulers.io())
 
@@ -260,13 +284,11 @@ public class DataAccessControllerImpl implements DataAccessController {
                                     double temp = weatherResponse.main.temp;
                                     log.d(tag + "Temp retrieved (from API or local store), temp: " + temp);
                                     bus.post(new GetTempSuccessEvent(new Temperature(temp)));
-                                    taskCounter.taskFinished();
                                 },
                                 throwable -> {
                                     DataAccessError dataAccessError = errorInterpreter.interpret(throwable);
                                     bus.post(dataAccessError);
                                     log.w(tag + "Error: " + throwable);
-                                    taskCounter.taskFinished();
                                 });
     }
 
@@ -287,6 +309,9 @@ public class DataAccessControllerImpl implements DataAccessController {
 
                 .map(forecastConverter::convert)
 
+                .toObservable()
+                .doOnUnsubscribe(taskCounter::taskFinished)
+
                 .subscribeOn(Schedulers.io())
 
                 .subscribe(
@@ -294,17 +319,24 @@ public class DataAccessControllerImpl implements DataAccessController {
                             log.d(tag + "Finished, forecast:" + forecast);
                             bus.post(new GetForecastSuccessEvent(forecast));
                             bus.postSticky(GetForecastProgressEvent.COMPLETED);
-                            taskCounter.taskFinished();
                         },
                         throwable -> {
                             bus.postSticky(GetForecastProgressEvent.COMPLETED);
                             DataAccessError dataAccessError = errorInterpreter.interpret(throwable);
                             bus.post(dataAccessError);
                             log.w(tag + "Error: " + throwable);
-                            taskCounter.taskFinished();
                         }
                 );
 
+    }
+
+    @Override
+    public void cancelCall() {
+        log.d("Cancelling call");
+        if (isOngoing(cancellableSubscription)) {
+            cancellableSubscription.unsubscribe();
+        }
+        taskCounter.taskFinished();
     }
 
     private boolean isOngoing(Subscription subscription) {

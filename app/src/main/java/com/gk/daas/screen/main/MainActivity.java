@@ -169,6 +169,7 @@ public class MainActivity extends BaseActivity {
                 view.setExecuteButtonText(R.string.GetTemp_Button);
                 view.setWeatherUseCaseDesc(R.string.WeatherUseCase_GetTemp);
                 switch (currentUseCase) {
+                    // TODO generalize with the enum params
                     case BASIC:
                         view.showOtherScreenButton();
                         view.setTechnicalUseCaseDesc(R.string.UseCase_Basic_Description);
@@ -193,6 +194,11 @@ public class MainActivity extends BaseActivity {
                         view.setImplementationDesc(R.string.UseCase_Retry_Implementation);
                         view.setHowToTestDesc(R.string.UseCase_Retry_HowToTest);
                         break;
+                    case CANCELLABLE:
+                        view.setTechnicalUseCaseDesc(R.string.UseCase_Cancellable_Requirement);
+                        view.setImplementationDesc(R.string.UseCase_Cancellable_Implementation);
+                        view.setHowToTestDesc(R.string.UseCase_Cancellable_HowToTest);
+                        break;
                     case COMBINED:
                         view.setTechnicalUseCaseDesc(R.string.UseCase_Combined_Requirement);
                         break;
@@ -210,18 +216,35 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onExecuteButtonClick() {
             String city = view.getCity1();
-            if (currentUseCase == UseCase.PARALLEL_AND_CHAINED) {
-                String city2 = view.getCity2();
-                dataAccessInitiator.getForecastForWarmerCity(city, city2);
-            } else {
-                view.showProgressBar();
-                dataAccessInitiator.getWeather(currentUseCase, city);
+            switch (currentUseCase) {
+                case BASIC:
+                case ERROR_HANDLING:
+                case ONGOING_CALL_HANDLING:
+                case OFFLINE_STORAGE:
+                case RETRY:
+                case COMBINED:
+                    view.showProgressBar();
+                    dataAccessInitiator.getWeather(currentUseCase, city);
+                    break;
+                case CANCELLABLE:
+                    dataAccessInitiator.getWeather(currentUseCase, city);
+                    runOnUiThread(dataAccessInitiator::cancelCall); // almost immediately requesting cancel as well to test (see logs)
+                    break;
+                case PARALLEL_AND_CHAINED:
+                    String city2 = view.getCity2();
+                    dataAccessInitiator.getForecastForWarmerCity(city, city2);
+                    break;
             }
         }
 
         @Override
         public void onOtherScreenButtonClick() {
             startActivity(new Intent(MainActivity.this, SecondActivity.class));
+        }
+
+        @Override
+        public void onXbuttonClick() {
+            view.clearResultText();
         }
     }
 }
