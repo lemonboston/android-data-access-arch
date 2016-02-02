@@ -93,6 +93,7 @@
         \n - Error handling
         \n - Offline store
         \n - Ongoing call handling
+        \n - Retry
     </string>
 
     <string name="UseCase_ParallelAndChained_Requirement">User initiates data access, receives the result on UI.
@@ -102,6 +103,14 @@
     <string name="UseCase_ParallelAndChained_Implementation">Rx operator <i>zip</i> for parallel execution and <i>flatMap</i> for sequential execution.
         \nProgress update events sent to presentation layer at any point in Rx chain.
     </string>
+
+    <string name="UseCase_Retry_Title">Retry</string>
+    <string name="UseCase_Retry_Requirement">User initiates data access, receives the result on UI. Requires single network call.
+    \nRetries the call multiple times if it fails.</string>
+    <string name="UseCase_Retry_Implementation">Using Rx operator <i>RetryWhen</i></string>
+    <string name="UseCase_Retry_HowToTest">- Try with no connection (retries and fails with no internet message)
+    \n- Try with real service (retries and fails with invalid api key message)
+    \n- Try with mock service (succeeds)</string>
 
     <!-- TODO add notes on real, mock service usage on landing page -->
 

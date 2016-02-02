@@ -84,6 +84,7 @@ public class DataAccessService extends Service implements TaskCounter.AllTasksFi
             case ERROR_HANDLING:
             case ONGOING_CALL_HANDLING:
             case OFFLINE_STORAGE:
+            case RETRY:
             case COMBINED:
                 String city = intentHelper.extractCity(intent);
                 dataAccessController.getWeather(useCase, city);

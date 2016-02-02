@@ -4,8 +4,8 @@ import com.gk.daas.bus.Bus;
 import com.gk.daas.data.access.DataAccessController;
 import com.gk.daas.data.event.GetForecastProgressEvent;
 import com.gk.daas.data.event.GetForecastSuccessEvent;
-import com.gk.daas.data.event.GetTempStoreSuccessEvent;
 import com.gk.daas.data.event.GetTempSuccessEvent;
+import com.gk.daas.data.event.RetryEvent;
 import com.gk.daas.data.model.client.Forecast;
 import com.gk.daas.data.model.client.Temperature;
 import com.gk.daas.data.model.converter.ForecastConverter;
@@ -15,8 +15,12 @@ import com.gk.daas.data.store.DataStore;
 import com.gk.daas.log.Log;
 import com.gk.daas.log.LogFactory;
 
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
 import rx.Single;
 import rx.Subscription;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.gk.daas.data.network.OpenWeatherService.API_KEY;
@@ -25,6 +29,9 @@ import static com.gk.daas.data.network.OpenWeatherService.API_KEY;
  * @author Gabor_Keszthelyi
  */
 public class DataAccessControllerImpl implements DataAccessController {
+
+    private static final int RETRY_COUNT = 3;
+    private static final int RETRY_DELAY_SECONDS = 2;
 
     private final OpenWeatherService weatherService;
     private final Log log;
@@ -53,25 +60,30 @@ public class DataAccessControllerImpl implements DataAccessController {
     public void getWeather(UseCase useCase, String city) {
         switch (useCase) {
             case BASIC:
-                getTemperature_basic(city);
+                getTemperatureBasic(city);
                 break;
             case ERROR_HANDLING:
-                getTemperature_wErrorHandling(city);
+                getTemperatureWithErrorHandling(city);
                 break;
             case ONGOING_CALL_HANDLING:
-                getTemperature_wOngoingHandling(city);
+                getTemperatureWithOngoingHandling(city);
                 break;
             case OFFLINE_STORAGE:
-                getTemperature_wOfflineLocalStore(city);
+                getTemperatureWithOfflineLocalStore(city);
+                break;
+            case RETRY:
+                getTemperatureWithRetry(city);
                 break;
             case COMBINED:
-                getTemperature_allInOne(city);
+                getTemperatureCombined(city);
+                break;
+            case PARALLEL_AND_CHAINED:
                 break;
         }
     }
 
-    private void getTemperature_basic(String city) {
-        String tag = "getTemperature_basic | ";
+    private void getTemperatureBasic(String city) {
+        String tag = "getTemperatureBasic | ";
         log.d(tag + "Starting, city: " + city);
 
         weatherService.getWeather(city, API_KEY)
@@ -85,8 +97,8 @@ public class DataAccessControllerImpl implements DataAccessController {
                         });
     }
 
-    private void getTemperature_wErrorHandling(String city) {
-        String tag = "getTemperature_wErrorHandling | ";
+    private void getTemperatureWithErrorHandling(String city) {
+        String tag = "getTemperatureWithErrorHandling | ";
         log.d(tag + "Starting, city: " + city);
 
         connectionChecker.checkNetwork()
@@ -107,8 +119,8 @@ public class DataAccessControllerImpl implements DataAccessController {
                         });
     }
 
-    private void getTemperature_wOngoingHandling(String city) {
-        String tag = "getTemperature_wOngoingHandling |";
+    private void getTemperatureWithOngoingHandling(String city) {
+        String tag = "getTemperatureWithOngoingHandling |";
         log.d(tag + "Starting, city: " + city);
 
         if (isOngoing(getTempWithOngoingHandlingSubscription)) {
@@ -128,8 +140,8 @@ public class DataAccessControllerImpl implements DataAccessController {
                         });
     }
 
-    private void getTemperature_wOfflineLocalStore(String city) {
-        String tag = "getTemperature_wOfflineLocalStore | ";
+    private void getTemperatureWithOfflineLocalStore(String city) {
+        String tag = "getTemperatureWithOfflineLocalStore | ";
         log.d(tag + "Starting, city: " + city);
 
         weatherService.getWeather(city, API_KEY)
@@ -164,15 +176,54 @@ public class DataAccessControllerImpl implements DataAccessController {
 
     }
 
-    // TODO Case with retry
+    private void getTemperatureWithRetry(String city) {
+        String tag = "getTemperatureWithRetry | ";
+        log.d(tag + "Starting, city: " + city);
+
+        connectionChecker.checkNetwork()
+                .flatMap(aVoid -> weatherService.getWeather(city, "invalid api key"))
+
+                .toObservable()
+                .retryWhen(retryFunc(tag))
+                .toSingle()
+
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                        (WeatherResponse weatherResponse) -> {
+                            double temp = weatherResponse.main.temp;
+                            log.d(tag + "Finished, temp returned: " + temp);
+                            bus.post(new GetTempSuccessEvent(new Temperature(temp)));
+                            taskCounter.taskFinished();
+                        },
+                        throwable -> {
+                            DataAccessError dataAccessError = errorInterpreter.interpret(throwable);
+                            bus.post(dataAccessError);
+                            log.w(tag + "Error: " + throwable);
+                            taskCounter.taskFinished();
+                        });
+    }
+
     // http://reactivex.io/documentation/operators/retry.html
-    // check the delay example
+    private Func1<Observable<? extends Throwable>, Observable<?>> retryFunc(String tag) {
+        return throwableStream ->
+                throwableStream
+                        .zipWith(Observable.range(1, RETRY_COUNT + 1), (throwable, count) -> {
+                            if (count <= RETRY_COUNT) {
+                                log.d(tag + "delayed retry #" + count);
+                                bus.post(new RetryEvent(count));
+                                return null;
+                            } else {
+                                return throwable;
+                            }
+                        })
+                        .concatMap(nullableThrowable -> nullableThrowable == null ? Observable.timer(RETRY_DELAY_SECONDS, TimeUnit.SECONDS) : Observable.error(nullableThrowable));
+    }
 
     // TODO Case with cancel
 
     // TODO Case for http cache?
 
-    public void getTemperature_allInOne(String city) {
+    public void getTemperatureCombined(String city) {
         String tag = "getTemperature_allInOne | ";
         log.d(tag + "Starting, city: " + city);
 
@@ -197,6 +248,8 @@ public class DataAccessControllerImpl implements DataAccessController {
                             log.w(tag + "Error getting temp through API: " + throwable);
                             return dataStore.getTemperatureAsObservable(city).map(WeatherResponse::createFromTemp);
                         })
+
+                        .retryWhen(retryFunc(tag))
                         .toSingle()
 
                         .subscribeOn(Schedulers.io())
@@ -205,7 +258,7 @@ public class DataAccessControllerImpl implements DataAccessController {
                                 (WeatherResponse weatherResponse) -> {
                                     double temp = weatherResponse.main.temp;
                                     log.d(tag + "Temp retrieved (from API or local store), temp: " + temp);
-                                    bus.post(new GetTempStoreSuccessEvent(new Temperature(temp)));
+                                    bus.post(new GetTempSuccessEvent(new Temperature(temp)));
                                     taskCounter.taskFinished();
                                 },
                                 throwable -> {

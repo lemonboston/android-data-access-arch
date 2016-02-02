@@ -27,6 +27,7 @@ public class MockWeatherService implements OpenWeatherService {
             @Override
             public void call(SingleSubscriber<? super WeatherResponse> singleSubscriber) {
                 sleep(3000);
+                log.d("Mock weather call finish");
                 singleSubscriber.onSuccess(MockData.randomWeatherResponse());
             }
         });
@@ -38,6 +39,7 @@ public class MockWeatherService implements OpenWeatherService {
             @Override
             public void call(SingleSubscriber<? super ForecastResponse> singleSubscriber) {
                 sleep(4000);
+                log.d("Mock forecast call finish");
                 singleSubscriber.onSuccess(MockData.randomForecastResponse());
 
             }

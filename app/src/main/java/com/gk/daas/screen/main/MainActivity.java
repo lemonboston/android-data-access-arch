@@ -13,6 +13,7 @@ import com.gk.daas.data.access.DataAccessInitiator;
 import com.gk.daas.data.event.GetForecastProgressEvent;
 import com.gk.daas.data.event.GetForecastSuccessEvent;
 import com.gk.daas.data.event.GetTempSuccessEvent;
+import com.gk.daas.data.event.RetryEvent;
 import com.gk.daas.data.network.DataAccessError;
 import com.gk.daas.data.network.UseCase;
 import com.gk.daas.data.store.DataStore;
@@ -115,12 +116,14 @@ public class MainActivity extends BaseActivity {
         @Subscribe(threadMode = ThreadMode.MainThread)
         public void onGetTempSuccess(GetTempSuccessEvent event) {
             view.hideProgressBar();
+            progressDialog.dismiss();
             view.setResultText(event.temperature.toString());
         }
 
         @Subscribe(threadMode = ThreadMode.MainThread)
         public void onDataAccessFailure(DataAccessError error) {
             view.hideProgressBar();
+            progressDialog.dismiss();
             String errorMessage = errorTranslator.translate(error);
             errorDialog.show(errorMessage);
         }
@@ -143,6 +146,12 @@ public class MainActivity extends BaseActivity {
         @Subscribe(threadMode = ThreadMode.MainThread)
         public void onForecastSuccess(GetForecastSuccessEvent event) {
             view.setResultText(event.forecast.toString());
+        }
+
+        @Subscribe(threadMode = ThreadMode.MainThread)
+        public void onRetryEvent(RetryEvent retry) {
+            view.hideProgressBar();
+            progressDialog.showMessage(String.format("Retry #%d", retry.retryCount));
         }
     }
 
@@ -178,6 +187,11 @@ public class MainActivity extends BaseActivity {
                         view.setTechnicalUseCaseDesc(R.string.UseCase_OfflineStorage_Requirement);
                         view.setImplementationDesc(R.string.UseCase_OfflineStorage_Implementation);
                         view.setHowToTestDesc(R.string.UseCase_OfflineStorage_HowToTest);
+                        break;
+                    case RETRY:
+                        view.setTechnicalUseCaseDesc(R.string.UseCase_Retry_Requirement);
+                        view.setImplementationDesc(R.string.UseCase_Retry_Implementation);
+                        view.setHowToTestDesc(R.string.UseCase_Retry_HowToTest);
                         break;
                     case COMBINED:
                         view.setTechnicalUseCaseDesc(R.string.UseCase_Combined_Requirement);
