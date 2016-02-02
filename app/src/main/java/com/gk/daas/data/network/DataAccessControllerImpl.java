@@ -204,6 +204,7 @@ public class DataAccessControllerImpl implements DataAccessController {
     }
 
     // http://reactivex.io/documentation/operators/retry.html
+    // Could use this too: http://stackoverflow.com/a/25292833/4247460
     private Func1<Observable<? extends Throwable>, Observable<?>> retryFunc(String tag) {
         return throwableStream ->
                 throwableStream
