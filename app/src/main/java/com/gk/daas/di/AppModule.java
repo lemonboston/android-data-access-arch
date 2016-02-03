@@ -12,6 +12,7 @@ import com.gk.daas.data.network.ErrorInterpreterImpl;
 import com.gk.daas.data.network.MockWeatherService;
 import com.gk.daas.data.network.NetworkServiceIntentHelper;
 import com.gk.daas.data.network.OpenWeatherService;
+import com.gk.daas.data.network.RoutingWeatherService;
 import com.gk.daas.data.network.SyncScheduler;
 import com.gk.daas.data.network.connection.NetworkConnectionChecker;
 import com.gk.daas.data.store.DataStore;
@@ -24,6 +25,7 @@ import com.gk.daas.log.LogFactory;
 import com.gk.daas.log.LogFactoryImpl;
 import com.gk.daas.util.TemperatureFormatter;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -78,15 +80,6 @@ public class AppModule {
         return new LogFactoryImpl();
     }
 
-    @Provides
-    public OpenWeatherService provideWeatherService(LogFactory logFactory, OkHttpClient okHttpClient) {
-        if (DebugOptions.MOCK_WEATHER_SERVICE) {
-            return new MockWeatherService(logFactory);
-        } else {
-            return createWeatherService(okHttpClient);
-        }
-    }
-
     @Singleton
     @Provides
     OkHttpClient provideOkHttpClient() {
@@ -115,7 +108,21 @@ public class AppModule {
         return client;
     }
 
-    private OpenWeatherService createWeatherService(OkHttpClient okHttpClient) {
+    @Provides
+    @Named(Name.ROUTER)
+    OpenWeatherService provideRouterWeatherService(@Named(Name.REAL) OpenWeatherService realService, @Named(Name.MOCK) OpenWeatherService mockService) {
+        return new RoutingWeatherService(realService, mockService);
+    }
+
+    @Provides
+    @Named(Name.MOCK)
+    OpenWeatherService provideMockWeatherService(LogFactory logFactory) {
+        return new MockWeatherService(logFactory);
+    }
+
+    @Provides
+    @Named(Name.REAL)
+    OpenWeatherService provideRealWeatherService(OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(OpenWeatherService.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())

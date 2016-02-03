@@ -14,6 +14,7 @@ import com.gk.daas.log.LogFactory;
 import com.gk.daas.screen.second.SecondActivity;
 import com.gk.daas.util.TemperatureFormatter;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -43,6 +44,7 @@ public interface AppComponent {
 
     Toaster getToaster();
 
+    @Named(Name.ROUTER)
     OpenWeatherService getOpenWeatherService();
 
     NetworkConnectionChecker getNetworkConnectionChecker();

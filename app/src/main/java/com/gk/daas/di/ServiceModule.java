@@ -12,6 +12,8 @@ import com.gk.daas.data.network.connection.NetworkConnectionChecker;
 import com.gk.daas.data.store.DataStore;
 import com.gk.daas.log.LogFactory;
 
+import javax.inject.Named;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -29,7 +31,7 @@ public class ServiceModule {
     }
 
     @Provides
-    public DataAccessController provideDataAccessController(OpenWeatherService weatherService, LogFactory logFactory, Bus bus, NetworkConnectionChecker connectionChecker, DataStore dataStore, TaskCounter taskCounter, ErrorInterpreter errorInterpreter, ForecastConverter forecastConverter) {
+    public DataAccessController provideDataAccessController(@Named(Name.ROUTER) OpenWeatherService weatherService, LogFactory logFactory, Bus bus, NetworkConnectionChecker connectionChecker, DataStore dataStore, TaskCounter taskCounter, ErrorInterpreter errorInterpreter, ForecastConverter forecastConverter) {
         return new DataAccessControllerImpl(weatherService, logFactory, bus, connectionChecker, dataStore, taskCounter, errorInterpreter, forecastConverter);
     }
 

@@ -25,6 +25,8 @@ public class ServiceSelectorDialog {
     @Bind(R.id.Radio_MockService)
     RadioButton mockServiceButton;
 
+    private Dialog dialog;
+
     public ServiceSelectorDialog(Activity activity) {
         this.activity = activity;
     }
@@ -33,7 +35,7 @@ public class ServiceSelectorDialog {
         View layout = activity.getLayoutInflater().inflate(R.layout.mock_real_service_selector, null);
         ButterKnife.bind(this, layout);
 
-        Dialog dialog = new Dialog(activity);
+        dialog = new Dialog(activity);
         dialog.setContentView(layout);
 
         if (DebugOptions.MOCK_WEATHER_SERVICE) {
@@ -48,13 +50,13 @@ public class ServiceSelectorDialog {
     @OnClick(R.id.Radio_RealService)
     void onRealServiceRadioButtonClick() {
         DebugOptions.MOCK_WEATHER_SERVICE = false;
-        restartActivity();
+        dialog.dismiss();
     }
 
     @OnClick(R.id.Radio_MockService)
     void onMockServiceRadioButtonClick() {
         DebugOptions.MOCK_WEATHER_SERVICE = true;
-        restartActivity();
+        dialog.dismiss();
     }
 
     // TODO create proxy service that decides dynamically runtime, so no need to restart activity
