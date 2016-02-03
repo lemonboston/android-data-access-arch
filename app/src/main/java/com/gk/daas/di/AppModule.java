@@ -93,22 +93,23 @@ public class AppModule {
         HttpLoggingInterceptor logger = new HttpLoggingInterceptor();
         logger.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-//        File httpCacheDirectory = new File(app.getCacheDir(), Config.Cache.CACHE_SUB_DIR);
-//        Cache cache = new Cache(httpCacheDirectory, Config.Cache.CACHE_MAX_SIZE);
+        /** Uncomment below for HTTP Cache simulation **/
+
+        // File httpCacheDirectory = new File(app.getCacheDir(), Config.Cache.CACHE_SUB_DIR);
+        // Cache cache = new Cache(httpCacheDirectory, Config.Cache.CACHE_MAX_SIZE);
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(logger)
 
                         // https://github.com/square/okhttp/wiki/Interceptors
                         // http://stackoverflow.com/questions/23429046/can-retrofit-with-okhttp-use-cache-data-when-offline
-//                .addNetworkInterceptor((Interceptor.Chain chain) -> {
-//                    Response response = chain.proceed(chain.request());
-//                    return response.newBuilder()
-//                            .header("Cache-Control", "private, max-age=20")
-//                            .build();
-//
-//                })
-//                .cache(cache)
+                        // .addNetworkInterceptor((Interceptor.Chain chain) -> {
+                        // Response response = chain.proceed(chain.request());
+                        //                    return response.newBuilder()
+                        //                            .header("Cache-Control", "private, max-age=20")
+                        //                            .build();
+                        //                })
+                        //                .cache(cache)
                 .build();
 
         return client;

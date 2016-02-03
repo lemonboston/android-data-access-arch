@@ -163,54 +163,37 @@ public class MainActivity extends BaseActivity {
 
             view.hideEverything();
 
-            if (currentUseCase == UseCase.EMPTY_PLACEHOLDER) {
-                view.showGeneralDescription();
-            } else {
-                view.setExecuteButtonText(R.string.GetTemp_Button);
-                view.setWeatherUseCaseDesc(R.string.WeatherUseCase_GetTemp);
-                switch (currentUseCase) {
-                    // TODO generalize with the enum params
-                    case BASIC:
-                        view.showOtherScreenButton();
-                        view.setTechnicalUseCaseDesc(R.string.UseCase_Basic_Description);
-                        break;
-                    case ERROR_HANDLING:
-                        view.setTechnicalUseCaseDesc(R.string.UseCase_ErrorHandling_Desc);
-                        view.setImplementationDesc(R.string.UseCase_ErrorHandling_Implementation);
-                        view.setHowToTestDesc(R.string.UseCase_ErrorHandling_HowToTest);
-                        break;
-                    case ONGOING_CALL_HANDLING:
-                        view.setTechnicalUseCaseDesc(R.string.UseCase_OngoingCall_Desc);
-                        view.setImplementationDesc(R.string.UseCase_OngoingCall_Implementation);
-                        view.setHowToTestDesc(R.string.UseCase_OngoingCall_HowToTest);
-                        break;
-                    case OFFLINE_STORAGE:
-                        view.setTechnicalUseCaseDesc(R.string.UseCase_OfflineStorage_Requirement);
-                        view.setImplementationDesc(R.string.UseCase_OfflineStorage_Implementation);
-                        view.setHowToTestDesc(R.string.UseCase_OfflineStorage_HowToTest);
-                        break;
-                    case RETRY:
-                        view.setTechnicalUseCaseDesc(R.string.UseCase_Retry_Requirement);
-                        view.setImplementationDesc(R.string.UseCase_Retry_Implementation);
-                        view.setHowToTestDesc(R.string.UseCase_Retry_HowToTest);
-                        break;
-                    case CANCELLABLE:
-                        view.setTechnicalUseCaseDesc(R.string.UseCase_Cancellable_Requirement);
-                        view.setImplementationDesc(R.string.UseCase_Cancellable_Implementation);
-                        view.setHowToTestDesc(R.string.UseCase_Cancellable_HowToTest);
-                        break;
-                    case COMBINED:
-                        view.setTechnicalUseCaseDesc(R.string.UseCase_Combined_Requirement);
-                        break;
-                    case PARALLEL_AND_CHAINED:
-                        view.setExecuteButtonText(R.string.GetForecast_Button);
-                        view.setWeatherUseCaseDesc(R.string.WeatherUseCase_GetForecast);
-                        view.setTechnicalUseCaseDesc(R.string.UseCase_ParallelAndChained_Requirement);
-                        view.setImplementationDesc(R.string.UseCase_ParallelAndChained_Implementation);
-                        view.showCity2();
-                        break;
-                }
+            switch (currentUseCase) {
+                case EMPTY_PLACEHOLDER:
+                    view.showGeneralDescription();
+                    break;
+                case BASIC:
+                    view.showOtherScreenButton();
+                case PARALLEL_AND_CHAINED:
+                    view.showCity2();
+                default:
+                    view.setExecuteButtonText(currentUseCase.button);
+                    view.setWeatherUseCaseDesc(currentUseCase.weatherUseCase);
+                    view.setTechnicalUseCaseDesc(currentUseCase.technicalDesc);
+                    view.setImplementationDesc(currentUseCase.implementationDesc);
+                    view.setHowToTestDesc(currentUseCase.testDesc);
             }
+
+            //            if (currentUseCase == UseCase.EMPTY_PLACEHOLDER) {
+            //                view.showGeneralDescription();
+            //            } else {
+            //                view.setExecuteButtonText(currentUseCase.button);
+            //                view.setWeatherUseCaseDesc(currentUseCase.weatherUseCase);
+            //                view.setTechnicalUseCaseDesc(currentUseCase.technicalDesc);
+            //                view.setImplementationDesc(currentUseCase.implementationDesc);
+            //                view.setHowToTestDesc(currentUseCase.testDesc);
+            //
+            //                if (currentUseCase == UseCase.BASIC) {
+            //                    view.showOtherScreenButton();
+            //                }
+            //                if (currentUseCase == UseCase.PARALLEL_AND_CHAINED) {
+            //                    view.showCity2();
+            //                }
         }
 
         @Override

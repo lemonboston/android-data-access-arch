@@ -15,7 +15,7 @@
     </string>
 
     <!-- Basic use case-->
-    <string name="UseCaseTitle_Basic">Basic Use-Case</string>
+    <string name="UseCase_Basic_Title">Basic Use-Case</string>
     <string name="WeatherUseCase_GetTemp">Get the current temperature</string>
     <string name="GetTemp_Button">Get Temperature</string>
     <string name="Result_Text">[Result]</string>
@@ -31,7 +31,7 @@
         \nThe whole component is put in an Android Service which starts on-demand and stops when there is no more ongoing task.
     </string>
 
-    <string name="UseCaseTitle_ParallelChained">Parallel&amp;Chained calls</string>
+    <string name="UseCase_ParallelChained_Title">Parallel&amp;Chained calls</string>
     <string name="WeatherUseCase_GetForecast">Get the 5 day forecast for the city that is warmer currently</string>
     <string name="GetForecast_Button">Get forecast</string>
     <string name="ForecastProgress_Step1">Step 1: Getting current temperatures…</string>
@@ -54,37 +54,30 @@
 
     <!-- Combined use-case -->
     <string name="UseCase_Combined">Combined use case</string>
-    <string name="UseCaseTitle_OfflineStorage">Offline Storage</string>
+    <string name="UseCase_OfflineStorage_Title">Offline Storage</string>
     <string name="RequirementTitle">Requirement / Use-case</string>
     <string name="ImplementationTitle">Implementation</string>
 
-    <string name="UseCaseTitle_ErrorHandling">Error Handling</string>
-    <string name="UseCaseTitle_OnGoingCall">Ongoing call handling</string>
-    <string name="UseCase_ErrorHandling_Desc">
-        User initiates data access, receives the result on UI. Requires a single network call.
-        \n
-        \n - Error message displayed if something went wrong
-        \n - Different messages for different errors
-    </string>
+    <string name="UseCase_ErrorHandling_Title">Error Handling</string>
+    <string name="UseCase_OnGoingCall_Title">Ongoing call handling</string>
+    <string name="UseCase_ErrorHandling_Desc">Error message displayed if something went wrong.
+\nDifferent messages for different errors.</string>
     <string name="HowToTest_Title">How to test</string>
     <string name="UseCase_ErrorHandling_HowToTest">
         1. Use Real Weather Service (invalid API key used here -> error dialog)
         \n2. Disconnect from internet (no internet error message)
         \n3. Use Mock Weather service (completes successfully)</string>
     <string name="OtherScreenButton">Check on another screen</string>
-    <string name="UseCase_ErrorHandling_Implementation">Errors propagate through the Rx chain and interpreted at single place at the end. Event sent to presentation layer where message is decided.</string>
+    <string name="UseCase_ErrorHandling_Implementation">Errors propagate through the Rx chain and interpreted at single place at the end. Error event is sent to presentation layer where message is decided.</string>
     <string name="dismiss">Dismiss</string>
     <string name="ErrorMessage_unauthorized">API key unauthorized. A custom message can come here..</string>
 
-    <string name="UseCase_OngoingCall_Desc">User initiates data access, receives the result on UI. Requires a single network call.
-    \n\nThere is only one call at a time, initiating again is ignored.</string>
-    <string name="UseCase_OngoingCall_Implementation">Rx Subscription is kept in field and checked if subscribed.</string>
+    <string name="UseCase_OngoingCall_Desc">There is only one call at a time, initiating again is ignored.</string>
+    <string name="UseCase_OngoingCall_Implementation">Rx Subscription reference is kept and checked if subscribed.</string>
     <string name="UseCase_OngoingCall_HowToTest">Use Mock service (real one is too fast) and tap the button multiple times. Try basic use-case in comparison.</string>
 
-    <string name="UseCase_OfflineStorage_Requirement">User initiates data access, receives the result on UI.
-        \n - When online, network call is executed and result is displayed and saved
-        \n - When offline, data is loaded from offline store (custom cache)
-    </string>
+    <string name="UseCase_OfflineStorage_Requirement">When online, network call is executed and result is displayed and saved.
+\nWhen offline, data is loaded from offline store.</string>
     <string name="UseCase_OfflineStorage_Implementation">Rx operators <i>doOnSuccess</i> and <i>onErrorResumeNext</i> are used to construct the appropriate chain.</string>
     <string name="UseCase_OfflineStorage_HowToTest">Go offline and tap the button</string>
 
@@ -98,15 +91,13 @@
 
     <string name="UseCase_ParallelAndChained_Requirement">User initiates data access, receives the result on UI.
         \nRequires multiple network calls. Both parallel and sequential executions are needed.
-        \n\nShows dialog about the progress steps
-    </string>
+        \n\nShows dialog about the progress steps.</string>
     <string name="UseCase_ParallelAndChained_Implementation">Rx operator <i>zip</i> for parallel execution and <i>flatMap</i> for sequential execution.
         \nProgress update events sent to presentation layer at any point in Rx chain.
     </string>
 
     <string name="UseCase_Retry_Title">Retry</string>
-    <string name="UseCase_Retry_Requirement">User initiates data access, receives the result on UI. Requires single network call.
-    \nRetries the call multiple times if it fails.</string>
+    <string name="UseCase_Retry_Requirement">Retries the call multiple times if it fails.</string>
     <string name="UseCase_Retry_Implementation">Using Rx operator <i>RetryWhen</i></string>
     <string name="UseCase_Retry_HowToTest">- Try with no connection (retries and fails with no internet message)
     \n- Try with real service (retries and fails with invalid api key message)
@@ -114,7 +105,7 @@
 
     <string name="UseCase_Cancellable_Title">Cancellable</string>
     <string name="UseCase_Cancellable_Requirement">User can cancel the ongoing network call.</string>
-    <string name="UseCase_Cancellable_Implementation">Retrofit fortunately supports cancelling the call down to the network layer through the returned Observable/Single\'s unsubscribe() method.</string>
+    <string name="UseCase_Cancellable_Implementation">Retrofit supports cancelling the call down to the network layer through the returned Observable/Single\'s unsubscribe() method.</string>
     <string name="UseCase_Cancellable_HowToTest">To be able to cancel during the very fast network call, tapping the button initiates the call and the cancel as well right away in the next looper round.
         \nCheck the code and the logs to see that the call does not complete.</string>
 

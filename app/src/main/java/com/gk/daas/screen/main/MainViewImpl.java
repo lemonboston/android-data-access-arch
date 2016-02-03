@@ -171,32 +171,42 @@ public class MainViewImpl implements MainView {
 
     @Override
     public void setTechnicalUseCaseDesc(@StringRes int stringResId) {
-        requirementArea.setVisibility(View.VISIBLE);
-        technicalUseCase.setText(stringResId);
+        if (stringResId != 0) {
+            requirementArea.setVisibility(View.VISIBLE);
+            technicalUseCase.setText(stringResId);
+        }
     }
 
     @Override
     public void setHowToTestDesc(@StringRes int stringResId) {
-        howToTestArea.setVisibility(View.VISIBLE);
-        howToTestDesc.setText(stringResId);
+        if (stringResId != 0) {
+            howToTestArea.setVisibility(View.VISIBLE);
+            howToTestDesc.setText(stringResId);
+        }
     }
 
     @Override
     public void setExecuteButtonText(@StringRes int stringResId) {
-        executeArea.setVisibility(View.VISIBLE);
-        executeButton.setText(stringResId);
+        if (stringResId != 0) {
+            executeArea.setVisibility(View.VISIBLE);
+            executeButton.setText(stringResId);
+        }
     }
 
     @Override
     public void setWeatherUseCaseDesc(@StringRes int stringResId) {
-        executeArea.setVisibility(View.VISIBLE);
-        weatherUseCase.setText(stringResId);
+        if (stringResId != 0) {
+            executeArea.setVisibility(View.VISIBLE);
+            weatherUseCase.setText(stringResId);
+        }
     }
 
     @Override
     public void setImplementationDesc(@StringRes int stringResId) {
-        implementationArea.setVisibility(View.VISIBLE);
-        implementationDescription.setText(stringResId);
+        if (stringResId != 0) {
+            implementationArea.setVisibility(View.VISIBLE);
+            implementationDescription.setText(stringResId);
+        }
     }
 
     @Override

@@ -245,8 +245,6 @@ public class DataAccessControllerImpl implements DataAccessController {
                         });
     }
 
-    // TODO Case for http cache?
-
     public void getTemperatureCombined(String city) {
         String tag = "getTemperature_allInOne | ";
         log.d(tag + "Starting, city: " + city);
