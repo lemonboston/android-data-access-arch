@@ -4,6 +4,7 @@ import com.gk.daas.core.BaseActivity;
 import com.gk.daas.dialog.ErrorDialog;
 import com.gk.daas.dialog.ProgressDialog;
 import com.gk.daas.dialog.ProgressDialogImpl;
+import com.gk.daas.dialog.ServiceSelectorDialog;
 import com.gk.daas.framework.access.Navigator;
 import com.gk.daas.framework.access.NavigatorImpl;
 import com.gk.daas.framework.access.StringResAccess;
@@ -66,5 +67,10 @@ public class ActivityModule {
     @Provides
     public ErrorDialog provideErrorDialog() {
         return new ErrorDialog(activity);
+    }
+
+    @Provides
+    public ServiceSelectorDialog provideServiceSelectorDialog() {
+        return new ServiceSelectorDialog(activity);
     }
 }

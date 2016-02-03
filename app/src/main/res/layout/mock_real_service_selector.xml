@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="260dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:background="@color/colorAccent"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/Service_RadioButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/Radio_RealService"
+            style="@style/ButtonTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
+            android:buttonTint="@android:color/white"
+            android:text="@string/ServiceSelector_Real" />
+
+        <RadioButton
+            android:id="@+id/Radio_MockService"
+            style="@style/ButtonTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@android:color/white"
+            android:text="@string/ServiceSelector_Mock" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="left"
+        android:padding="@dimen/distance_default"
+        android:text="@string/Service_Descriptions"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
+</LinearLayout>

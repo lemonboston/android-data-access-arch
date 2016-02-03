@@ -16,9 +16,9 @@
         <item name="android:paddingBottom">4dp</item>
     </style>
 
-    <style name="TextDescription" parent="TextAppearance.AppCompat.Body1"/>
+    <style name="TextDescription" parent="TextAppearance.AppCompat.Body1" />
 
-    <style name="TabText" parent="TextAppearance.AppCompat.Widget.ActionBar.Subtitle"/>
+    <style name="TabText" parent="TextAppearance.AppCompat.Widget.ActionBar.Subtitle" />
 
     <style name="TextResult" parent="TextDescription">
         <item name="android:textSize">16sp</item>
@@ -44,8 +44,8 @@
         <item name="android:backgroundTint">@color/colorPrimaryLight</item>
     </style>
 
-    <style name="NavigationButtonStyle" parent="ButtonStyle">
-        <item name="android:background">@android:color/holo_blue_dark</item>N
+    <style name="SelectorDialogStyle" parent="ButtonStyle">
+        <item name="android:background">@color/colorAccent</item>N
     </style>
 
     <style name="TabStyle" parent="TextTitle">

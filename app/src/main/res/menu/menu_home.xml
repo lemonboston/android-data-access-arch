@@ -2,11 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/Menu_RealService"
-        android:title="@string/Menu_RealService"/>
-    <item
-        android:id="@+id/Menu_MockService"
-        android:title="@string/Menu_MockService"/>
+        android:id="@+id/Menu_ServiceSelector"
+        android:title="@string/Menu_ServiceSelector" />
     <item
         android:id="@+id/Menu_ClearDataStore"
         android:title="@string/Menu_ClearDataStore"/>

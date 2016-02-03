@@ -109,6 +109,13 @@
     <string name="UseCase_Cancellable_HowToTest">To be able to cancel during the very fast network call, tapping the button initiates the call and the cancel as well right away in the next looper round.
         \nCheck the code and the logs to see that the call does not complete.</string>
 
+    <string name="ServiceSelector_Real">Real</string>
+    <string name="ServiceSelector_Mock">Mock</string>
+    <string name="Service_Descriptions"><b>Real</b>: api.openweathermap.org
+        \n\n<b>Mock</b>: Retrofit annotated interface mocked. Returns random value after 3-4 seconds.
+    </string>
+    <string name="Menu_ServiceSelector">Select Real / Mock Weather Service</string>
+
     <!-- TODO add notes on real, mock service usage on landing page -->
 
 

@@ -17,10 +17,10 @@ import com.gk.daas.data.event.RetryEvent;
 import com.gk.daas.data.network.DataAccessError;
 import com.gk.daas.data.network.UseCase;
 import com.gk.daas.data.store.DataStore;
-import com.gk.daas.di.DebugOptions;
 import com.gk.daas.di.Injector;
 import com.gk.daas.dialog.ErrorDialog;
 import com.gk.daas.dialog.ProgressDialog;
+import com.gk.daas.dialog.ServiceSelectorDialog;
 import com.gk.daas.screen.ErrorTranslator;
 import com.gk.daas.screen.second.SecondActivity;
 import com.gk.daas.util.TemperatureFormatter;
@@ -59,6 +59,9 @@ public class MainActivity extends BaseActivity {
     @Inject
     DataStore dataStore;
 
+    @Inject
+    ServiceSelectorDialog serviceSelectorDialog;
+
     private DataAccessEventHandler eventHandler = new DataAccessEventHandler();
     private UseCase currentUseCase = UseCase.EMPTY_PLACEHOLDER;
 
@@ -90,13 +93,8 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.Menu_RealService:
-                DebugOptions.MOCK_WEATHER_SERVICE = false;
-                restartActivity();
-                return true;
-            case R.id.Menu_MockService:
-                DebugOptions.MOCK_WEATHER_SERVICE = true;
-                restartActivity();
+            case R.id.Menu_ServiceSelector:
+                serviceSelectorDialog.show();
                 return true;
             case R.id.Menu_ClearDataStore:
                 dataStore.clearStore();
@@ -104,11 +102,6 @@ public class MainActivity extends BaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void restartActivity() {
-        finish();
-        startActivity(getIntent());
     }
 
     public class DataAccessEventHandler {
@@ -169,8 +162,20 @@ public class MainActivity extends BaseActivity {
                     break;
                 case BASIC:
                     view.showOtherScreenButton();
+                    view.setExecuteButtonText(currentUseCase.button);
+                    view.setWeatherUseCaseDesc(currentUseCase.weatherUseCase);
+                    view.setTechnicalUseCaseDesc(currentUseCase.technicalDesc);
+                    view.setImplementationDesc(currentUseCase.implementationDesc);
+                    view.setHowToTestDesc(currentUseCase.testDesc);
+                    break;
                 case PARALLEL_AND_CHAINED:
                     view.showCity2();
+                    view.setExecuteButtonText(currentUseCase.button);
+                    view.setWeatherUseCaseDesc(currentUseCase.weatherUseCase);
+                    view.setTechnicalUseCaseDesc(currentUseCase.technicalDesc);
+                    view.setImplementationDesc(currentUseCase.implementationDesc);
+                    view.setHowToTestDesc(currentUseCase.testDesc);
+                    break;
                 default:
                     view.setExecuteButtonText(currentUseCase.button);
                     view.setWeatherUseCaseDesc(currentUseCase.weatherUseCase);
@@ -178,22 +183,6 @@ public class MainActivity extends BaseActivity {
                     view.setImplementationDesc(currentUseCase.implementationDesc);
                     view.setHowToTestDesc(currentUseCase.testDesc);
             }
-
-            //            if (currentUseCase == UseCase.EMPTY_PLACEHOLDER) {
-            //                view.showGeneralDescription();
-            //            } else {
-            //                view.setExecuteButtonText(currentUseCase.button);
-            //                view.setWeatherUseCaseDesc(currentUseCase.weatherUseCase);
-            //                view.setTechnicalUseCaseDesc(currentUseCase.technicalDesc);
-            //                view.setImplementationDesc(currentUseCase.implementationDesc);
-            //                view.setHowToTestDesc(currentUseCase.testDesc);
-            //
-            //                if (currentUseCase == UseCase.BASIC) {
-            //                    view.showOtherScreenButton();
-            //                }
-            //                if (currentUseCase == UseCase.PARALLEL_AND_CHAINED) {
-            //                    view.showCity2();
-            //                }
         }
 
         @Override
