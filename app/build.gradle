@@ -33,6 +33,9 @@ android {
         // Need for ButterKnife
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
