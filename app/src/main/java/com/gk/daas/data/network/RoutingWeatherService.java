@@ -2,7 +2,7 @@ package com.gk.daas.data.network;
 
 import com.gk.daas.data.model.server.ForecastResponse;
 import com.gk.daas.data.model.server.WeatherResponse;
-import com.gk.daas.di.DebugOptions;
+import com.gk.daas.di.Config;
 
 import retrofit2.http.Query;
 import rx.Single;
@@ -22,7 +22,7 @@ public class RoutingWeatherService implements OpenWeatherService {
 
     @Override
     public Single<WeatherResponse> getWeather(@Query("q") String queryString, @Query("appid") String apiKey) {
-        if (DebugOptions.MOCK_WEATHER_SERVICE) {
+        if (Config.MOCK_WEATHER_SERVICE) {
             return mockService.getWeather(queryString, apiKey);
         } else {
             return realService.getWeather(queryString, apiKey);
@@ -31,7 +31,7 @@ public class RoutingWeatherService implements OpenWeatherService {
 
     @Override
     public Single<ForecastResponse> getForecast(@Query("q") String queryString, @Query("appid") String apiKey) {
-        if (DebugOptions.MOCK_WEATHER_SERVICE) {
+        if (Config.MOCK_WEATHER_SERVICE) {
             return mockService.getForecast(queryString, apiKey);
         } else {
             return realService.getForecast(queryString, apiKey);
