@@ -11,7 +11,6 @@ public class MockData {
 
     private static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("#.##");
 
-
     public static WeatherResponse randomWeatherResponse() {
         double randomTemp = 325 + Math.random() * 50;
         randomTemp = twoDecimalsOnly(randomTemp);

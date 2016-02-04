@@ -6,14 +6,14 @@ package com.gk.daas.data.network;
  */
 public interface TaskCounter {
 
-    void setAllTaskFinishedListener(AllTasksFinishedListener listener);
+    void setAllTaskFinishedListener(TasksFinishedListener listener);
 
     void taskStarted();
 
     void taskFinished();
 
-    interface AllTasksFinishedListener {
+    interface TasksFinishedListener {
 
-        void onAllTasksFinished();
+        void onIdleTimeEnded();
     }
 }

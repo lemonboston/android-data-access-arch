@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 
 import com.gk.daas.R;
 import com.gk.daas.core.Config;
-import com.gk.daas.databinding.MockRealServiceSelectorBinding;
+import com.gk.daas.databinding.DialogServiceSelectorBinding;
 
 /**
  * @author Gabor_Keszthelyi
@@ -23,7 +23,7 @@ public class ServiceSelectorDialog {
     public void show() {
         Dialog dialog = new Dialog(context);
 
-        MockRealServiceSelectorBinding binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.mock_real_service_selector, null, false);
+        DialogServiceSelectorBinding binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_service_selector, null, false);
         if (Config.MOCK_WEATHER_SERVICE) {
             binding.MockService.setChecked(true);
         } else {

@@ -29,7 +29,7 @@ public interface Bus {
     void post(Object event);
 
     /**
-     * Post a sticky event to a bus, so the last instance of its type will be available for later registered subscribers. (see {@link #registerSticky(Object)}.
+     * Post a sticky event to a bus, so the last instance of its type will be available for later registered subscribers.
      *
      * @param event the event
      */

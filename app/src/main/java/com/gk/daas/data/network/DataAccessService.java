@@ -19,7 +19,7 @@ import javax.inject.Inject;
 /**
  * @author Gabor_Keszthelyi
  */
-public class DataAccessService extends Service implements TaskCounter.AllTasksFinishedListener {
+public class DataAccessService extends Service implements TaskCounter.TasksFinishedListener {
 
     @Inject
     DataAccessController dataAccessController;
@@ -110,7 +110,7 @@ public class DataAccessService extends Service implements TaskCounter.AllTasksFi
     }
 
     @Override
-    public void onAllTasksFinished() {
+    public void onIdleTimeEnded() {
         stopSelf();
         log.d("No tasks left, stopping self.");
     }

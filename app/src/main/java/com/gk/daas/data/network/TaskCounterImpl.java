@@ -20,7 +20,7 @@ public class TaskCounterImpl implements TaskCounter {
 
     private final Log log;
 
-    private AllTasksFinishedListener listener;
+    private TasksFinishedListener listener;
 
     private Subscription timeoutSubscription;
 
@@ -45,7 +45,7 @@ public class TaskCounterImpl implements TaskCounter {
     }
 
     private void scheduleNotifyListeners() {
-        // TODO Maybe it could be optimized to not create a new Observable every time.
+        // Note: Maybe this could be optimized to not create a new Observable every time.
         if (isOngoing(timeoutSubscription)) {
             timeoutSubscription.unsubscribe();
         }
@@ -61,12 +61,12 @@ public class TaskCounterImpl implements TaskCounter {
     private void notifyListener() {
         if (onGoingTaskCounter.get() == 0) {
             log.d("No tasks left after timeout, notify listener.");
-            listener.onAllTasksFinished();
+            listener.onIdleTimeEnded();
         }
     }
 
     @Override
-    public void setAllTaskFinishedListener(AllTasksFinishedListener listener) {
+    public void setAllTaskFinishedListener(TasksFinishedListener listener) {
         this.listener = listener;
     }
 

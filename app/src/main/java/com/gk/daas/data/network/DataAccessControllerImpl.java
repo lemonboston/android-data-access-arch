@@ -1,6 +1,7 @@
 package com.gk.daas.data.network;
 
 import com.gk.daas.bus.Bus;
+import com.gk.daas.core.Config;
 import com.gk.daas.data.access.DataAccessController;
 import com.gk.daas.data.event.GetForecastProgressEvent;
 import com.gk.daas.data.event.GetForecastSuccessEvent;
@@ -29,9 +30,6 @@ import static com.gk.daas.data.network.OpenWeatherService.API_KEY;
  * @author Gabor_Keszthelyi
  */
 public class DataAccessControllerImpl implements DataAccessController {
-
-    private static final int RETRY_COUNT = 3;
-    private static final int RETRY_DELAY_SECONDS = 2;
 
     private final OpenWeatherService weatherService;
     private final Log log;
@@ -209,8 +207,8 @@ public class DataAccessControllerImpl implements DataAccessController {
     private Func1<Observable<? extends Throwable>, Observable<?>> retryFunc(String tag) {
         return throwableStream ->
                 throwableStream
-                        .zipWith(Observable.range(1, RETRY_COUNT + 1), (throwable, count) -> {
-                            if (count <= RETRY_COUNT) {
+                        .zipWith(Observable.range(1, Config.RETRY_COUNT + 1), (throwable, count) -> {
+                            if (count <= Config.RETRY_COUNT) {
                                 log.d(tag + "delayed retry #" + count);
                                 bus.post(new RetryEvent(count));
                                 return null;
@@ -218,7 +216,7 @@ public class DataAccessControllerImpl implements DataAccessController {
                                 return throwable;
                             }
                         })
-                        .concatMap(nullableThrowable -> nullableThrowable == null ? Observable.timer(RETRY_DELAY_SECONDS, TimeUnit.SECONDS) : Observable.error(nullableThrowable));
+                        .concatMap(nullableThrowable -> nullableThrowable == null ? Observable.timer(Config.RETRY_DELAY_SECONDS, TimeUnit.SECONDS) : Observable.error(nullableThrowable));
     }
 
     // http://stackoverflow.com/a/30730934/4247460

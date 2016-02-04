@@ -11,6 +11,7 @@ import com.gk.daas.log.LogFactory;
 /**
  * @author Gabor_Keszthelyi
  */
+// TODO syncing to UI
 public class SyncScheduler {
 
     public static final long DEFAULT_INTERVAL_IN_MILLIS = 10_000;

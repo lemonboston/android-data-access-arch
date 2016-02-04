@@ -15,11 +15,9 @@ import butterknife.ButterKnife;
 public class ViewToolkitImpl implements ViewToolkit {
 
     private final BaseActivity activity;
-    private final ViewFactory viewFactory;
 
-    public ViewToolkitImpl(BaseActivity activity, ViewFactory viewFactory) {
+    public ViewToolkitImpl(BaseActivity activity) {
         this.activity = activity;
-        this.viewFactory = viewFactory;
     }
 
     @Override
@@ -40,11 +38,6 @@ public class ViewToolkitImpl implements ViewToolkit {
     @Override
     public void injectViews(Object target) {
         ButterKnife.bind(target, activity);
-    }
-
-    @Override
-    public ViewFactory factory() {
-        return viewFactory;
     }
 
 }

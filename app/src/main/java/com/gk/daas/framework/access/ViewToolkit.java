@@ -33,6 +33,4 @@ public interface ViewToolkit {
      */
     void injectViews(Object target);
 
-    ViewFactory factory();
-
 }

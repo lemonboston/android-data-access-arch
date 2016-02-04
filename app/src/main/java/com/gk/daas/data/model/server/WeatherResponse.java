@@ -5,6 +5,8 @@ package com.gk.daas.data.model.server;
  */
 public class WeatherResponse {
 
+    public Main main;
+
     public static WeatherResponse createFromTemp(double temp) {
         Main main = new Main();
         main.temp = temp;
@@ -12,6 +14,4 @@ public class WeatherResponse {
         weatherResponse.main = main;
         return weatherResponse;
     }
-
-    public Main main;
 }

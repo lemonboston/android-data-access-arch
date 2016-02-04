@@ -5,11 +5,7 @@ import com.gk.daas.dialog.ErrorDialog;
 import com.gk.daas.dialog.ProgressDialog;
 import com.gk.daas.dialog.ProgressDialogImpl;
 import com.gk.daas.dialog.ServiceSelectorDialog;
-import com.gk.daas.framework.access.Navigator;
-import com.gk.daas.framework.access.NavigatorImpl;
 import com.gk.daas.framework.access.StringResAccess;
-import com.gk.daas.framework.access.ViewFactory;
-import com.gk.daas.framework.access.ViewFactoryImpl;
 import com.gk.daas.framework.access.ViewToolkit;
 import com.gk.daas.framework.access.ViewToolkitImpl;
 import com.gk.daas.log.LogFactory;
@@ -44,18 +40,8 @@ public class ActivityModule {
     }
 
     @Provides
-    public ViewToolkit provideViewToolkit(ViewFactory viewFactory) {
-        return new ViewToolkitImpl(activity, viewFactory);
-    }
-
-    @Provides
-    public Navigator provideNavigator() {
-        return new NavigatorImpl(activity);
-    }
-
-    @Provides
-    public ViewFactory provideViewFactory() {
-        return new ViewFactoryImpl(activity);
+    public ViewToolkit provideViewToolkit() {
+        return new ViewToolkitImpl(activity);
     }
 
     @ActivityScope

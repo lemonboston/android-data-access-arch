@@ -13,15 +13,6 @@ public class Forecast {
         this.temperature = temperature;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public Temperature getTemperature() {
-        return temperature;
-    }
-
-
     @Override
     public String toString() {
         return city + ": " + temperature.toString();
