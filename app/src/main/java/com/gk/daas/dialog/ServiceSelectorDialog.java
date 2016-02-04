@@ -6,8 +6,8 @@ import android.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 
 import com.gk.daas.R;
+import com.gk.daas.core.Config;
 import com.gk.daas.databinding.MockRealServiceSelectorBinding;
-import com.gk.daas.di.Config;
 
 /**
  * @author Gabor_Keszthelyi

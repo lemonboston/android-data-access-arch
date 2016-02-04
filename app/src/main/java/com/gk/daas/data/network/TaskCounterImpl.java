@@ -1,5 +1,6 @@
 package com.gk.daas.data.network;
 
+import com.gk.daas.core.Config;
 import com.gk.daas.log.Log;
 import com.gk.daas.log.LogFactory;
 
@@ -7,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.schedulers.Schedulers;
 
 /**
@@ -19,6 +21,8 @@ public class TaskCounterImpl implements TaskCounter {
     private final Log log;
 
     private AllTasksFinishedListener listener;
+
+    private Subscription timeoutSubscription;
 
     public TaskCounterImpl(LogFactory logFactory) {
         this.log = logFactory.create(getClass());
@@ -35,20 +39,28 @@ public class TaskCounterImpl implements TaskCounter {
         int noOfOngoingTasks = onGoingTaskCounter.decrementAndGet();
         log.d("Task counter decreased to: " + noOfOngoingTasks);
         if (noOfOngoingTasks == 0) {
-            log.d("No tasks left, schedule double-check.");
+            log.d("No tasks left, schedule double-check after timeout.");
             scheduleNotifyListeners();
         }
     }
 
-    // Schedule double-check for later to prevent shutting down while there is incoming data access request
     private void scheduleNotifyListeners() {
-        Observable.timer(1, TimeUnit.SECONDS, Schedulers.io())
+        // TODO Maybe it could be optimized to not create a new Observable every time.
+        if (isOngoing(timeoutSubscription)) {
+            timeoutSubscription.unsubscribe();
+        }
+        timeoutSubscription = Observable
+                .timer(Config.BACKGROUND_SERVICE_SHUTDOWN_TIMEOUT_SECONDS, TimeUnit.SECONDS, Schedulers.io())
                 .subscribe(aLong -> notifyListener());
+    }
+
+    private boolean isOngoing(Subscription subscription) {
+        return subscription != null && !subscription.isUnsubscribed();
     }
 
     private void notifyListener() {
         if (onGoingTaskCounter.get() == 0) {
-            log.d("No tasks left, notify listener.");
+            log.d("No tasks left after timeout, notify listener.");
             listener.onAllTasksFinished();
         }
     }

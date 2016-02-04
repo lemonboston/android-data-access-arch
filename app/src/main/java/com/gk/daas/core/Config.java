@@ -5,6 +5,10 @@ package com.gk.daas.core;
  */
 public class Config {
 
+    public static final int BACKGROUND_SERVICE_SHUTDOWN_TIMEOUT_SECONDS = 60;
+
+    public static boolean MOCK_WEATHER_SERVICE = false;
+
     public static class Cache {
 
         public static final String CACHE_SUB_DIR = "responses";

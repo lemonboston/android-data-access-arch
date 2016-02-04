@@ -297,8 +297,8 @@ public class DataAccessControllerImpl implements DataAccessController {
         bus.postSticky(GetForecastProgressEvent.FIRST_STAGE_STARTED);
 
         Single.zip(
-                weatherService.getWeather(city1, API_KEY).subscribeOn(Schedulers.newThread()),
-                weatherService.getWeather(city2, API_KEY).subscribeOn(Schedulers.newThread()),
+                weatherService.getWeather(city1, API_KEY).subscribeOn(Schedulers.io()),
+                weatherService.getWeather(city2, API_KEY).subscribeOn(Schedulers.io()),
                 (response1, response2) -> response1.main.temp > response2.main.temp ? city1 : city2)
 
                 .doOnSuccess(city -> bus.postSticky(GetForecastProgressEvent.SECOND_STAGE_STARTED))

@@ -10,7 +10,7 @@
     <string name="AppDescription">The following networking/data access <b>architecture</b> is used in this sample app:
         \n\n<b>Retrofit</b> with <b>RxJava</b> for the REST API calls, and <b>EventBus</b> to deliver the results back to the presentation layer.
         \nRx features to handle errors, multiple calls, fallback to offline store, and more.
-        \nThe whole component is placed in a Android <b>Service</b> which starts on-demand and stops when there are no more ongoing tasks.
+        \nThe whole component is placed in a Android <b>Service</b> which starts on-demand and stops after a timeout when there are no more ongoing tasks.
         \n\nMore info at each use-case.
         \n\n<i>Tip:</i> Switch between real and mocked weather service in menu.
     </string>
@@ -71,16 +71,16 @@
     <string name="OtherScreenButton">Check on another screen</string>
     <string name="UseCase_ErrorHandling_Implementation">Errors propagate through the Rx chain and interpreted at single place at the end. Error event is sent to presentation layer where message is decided.</string>
     <string name="dismiss">Dismiss</string>
-    <string name="ErrorMessage_unauthorized">API key unauthorized. A custom message can come here..</string>
+    <string name="ErrorMessage_unauthorized">API key unauthorized\n(A custom user message could come here)</string>
 
-    <string name="UseCase_OngoingCall_Desc">There is only one call at a time, initiating again is ignored.</string>
+    <string name="UseCase_OngoingCall_Desc">There is only one call running at a time, initiating again is ignored.</string>
     <string name="UseCase_OngoingCall_Implementation">Rx Subscription reference is kept and checked if subscribed.</string>
-    <string name="UseCase_OngoingCall_HowToTest">Use Mock service (real one is too fast) and tap the button multiple times. Try basic use-case in comparison.</string>
+    <string name="UseCase_OngoingCall_HowToTest">Use Mock service (real one is too fast) and tap the button multiple times. Try basic use-case for comparison.</string>
 
     <string name="UseCase_OfflineStorage_Requirement">When online, network call is executed and result is displayed and saved.
 \nWhen offline, data is loaded from offline store.</string>
     <string name="UseCase_OfflineStorage_Implementation">Rx operators <i>doOnSuccess</i> and <i>onErrorResumeNext</i> are used to construct the appropriate chain.</string>
-    <string name="UseCase_OfflineStorage_HowToTest">Go offline and tap the button</string>
+    <string name="UseCase_OfflineStorage_HowToTest">Go offline and tap the button. \nClearing the saved data is available in the menu.</string>
 
     <string name="UseCase_Combined_Requirement">User initiates data access, receives the result on UI. Requires a single network call.
         \n\n - Progress dialog
