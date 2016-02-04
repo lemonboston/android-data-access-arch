@@ -2,6 +2,7 @@ package com.gk.daas.core;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 import com.gk.daas.di.Injector;
 
 /**
@@ -13,5 +14,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         Injector.init(this);
+        Stetho.initializeWithDefaults(this);
     }
 }

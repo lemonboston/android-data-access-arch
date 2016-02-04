@@ -2,6 +2,7 @@ package com.gk.daas.di;
 
 import android.net.ConnectivityManager;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.gk.daas.bus.Bus;
 import com.gk.daas.bus.BusImpl;
 import com.gk.daas.core.App;
@@ -93,6 +94,7 @@ public class AppModule {
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(logger)
+                .addNetworkInterceptor(new StethoInterceptor())
 
                         // https://github.com/square/okhttp/wiki/Interceptors
                         // http://stackoverflow.com/questions/23429046/can-retrofit-with-okhttp-use-cache-data-when-offline
