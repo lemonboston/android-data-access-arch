@@ -8,6 +8,16 @@
         android:background="@color/colorAccent"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:paddingTop="@dimen/distance_default"
+            android:text="@string/ServiceSelector_Title"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"/>
+
         <RadioGroup
             android:id="@+id/Service_RadioButtons"
             android:layout_width="wrap_content"
@@ -38,7 +48,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="left"
-            android:padding="@dimen/distance_default"
+            android:paddingTop="8dp"
+            android:paddingBottom="@dimen/distance_default"
+            android:paddingRight="@dimen/distance_default"
+            android:paddingLeft="@dimen/distance_default"
             android:text="@string/Service_Descriptions"
             android:textColor="@android:color/white"
             android:textSize="14sp" />

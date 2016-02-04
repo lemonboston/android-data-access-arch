@@ -7,11 +7,12 @@
     <string name="SecondActivity_label">Another screen..</string>
 
     <!-- TODO maybe add note on DataAccessControllerImpl -->
-    <string name="AppDescription">The networking / data access structure used in this sample app:
-        \n\nRetrofit with RxJava for the REST API calls, and EventBus to deliver the results back to the presentation layer.
+    <string name="AppDescription">The following networking/data access <b>architecture</b> is used in this sample app:
+        \n\n<b>Retrofit</b> with <b>RxJava</b> for the REST API calls, and <b>EventBus</b> to deliver the results back to the presentation layer.
         \nRx features to handle errors, multiple calls, fallback to offline store, and more.
-        \nThe whole component is placed in a Android Service which starts on-demand and stops when there are no more ongoing tasks.
+        \nThe whole component is placed in a Android <b>Service</b> which starts on-demand and stops when there are no more ongoing tasks.
         \n\nMore info at each use-case.
+        \n\n<i>Tip:</i> Switch between real and mocked weather service in menu.
     </string>
 
     <!-- Basic use case-->
@@ -109,12 +110,14 @@
     <string name="UseCase_Cancellable_HowToTest">To be able to cancel during the very fast network call, tapping the button initiates the call and the cancel as well right away in the next looper round.
         \nCheck the code and the logs to see that the call does not complete.</string>
 
+    <string name="ServiceSelector_Title">Weather Service</string>
     <string name="ServiceSelector_Real">Real</string>
     <string name="ServiceSelector_Mock">Mock</string>
     <string name="Service_Descriptions"><b>Real</b>: api.openweathermap.org
         \n\n<b>Mock</b>: Retrofit annotated interface mocked. Returns random value after 3-4 seconds.
     </string>
-    <string name="Menu_ServiceSelector">Select Real / Mock Weather Service</string>
+    <string name="Menu_ServiceSelector">Real/Mock Service</string>
+    <!--<string name="skldjf"><b>Weather Service</b></string>-->
 
     <!-- TODO add notes on real, mock service usage on landing page -->
 
