@@ -97,6 +97,7 @@ public class AppModule {
                 .addInterceptor(logger)
                 .addNetworkInterceptor(new StethoInterceptor())
 
+                        //                        TODO maybe try add to config the max-age string so it could be changed dynamically
                         // https://github.com/square/okhttp/wiki/Interceptors
                         // http://stackoverflow.com/questions/23429046/can-retrofit-with-okhttp-use-cache-data-when-offline
                         // .addNetworkInterceptor((Interceptor.Chain chain) -> {
