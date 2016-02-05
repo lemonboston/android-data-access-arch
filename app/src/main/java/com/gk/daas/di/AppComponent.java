@@ -5,6 +5,7 @@ import com.gk.daas.data.access.DataAccessInitiator;
 import com.gk.daas.data.network.ErrorInterpreter;
 import com.gk.daas.data.network.NetworkServiceIntentHelper;
 import com.gk.daas.data.network.OpenWeatherService;
+import com.gk.daas.data.network.SyncScheduler;
 import com.gk.daas.data.network.SyncSchedulerBroadcastReceiver;
 import com.gk.daas.data.network.connection.NetworkConnectionChecker;
 import com.gk.daas.data.store.DataStore;
@@ -54,5 +55,7 @@ public interface AppComponent {
     StringResAccess getStringResAccess();
 
     ErrorInterpreter getErrorInterpreter();
+
+    SyncScheduler getSyncScheduler();
 
 }

@@ -15,6 +15,7 @@ import com.gk.daas.data.network.NetworkServiceIntentHelper;
 import com.gk.daas.data.network.OpenWeatherService;
 import com.gk.daas.data.network.RoutingWeatherService;
 import com.gk.daas.data.network.SyncScheduler;
+import com.gk.daas.data.network.SyncSchedulerImpl;
 import com.gk.daas.data.network.connection.NetworkConnectionChecker;
 import com.gk.daas.data.store.DataStore;
 import com.gk.daas.data.store.DataStoreImpl;
@@ -141,8 +142,8 @@ public class AppModule {
     }
 
     @Provides
-    public SyncScheduler provideSyncScheduler(LogFactory logFactory) {
-        return new SyncScheduler(app, logFactory);
+    public SyncScheduler provideSyncScheduler(LogFactory logFactory, Toaster toaster) {
+        return new SyncSchedulerImpl(app, logFactory, toaster);
     }
 
     @Provides

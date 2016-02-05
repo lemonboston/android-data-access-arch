@@ -8,6 +8,7 @@ import java.util.List;
 
 import static com.gk.daas.R.string.GetForecast_Button;
 import static com.gk.daas.R.string.GetTemp_Button;
+import static com.gk.daas.R.string.StartSync_Button;
 import static com.gk.daas.R.string.UseCase_Basic_Description;
 import static com.gk.daas.R.string.UseCase_Basic_Title;
 import static com.gk.daas.R.string.UseCase_Cancellable_HowToTest;
@@ -36,8 +37,13 @@ import static com.gk.daas.R.string.UseCase_Retry_HowToTest;
 import static com.gk.daas.R.string.UseCase_Retry_Implementation;
 import static com.gk.daas.R.string.UseCase_Retry_Requirement;
 import static com.gk.daas.R.string.UseCase_Retry_Title;
+import static com.gk.daas.R.string.UseCase_Sync_HowToTest;
+import static com.gk.daas.R.string.UseCase_Sync_Implementation;
+import static com.gk.daas.R.string.UseCase_Sync_Requirement;
+import static com.gk.daas.R.string.UseCase_Sync_Title;
 import static com.gk.daas.R.string.WeatherUseCase_GetForecast;
 import static com.gk.daas.R.string.WeatherUseCase_GetTemp;
+import static com.gk.daas.R.string.WeatherUseCase_Sync;
 
 /**
  * @author Gabor_Keszthelyi
@@ -106,7 +112,15 @@ public enum UseCase {
             UseCase_ParallelAndChained_Implementation,
             0,
             WeatherUseCase_GetForecast,
-            GetForecast_Button);
+            GetForecast_Button),
+    SYNC(
+            UseCase_Sync_Title,
+            UseCase_Sync_Requirement,
+            UseCase_Sync_Implementation,
+            UseCase_Sync_HowToTest,
+            WeatherUseCase_Sync,
+            StartSync_Button
+    );
 
     private final int titleResId;
 

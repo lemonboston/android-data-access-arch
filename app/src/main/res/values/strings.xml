@@ -117,4 +117,15 @@
     </string>
     <string name="Menu_ServiceSelector">Real/Mock Service</string>
 
+    <string name="WeatherUseCase_Sync">Syncing the current temperature with exponential backoff</string>
+    <string name="StartSync_Button">Start sync</string>
+    <string name="UseCase_Sync_Title">Background Sync</string>
+    <string name="UseCase_Sync_Requirement">Scheduled background data sync with server.
+        \nEven if app is not running/used by the user.</string>
+    <string name="UseCase_Sync_Implementation">The Service used for on-demand data access can be started up for syncing too.
+    \nScheduling here is done simply with AlarmManager. (JobScheduler or GcmNetworkManager is a better solution in a real app)
+    \nSynced data is available in offline store.</string>
+    <string name="UseCase_Sync_HowToTest">Start syncing with the button, stop it with X.
+    \nUse mock service to see the values changing.</string>
+
 </resources>

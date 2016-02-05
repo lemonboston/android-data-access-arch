@@ -17,4 +17,10 @@ public class Config {
         public static final String CACHE_SUB_DIR = "responses";
         public static final int CACHE_MAX_SIZE = 5 * 1024 * 1024; // 5 MB
     }
+
+    public static class Syncing {
+
+        public static final long DEFAULT_INTERVAL_IN_MILLIS = 5000;
+        public static final double BACKOFF_EXPONENTIAL_BASE = 1.1;
+    }
 }

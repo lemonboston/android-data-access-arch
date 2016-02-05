@@ -34,7 +34,8 @@ public class SyncSchedulerBroadcastReceiver extends BroadcastReceiver {
 
         log.d("Sync broadcast received");
         syncScheduler.scheduleNext(intent);
-        dataAccessInitiator.getWeather(UseCase.BASIC, "London");
+        String city = intent.getStringExtra(SyncSchedulerImpl.KEY_CITY);
+        dataAccessInitiator.getWeather(UseCase.OFFLINE_STORAGE, city);
     }
 
 }

@@ -15,6 +15,7 @@ import com.gk.daas.data.event.GetForecastSuccessEvent;
 import com.gk.daas.data.event.GetTempSuccessEvent;
 import com.gk.daas.data.event.RetryEvent;
 import com.gk.daas.data.network.DataAccessError;
+import com.gk.daas.data.network.SyncScheduler;
 import com.gk.daas.data.network.UseCase;
 import com.gk.daas.data.store.DataStore;
 import com.gk.daas.di.Injector;
@@ -61,6 +62,9 @@ public class MainActivity extends BaseActivity {
 
     @Inject
     ServiceSelectorDialog serviceSelectorDialog;
+
+    @Inject
+    SyncScheduler syncScheduler;
 
     private DataAccessEventHandler eventHandler = new DataAccessEventHandler();
     private UseCase currentUseCase = UseCase.EMPTY_PLACEHOLDER;
@@ -189,6 +193,8 @@ public class MainActivity extends BaseActivity {
         public void onExecuteButtonClick() {
             String city = view.getCity1();
             switch (currentUseCase) {
+                case EMPTY_PLACEHOLDER:
+                    break;
                 case BASIC:
                 case ERROR_HANDLING:
                 case ONGOING_CALL_HANDLING:
@@ -206,6 +212,9 @@ public class MainActivity extends BaseActivity {
                     String city2 = view.getCity2();
                     dataAccessInitiator.getForecastForWarmerCity(city, city2);
                     break;
+                case SYNC:
+                    syncScheduler.startSyncing(city);
+                    break;
             }
         }
 
@@ -217,6 +226,9 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onXbuttonClick() {
             view.clearResultText();
+            if (currentUseCase == UseCase.SYNC) {
+                syncScheduler.stopSyncing();
+            }
         }
     }
 }
