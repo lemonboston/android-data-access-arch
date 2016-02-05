@@ -67,8 +67,8 @@ public class AppModule {
     }
 
     @Provides
-    public DataStore provideDataStore(LogFactory logFactory) {
-        return new DataStoreImpl(app, logFactory);
+    public DataStore provideDataStore(LogFactory logFactory, Toaster toaster) {
+        return new DataStoreImpl(app, logFactory, toaster);
     }
 
     @Provides
@@ -90,8 +90,8 @@ public class AppModule {
 
         /** Uncomment below for HTTP Cache simulation **/
 
-        // File httpCacheDirectory = new File(app.getCacheDir(), Config.Cache.CACHE_SUB_DIR);
-        // Cache cache = new Cache(httpCacheDirectory, Config.Cache.CACHE_MAX_SIZE);
+        //         File httpCacheDirectory = new File(app.getCacheDir(), Config.Cache.CACHE_SUB_DIR);
+        //         Cache cache = new Cache(httpCacheDirectory, Config.Cache.CACHE_MAX_SIZE);
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(logger)
@@ -100,13 +100,13 @@ public class AppModule {
                         //                        TODO maybe try add to config the max-age string so it could be changed dynamically
                         // https://github.com/square/okhttp/wiki/Interceptors
                         // http://stackoverflow.com/questions/23429046/can-retrofit-with-okhttp-use-cache-data-when-offline
-                        // .addNetworkInterceptor((Interceptor.Chain chain) -> {
-                        // Response response = chain.proceed(chain.request());
-                        //                    return response.newBuilder()
-                        //                            .header("Cache-Control", "private, max-age=20")
-                        //                            .build();
-                        //                })
-                        //                .cache(cache)
+                        //                         .addNetworkInterceptor((Interceptor.Chain chain) -> {
+                        //                             Response response = chain.proceed(chain.request());
+                        //                             return response.newBuilder()
+                        //                                     .header("Cache-Control", "private, max-age=20")
+                        //                                     .build();
+                        //                         })
+                        //                                        .cache(cache)
                 .build();
 
         return client;

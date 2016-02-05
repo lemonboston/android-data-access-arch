@@ -90,6 +90,7 @@ public class DataAccessService extends Service implements TaskCounter.TasksFinis
                 case RETRY:
                 case CANCELLABLE:
                 case COMBINED:
+                case DOUBLE_LOAD:
                     String city = intentHelper.extractCity(intent);
                     dataAccessController.getWeather(useCase, city);
                     break;

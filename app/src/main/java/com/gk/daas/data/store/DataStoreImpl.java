@@ -3,6 +3,8 @@ package com.gk.daas.data.store;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.gk.daas.R;
+import com.gk.daas.framework.access.Toaster;
 import com.gk.daas.log.Log;
 import com.gk.daas.log.LogFactory;
 
@@ -21,8 +23,10 @@ public class DataStoreImpl implements DataStore {
 
     private final SharedPreferences prefs;
     private final Log log;
+    private final Toaster toaster;
 
-    public DataStoreImpl(Context context, LogFactory logFactory) {
+    public DataStoreImpl(Context context, LogFactory logFactory, Toaster toaster) {
+        this.toaster = toaster;
         this.prefs = context.getSharedPreferences("DataStore", Context.MODE_PRIVATE);
         this.log = logFactory.create(getClass());
     }
@@ -72,5 +76,6 @@ public class DataStoreImpl implements DataStore {
     @Override
     public void clearStore() {
         prefs.edit().clear().apply();
+        toaster.showToast(R.string.DataStore_ClearMessage);
     }
 }

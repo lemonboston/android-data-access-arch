@@ -72,6 +72,9 @@ public class MainViewImpl implements MainView {
     @Bind(R.id.HowToTestArea)
     ViewGroup howToTestArea;
 
+    @Bind(R.id.MiniProgressBar)
+    ProgressBar miniProgressBar;
+
     private final ViewToolkit viewToolkit;
     private UserActionListener listener;
 
@@ -222,5 +225,15 @@ public class MainViewImpl implements MainView {
     @Override
     public void clearResultText() {
         resultTextView.setText(null);
+    }
+
+    @Override
+    public void showRefreshingIndicator() {
+        miniProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideRefreshIndicator() {
+        miniProgressBar.setVisibility(View.GONE);
     }
 }

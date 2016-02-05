@@ -45,6 +45,10 @@ public interface MainView {
 
     void clearResultText();
 
+    void showRefreshingIndicator();
+
+    void hideRefreshIndicator();
+
     interface UserActionListener {
 
         void onUseCaseSelected(int position);

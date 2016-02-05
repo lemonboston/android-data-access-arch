@@ -10,6 +10,7 @@ import com.gk.daas.R;
 import com.gk.daas.bus.Bus;
 import com.gk.daas.core.BaseActivity;
 import com.gk.daas.data.access.DataAccessInitiator;
+import com.gk.daas.data.event.DoubleLoadFinishEvent;
 import com.gk.daas.data.event.GetForecastProgressEvent;
 import com.gk.daas.data.event.GetForecastSuccessEvent;
 import com.gk.daas.data.event.GetTempSuccessEvent;
@@ -150,6 +151,11 @@ public class MainActivity extends BaseActivity {
             view.hideProgressBar();
             progressDialog.showMessage(String.format("Retry #%d", retry.retryCount));
         }
+
+        @Subscribe(threadMode = ThreadMode.MainThread)
+        public void onDoubleLoadFinish(DoubleLoadFinishEvent event) {
+            view.hideRefreshIndicator();
+        }
     }
 
     private class UserActionHandler implements MainView.UserActionListener {
@@ -193,8 +199,6 @@ public class MainActivity extends BaseActivity {
         public void onExecuteButtonClick() {
             String city = view.getCity1();
             switch (currentUseCase) {
-                case EMPTY_PLACEHOLDER:
-                    break;
                 case BASIC:
                 case ERROR_HANDLING:
                 case ONGOING_CALL_HANDLING:
@@ -202,6 +206,10 @@ public class MainActivity extends BaseActivity {
                 case RETRY:
                 case COMBINED:
                     view.showProgressBar();
+                    dataAccessInitiator.getWeather(currentUseCase, city);
+                    break;
+                case DOUBLE_LOAD:
+                    view.showRefreshingIndicator();
                     dataAccessInitiator.getWeather(currentUseCase, city);
                     break;
                 case CANCELLABLE:

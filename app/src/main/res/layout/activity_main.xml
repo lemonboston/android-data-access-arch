@@ -26,10 +26,10 @@
             <TextView
                 android:id="@+id/EmptyPage_Text"
                 style="@style/TextDescription"
-                android:text="@string/AppDescription"
-                android:paddingTop="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="24dp"
+                android:text="@string/AppDescription"
                 android:visibility="gone"/>
 
             <RelativeLayout
@@ -75,14 +75,25 @@
                     android:layout_marginTop="@dimen/distance_default"
                     tools:text="@string/GetTemp_Button"/>
 
+                <com.gk.daas.widget.KeepVisibilityProgressBar
+                    android:id="@+id/MiniProgressBar"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignTop="@id/Button_Execute"
+                    android:layout_margin="14dp"
+                    android:layout_toLeftOf="@id/Button_Execute"
+                    android:saveEnabled="true"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
                 <Button
                     android:id="@+id/Button_OtherScreen"
                     style="@style/ActionButtonStyle.Secondary"
                     android:layout_alignParentRight="true"
                     android:layout_below="@id/Button_Execute"
-                    android:visibility="gone"
                     android:layout_marginTop="@dimen/distance_default"
-                    android:text="@string/OtherScreenButton"/>
+                    android:text="@string/OtherScreenButton"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/ResultText"

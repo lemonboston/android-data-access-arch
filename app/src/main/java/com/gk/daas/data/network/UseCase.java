@@ -18,6 +18,10 @@ import static com.gk.daas.R.string.UseCase_Cancellable_Title;
 import static com.gk.daas.R.string.UseCase_Choose;
 import static com.gk.daas.R.string.UseCase_Combined;
 import static com.gk.daas.R.string.UseCase_Combined_Requirement;
+import static com.gk.daas.R.string.UseCase_DoubleLoad_HowToTest;
+import static com.gk.daas.R.string.UseCase_DoubleLoad_Implementation;
+import static com.gk.daas.R.string.UseCase_DoubleLoad_Requirement;
+import static com.gk.daas.R.string.UseCase_DoubleLoad_Title;
 import static com.gk.daas.R.string.UseCase_ErrorHandling_Desc;
 import static com.gk.daas.R.string.UseCase_ErrorHandling_HowToTest;
 import static com.gk.daas.R.string.UseCase_ErrorHandling_Implementation;
@@ -104,6 +108,13 @@ public enum UseCase {
             UseCase_Combined_Requirement,
             0,
             0,
+            WeatherUseCase_GetTemp,
+            GetTemp_Button),
+    DOUBLE_LOAD(
+            UseCase_DoubleLoad_Title,
+            UseCase_DoubleLoad_Requirement,
+            UseCase_DoubleLoad_Implementation,
+            UseCase_DoubleLoad_HowToTest,
             WeatherUseCase_GetTemp,
             GetTemp_Button),
     PARALLEL_AND_CHAINED(

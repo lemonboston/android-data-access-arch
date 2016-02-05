@@ -1,8 +1,10 @@
 package com.gk.daas.data.network;
 
+import com.gk.daas.Investigator;
 import com.gk.daas.bus.Bus;
 import com.gk.daas.core.Config;
 import com.gk.daas.data.access.DataAccessController;
+import com.gk.daas.data.event.DoubleLoadFinishEvent;
 import com.gk.daas.data.event.GetForecastProgressEvent;
 import com.gk.daas.data.event.GetForecastSuccessEvent;
 import com.gk.daas.data.event.GetTempSuccessEvent;
@@ -79,7 +81,8 @@ public class DataAccessControllerImpl implements DataAccessController {
             case COMBINED:
                 getTemperatureCombined(city);
                 break;
-            case PARALLEL_AND_CHAINED:
+            case DOUBLE_LOAD:
+                getTemperatureWithDoubleLoad(city);
                 break;
         }
     }
@@ -172,6 +175,47 @@ public class DataAccessControllerImpl implements DataAccessController {
                             DataAccessError dataAccessError = errorInterpreter.interpret(throwable);
                             bus.post(dataAccessError);
                             log.w(tag + "Error: " + throwable);
+                        });
+
+    }
+
+    private void getTemperatureWithDoubleLoad(String city) {
+        String tag = "getTemperatureWithDoubleLoad | ";
+        log.d(tag + "Starting, city: " + city);
+
+        Observable.concatEager(
+
+                dataStore.getTemperatureAsObservable(city)
+                        .map(WeatherResponse::createFromTemp)
+                        .onErrorResumeNext(Observable.<WeatherResponse>empty())
+                        .subscribeOn(Schedulers.io()),
+
+                weatherService.getWeather(city, API_KEY)
+                        .doOnSuccess((WeatherResponse weatherResponse) -> {
+                            log.d(tag + "Saving temp to data store");
+                            dataStore.saveAsync(city, weatherResponse.main.temp);
+                        })
+                        .toObservable()
+                        .subscribeOn(Schedulers.io()))
+
+                .doOnUnsubscribe(taskCounter::taskFinished)
+
+                .subscribeOn(Schedulers.io())
+
+                .subscribe(
+                        (WeatherResponse weatherResponse) -> {
+                            Investigator.log(this);
+                            double temp = weatherResponse.main.temp;
+                            log.d(tag + "Temp retrieved (from server or local store), temp: " + temp);
+                            bus.post(new GetTempSuccessEvent(new Temperature(temp)));
+                        },
+                        throwable -> {
+                            DataAccessError dataAccessError = errorInterpreter.interpret(throwable);
+                            bus.post(dataAccessError);
+                            log.w(tag + "Error: " + throwable);
+                        },
+                        () -> {
+                            bus.post(new DoubleLoadFinishEvent());
                         });
 
     }

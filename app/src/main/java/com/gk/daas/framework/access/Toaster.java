@@ -1,5 +1,6 @@
 package com.gk.daas.framework.access;
 
+import android.support.annotation.StringRes;
 import android.widget.Toast;
 
 /**
@@ -15,5 +16,7 @@ public interface Toaster {
      * @param message the message
      */
     void showToast(String message);
+
+    void showToast(@StringRes int messageResId);
 
 }

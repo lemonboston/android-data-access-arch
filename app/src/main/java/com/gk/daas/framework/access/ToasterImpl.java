@@ -2,6 +2,7 @@ package com.gk.daas.framework.access;
 
 import android.content.Context;
 import android.os.Handler;
+import android.support.annotation.StringRes;
 import android.widget.Toast;
 
 import javax.inject.Inject;
@@ -25,6 +26,11 @@ public class ToasterImpl implements Toaster {
     @Override
     public void showToast(String message) {
         uiHandler.post(() -> Toast.makeText(context, message, Toast.LENGTH_SHORT).show());
+    }
+
+    @Override
+    public void showToast(@StringRes int messageResId) {
+        showToast(context.getString(messageResId));
     }
 
 }
