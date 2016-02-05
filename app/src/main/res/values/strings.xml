@@ -6,7 +6,6 @@
 
     <string name="SecondActivity_label">Another screen..</string>
 
-    <!-- TODO maybe add note on DataAccessControllerImpl -->
     <string name="AppDescription">The following networking/data access <b>architecture</b> is used in this sample app:
         \n\n<b>Retrofit</b> with <b>RxJava</b> for the REST API calls, and <b>EventBus</b> to deliver the results back to the presentation layer.
         \nRx features to handle errors, multiple calls, fallback to offline store, and more.
@@ -117,9 +116,5 @@
         \n\n<b>Mock</b>: Retrofit annotated interface mocked. Returns random value after 3-4 seconds.
     </string>
     <string name="Menu_ServiceSelector">Real/Mock Service</string>
-    <!--<string name="skldjf"><b>Weather Service</b></string>-->
-
-    <!-- TODO add notes on real, mock service usage on landing page -->
-
 
 </resources>
