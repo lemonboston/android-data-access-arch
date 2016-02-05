@@ -28,7 +28,7 @@ public class MockData {
         ForecastResponse forecastResponse = new ForecastResponse();
 
         City city = new City();
-        city.name = "Budapest";
+        city.name = "San Francisco";
         forecastResponse.city = city;
 
         List<WeatherResponse> weatherResponses = new ArrayList<>();

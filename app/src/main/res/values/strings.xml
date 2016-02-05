@@ -47,8 +47,8 @@
     <string name="Menu_MockService">Use Mock Weather Service</string>
     <string name="Menu_ClearDataStore">Clear data store</string>
 
-    <string name="City1_Default">Budapest</string>
-    <string name="City2_Default">London</string>
+    <string name="City1_Default">San Francisco</string>
+    <string name="City2_Default">Berlin</string>
 
     <string name="UseCase_Choose">[Choose use case…]</string>
 
