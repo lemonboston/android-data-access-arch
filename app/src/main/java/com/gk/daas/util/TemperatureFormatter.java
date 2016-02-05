@@ -13,6 +13,6 @@ public class TemperatureFormatter {
     }
 
     private static String formatTempToCelsius(double tempInCelsius) {
-        return String.format("%.1f %s", tempInCelsius, DEGREE_CELSIUS);
+        return String.format("%.1f\u00A0%s", tempInCelsius, DEGREE_CELSIUS);
     }
 }

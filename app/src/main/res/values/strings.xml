@@ -6,7 +6,7 @@
 
     <string name="SecondActivity_label">Another screen..</string>
 
-    <string name="AppDescription">The following networking/data access <b>architecture</b> is used in this sample app:
+    <string name="AppDescription">The networking/data access <b>architecture</b> used in this sample app:
         \n\n<b>Retrofit</b> with <b>RxJava</b> for the REST API calls, and <b>EventBus</b> to deliver the results back to the presentation layer.
         \nRx features to handle errors, multiple calls, fallback to offline store, and more.
         \nThe whole component is placed in a Android <b>Service</b> which starts on-demand and stops after a timeout when there are no more ongoing tasks.
@@ -117,7 +117,7 @@
     <string name="ServiceSelector_Real">Real</string>
     <string name="ServiceSelector_Mock">Mock</string>
     <string name="Service_Descriptions"><b>Real</b>: api.openweathermap.org
-        \n\n<b>Mock</b>: Retrofit annotated interface mocked. Returns random value after 3-4 seconds.
+        \n\n<b>Mock</b>: The Retrofit service interface is mocked. Returns random value after 3-4 seconds.
     </string>
     <string name="Menu_ServiceSelector">Real/Mock Service</string>
 
