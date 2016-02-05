@@ -1,6 +1,9 @@
 package com.gk.daas.data.model.client;
 
-import com.gk.daas.util.TemperatureFormatter;
+import com.gk.daas.core.Config;
+
+import static com.gk.daas.util.TemperatureFormatter.convertAndFormatToCelsius;
+import static com.gk.daas.util.TemperatureFormatter.convertAndFormatToFahrenheit;
 
 /**
  * @author Gabor_Keszthelyi
@@ -15,6 +18,6 @@ public class Temperature {
 
     @Override
     public String toString() {
-        return TemperatureFormatter.formatTempInKelvinToCelsius(temperatureInKelvin);
+        return Config.USE_FAHRENHEIT ? convertAndFormatToFahrenheit(temperatureInKelvin) : convertAndFormatToCelsius(temperatureInKelvin);
     }
 }

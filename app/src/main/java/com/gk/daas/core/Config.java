@@ -7,6 +7,8 @@ public class Config {
 
     public static boolean MOCK_WEATHER_SERVICE = false;
 
+    public static boolean USE_FAHRENHEIT = false;
+
     public static final int BACKGROUND_SERVICE_SHUTDOWN_TIMEOUT_SECONDS = 60;
     public static final int RETRY_COUNT = 3;
 
