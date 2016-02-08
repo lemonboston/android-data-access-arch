@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import com.gk.daas.R;
 import com.gk.daas.core.Config;
 import com.gk.daas.databinding.DialogServiceSelectorBinding;
+import com.gk.daas.framework.access.Toaster;
 
 /**
  * @author Gabor_Keszthelyi
@@ -15,9 +16,11 @@ import com.gk.daas.databinding.DialogServiceSelectorBinding;
 public class ServiceSelectorDialog {
 
     private final Context context;
+    private final Toaster toaster;
 
-    public ServiceSelectorDialog(Context context) {
+    public ServiceSelectorDialog(Context context, Toaster toaster) {
         this.context = context;
+        this.toaster = toaster;
     }
 
     public void show() {
@@ -39,6 +42,7 @@ public class ServiceSelectorDialog {
     private void setMockServiceAndDismiss(boolean isMockService, Dialog dialog) {
         Config.MOCK_WEATHER_SERVICE = isMockService;
         dialog.dismiss();
+        toaster.showToast(isMockService ? R.string.SelectorDialog_MockSelected : R.string.SelectorDialog_RealSelected);
     }
 
 }

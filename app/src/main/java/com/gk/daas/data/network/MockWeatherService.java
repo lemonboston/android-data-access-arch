@@ -1,5 +1,6 @@
 package com.gk.daas.data.network;
 
+import com.gk.daas.core.Config;
 import com.gk.daas.data.model.server.ForecastResponse;
 import com.gk.daas.data.model.server.MockData;
 import com.gk.daas.data.model.server.WeatherResponse;
@@ -26,7 +27,7 @@ public class MockWeatherService implements OpenWeatherService {
         return Single.create(new Single.OnSubscribe<WeatherResponse>() {
             @Override
             public void call(SingleSubscriber<? super WeatherResponse> singleSubscriber) {
-                sleep(3000);
+                sleep(Config.MOCK_SERVICE_RESPONSE_DELAY);
                 log.d("Mock weather call finish");
                 singleSubscriber.onSuccess(MockData.randomWeatherResponse());
             }
@@ -38,7 +39,7 @@ public class MockWeatherService implements OpenWeatherService {
         return Single.create(new Single.OnSubscribe<ForecastResponse>() {
             @Override
             public void call(SingleSubscriber<? super ForecastResponse> singleSubscriber) {
-                sleep(4000);
+                sleep(Config.MOCK_SERVICE_RESPONSE_DELAY);
                 log.d("Mock forecast call finish");
                 singleSubscriber.onSuccess(MockData.randomForecastResponse());
 

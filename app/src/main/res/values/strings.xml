@@ -117,7 +117,7 @@
     <string name="ServiceSelector_Real">Real</string>
     <string name="ServiceSelector_Mock">Mock</string>
     <string name="Service_Descriptions"><b>Real</b>: api.openweathermap.org
-        \n\n<b>Mock</b>: The Retrofit service interface is mocked. Returns random value after 3-4 seconds.
+        \n\n<b>Mock</b>: The Retrofit service interface is mocked. Returns random value after 3 seconds.
     </string>
     <string name="Menu_ServiceSelector">Real/Mock Service</string>
 
@@ -141,5 +141,8 @@
     <string name="UseCase_DoubleLoad_Requirement">If offline data is available, show that first but load from server too and refresh the value. Execute them in parallel.</string>
     <string name="UseCase_DoubleLoad_Implementation">Combining the two Rx Observables with operator <i>concatEager</i>.</string>
     <string name="UseCase_DoubleLoad_HowToTest">Use with mock server (real one is too fast).</string>
+
+    <string name="SelectorDialog_MockSelected">Mock Weather Service selected</string>
+    <string name="SelectorDialog_RealSelected">Real Weather Service selected</string>
 
 </resources>
