@@ -1,7 +1,7 @@
 # RRES (Retrofit-RxJava-EventBus-Service) Architecture Demo App #
 
-This is a Android sample app for showing the implementation of 
- the following __Networking / Data Access architecture__ using concrete use-cases.
+This is a Android sample app for showing the implementation of the 
+__Networking / Data Access architecture__ described below using concrete use-cases.
  
 ## Architecture ##
 __Retrofit__ with __RxJava__ for handling the REST API calls.  
@@ -9,6 +9,32 @@ __EventBus__ to deliver the results and updates back to the presentation layer.
 Rx features to handle errors, chained or parallel calls, fallback to offline store, and more.  
 The whole component is placed in a __Android Service__ which starts on-demand and stops after some idle time when there are no more ongoing tasks.
   
+#### Why them? ####
+- __Retrofit__  
+Provides a simple, declarative way to create the REST API client as a Java interface, 
+while it is also highly configurable through the underlying OkHttp client.  
+Supports RxJava return values.
+- __RxJava__  
+RxJava makes it easier to combine calls or execute custom processing chains without keeping states.  
+Makes threading simple and declarative.
+- __EventBus__  
+I believe that for the data access component the decoupling of the publishers and subscribers by using an event bus
+as middleman instead of using the more direct connection with callbacks and the observer pattern
+can give some benefits and thus be a better approach.  
+It gives us the flexibility to send any kind of result, error, or progress update from any part of the processing chain
+and let the interested UI controller(s) listen to them independently from the initiator and from each other.  
+It allows us to separate the data access layer more easily without the need and difficulties of keeping
+the direct callback references to the presentation layer.    
+EventBus in particular has some useful features (threading, sticky events) over using for example the built-in BroadcastReceiver.
+- __Android Service__  
+Putting the whole component in a Service has some benefits:  
+We can control its lifecycle, so it can work as a 'temporary singleton' while the network calls are executing.
+So it can survive the configuration changes easily but also make sure not to keep a global singleton in memory
+when it's not needed.  
+A Service also has more guarantees from the system that while it is running it won't be killed,
+which can be useful for some use-cases.  
+(e.g.: user exits the app with back button or background sync)
+
   
 ## List of use-cases implemented  ##
 
