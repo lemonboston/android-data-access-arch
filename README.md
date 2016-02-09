@@ -37,7 +37,7 @@ which can be useful for some use-cases.
 
 ##### Is this the best approach? #####
 No, I think the [Design for Offline](https://plus.google.com/+AndroidDevelopers/posts/3C4GPowmWLb) approach presented by Googlers
- is a more advanced solution.  But it's probably second best and might be considered depending on the requirements.  
+ is a more advanced solution.  But this is probably second best and might be considered depending on the requirements.  
  The [github page](https://github.com/yigit/android-priority-jobqueue) of the Job Queue library used in that app also has some
  good comments on the whole problem domain. ( _Service with a ThreadPool_ corresponds to this architecture.) 
 
@@ -94,5 +94,3 @@ No, I think the [Design for Offline](https://plus.google.com/+AndroidDevelopers/
     - _Implementation_:  
     Retrofit backed by OkHttp can take care of the caching, just has to be configured.  
     (Need to be un-commented in code to enable it.)
-
-
