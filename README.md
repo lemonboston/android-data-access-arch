@@ -35,12 +35,6 @@ when it's not needed.
 A Service also has more guarantees from the system that while it is running it won't be killed,
 which can be useful for some use-cases.
 
-##### Is this the best approach? #####
-No, I think the [Design for Offline](https://plus.google.com/+AndroidDevelopers/posts/3C4GPowmWLb) approach presented by Googlers
- is a more advanced solution.  But this is probably second best and might be considered depending on the requirements.  
- The [github page](https://github.com/yigit/android-priority-jobqueue) of the Job Queue library used in that app also has some
- good comments on the whole problem domain. ( _Service with a ThreadPool_ corresponds to this architecture.) 
-
 - - - - -
   
 ## List of use-cases implemented  ##
