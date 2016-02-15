@@ -12,6 +12,7 @@ import com.gk.daas.data.event.RetryEvent;
 import com.gk.daas.data.model.client.Forecast;
 import com.gk.daas.data.model.client.Temperature;
 import com.gk.daas.data.model.converter.ForecastConverter;
+import com.gk.daas.data.model.server.MockData;
 import com.gk.daas.data.model.server.WeatherResponse;
 import com.gk.daas.data.network.connection.NetworkConnectionChecker;
 import com.gk.daas.data.store.DataStore;
@@ -109,7 +110,7 @@ public class DataAccessControllerImpl implements DataAccessController {
         log.d(tag + "Starting, city: " + city);
 
         connectionChecker.checkNetwork()
-                .flatMap(aVoid -> weatherService.getWeather(city, "an invalid api key"))
+                .flatMap(aVoid -> weatherService.getWeather(city, MockData.INVALID_API_KEY))
                 .toObservable().doOnUnsubscribe(taskCounter::taskFinished)
                 .subscribeOn(scheduler)
                 .subscribe(

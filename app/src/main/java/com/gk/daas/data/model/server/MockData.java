@@ -10,6 +10,7 @@ import java.util.List;
 public class MockData {
 
     private static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("#.##");
+    public static final String INVALID_API_KEY = "an invalid api key";
 
     public static WeatherResponse randomWeatherResponse() {
         double randomTemp = 325 + Math.random() * 50;
