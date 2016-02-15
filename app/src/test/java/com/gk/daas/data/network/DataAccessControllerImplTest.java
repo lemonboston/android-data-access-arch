@@ -12,6 +12,7 @@ import com.gk.daas.log.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -21,7 +22,7 @@ import rx.Single;
 import rx.schedulers.Schedulers;
 
 import static com.gk.daas.data.network.OpenWeatherService.API_KEY;
-import static org.mockito.Matchers.isA;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -70,7 +71,9 @@ public class DataAccessControllerImplTest {
 
         underTest.getWeather(UseCase.BASIC, CITY);
 
-        verify(bus).post(isA(GetTempSuccessEvent.class));
+        ArgumentCaptor<GetTempSuccessEvent> event = ArgumentCaptor.forClass(GetTempSuccessEvent.class);
+        verify(bus).post(event.capture());
+        assertEquals(event.getValue().temperature.temperatureInKelvin, WEATHER_RESPONSE.main.temp, 0.00001);
         verify(taskCounter).taskFinished();
     }
 }
