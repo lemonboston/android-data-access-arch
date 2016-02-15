@@ -16,6 +16,7 @@ import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
+import rx.schedulers.Schedulers;
 
 /**
  * @author Gabor_Keszthelyi
@@ -32,7 +33,7 @@ public class ServiceModule {
 
     @Provides
     public DataAccessController provideDataAccessController(@Named(Name.ROUTER) OpenWeatherService weatherService, LogFactory logFactory, Bus bus, NetworkConnectionChecker connectionChecker, DataStore dataStore, TaskCounter taskCounter, ErrorInterpreter errorInterpreter, ForecastConverter forecastConverter) {
-        return new DataAccessControllerImpl(weatherService, logFactory, bus, connectionChecker, dataStore, taskCounter, errorInterpreter, forecastConverter);
+        return new DataAccessControllerImpl(weatherService, logFactory, bus, connectionChecker, dataStore, taskCounter, errorInterpreter, forecastConverter, Schedulers.io());
     }
 
     @Provides
