@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="12dp"
                 android:buttonTint="@android:color/white"
-                android:text="@string/ServiceSelector_Real" />
+                android:text="@string/ServiceSelector_Real"/>
 
             <RadioButton
                 android:id="@+id/MockService"
@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:buttonTint="@android:color/white"
-                android:text="@string/ServiceSelector_Mock" />
+                android:text="@string/ServiceSelector_Mock"/>
         </RadioGroup>
 
         <TextView
@@ -48,12 +48,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="left"
-            android:paddingTop="8dp"
             android:paddingBottom="@dimen/distance_default"
-            android:paddingRight="@dimen/distance_default"
             android:paddingLeft="@dimen/distance_default"
+            android:paddingRight="@dimen/distance_default"
+            android:paddingTop="8dp"
             android:text="@string/Service_Descriptions"
             android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
     </LinearLayout>
 </layout>

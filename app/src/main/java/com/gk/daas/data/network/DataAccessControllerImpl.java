@@ -1,6 +1,6 @@
 package com.gk.daas.data.network;
 
-import com.gk.daas.Investigator;
+
 import com.gk.daas.bus.Bus;
 import com.gk.daas.core.Config;
 import com.gk.daas.data.access.DataAccessController;
@@ -207,7 +207,6 @@ public class DataAccessControllerImpl implements DataAccessController {
 
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
-                            Investigator.log(this);
                             double temp = weatherResponse.main.temp;
                             log.d(tag + "Temp retrieved (from server or local store), temp: " + temp);
                             bus.post(new GetTempSuccessEvent(new Temperature(temp)));

@@ -27,10 +27,11 @@ import com.gk.daas.screen.ErrorTranslator;
 import com.gk.daas.screen.second.SecondActivity;
 import com.gk.daas.util.TemperatureFormatter;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import javax.inject.Inject;
 
-import de.greenrobot.event.Subscribe;
-import de.greenrobot.event.ThreadMode;
 
 /**
  * @author Gabor_Keszthelyi
@@ -111,14 +112,14 @@ public class MainActivity extends BaseActivity {
 
     public class DataAccessEventHandler {
 
-        @Subscribe(threadMode = ThreadMode.MainThread)
+        @Subscribe(threadMode = ThreadMode.MAIN)
         public void onGetTempSuccess(GetTempSuccessEvent event) {
             view.hideProgressBar();
             progressDialog.dismiss();
             view.setResultText(event.temperature.toString());
         }
 
-        @Subscribe(threadMode = ThreadMode.MainThread)
+        @Subscribe(threadMode = ThreadMode.MAIN)
         public void onDataAccessFailure(DataAccessError error) {
             view.hideProgressBar();
             progressDialog.dismiss();
@@ -126,7 +127,7 @@ public class MainActivity extends BaseActivity {
             errorDialog.show(errorMessage);
         }
 
-        @Subscribe(threadMode = ThreadMode.MainThread, sticky = true)
+        @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
         public void onProgressUpdate(GetForecastProgressEvent progress) {
             switch (progress) {
                 case FIRST_STAGE_STARTED:
@@ -141,18 +142,18 @@ public class MainActivity extends BaseActivity {
             }
         }
 
-        @Subscribe(threadMode = ThreadMode.MainThread)
+        @Subscribe(threadMode = ThreadMode.MAIN)
         public void onForecastSuccess(GetForecastSuccessEvent event) {
             view.setResultText(event.forecast.toString());
         }
 
-        @Subscribe(threadMode = ThreadMode.MainThread)
+        @Subscribe(threadMode = ThreadMode.MAIN)
         public void onRetryEvent(RetryEvent retry) {
             view.hideProgressBar();
             progressDialog.showMessage(String.format("Retry #%d", retry.retryCount));
         }
 
-        @Subscribe(threadMode = ThreadMode.MainThread)
+        @Subscribe(threadMode = ThreadMode.MAIN)
         public void onDoubleLoadFinish(DoubleLoadFinishEvent event) {
             view.hideRefreshIndicator();
         }
