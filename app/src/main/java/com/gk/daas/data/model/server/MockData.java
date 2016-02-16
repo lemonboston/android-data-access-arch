@@ -16,6 +16,10 @@ public class MockData {
         double randomTemp = 325 + Math.random() * 50;
         randomTemp = twoDecimalsOnly(randomTemp);
 
+        return weatherResponse(randomTemp);
+    }
+
+    private static WeatherResponse weatherResponse(double randomTemp) {
         Main main = new Main();
         main.temp = randomTemp;
 
@@ -40,5 +44,18 @@ public class MockData {
 
     private static double twoDecimalsOnly(double temp) {
         return Double.valueOf(TWO_DECIMAL_FORMAT.format(temp));
+    }
+
+    public static ForecastResponse forecastResponse(String city, double temp) {
+        ForecastResponse forecastResponse = new ForecastResponse();
+
+        City cityObj = new City();
+        cityObj.name = city;
+        forecastResponse.city = cityObj;
+
+        List<WeatherResponse> weatherResponses = new ArrayList<>();
+        weatherResponses.add(weatherResponse(temp));
+        forecastResponse.list = weatherResponses;
+        return forecastResponse;
     }
 }

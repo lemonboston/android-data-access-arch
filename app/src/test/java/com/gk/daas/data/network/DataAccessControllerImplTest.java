@@ -1,9 +1,16 @@
 package com.gk.daas.data.network;
 
 import com.gk.daas.bus.Bus;
+import com.gk.daas.core.Config;
+import com.gk.daas.data.event.GetForecastProgressEvent;
+import com.gk.daas.data.event.GetForecastSuccessEvent;
 import com.gk.daas.data.event.GetTempSuccessEvent;
 import com.gk.daas.data.event.RetryEvent;
+import com.gk.daas.data.model.client.Forecast;
+import com.gk.daas.data.model.client.Temperature;
 import com.gk.daas.data.model.converter.ForecastConverter;
+import com.gk.daas.data.model.server.ForecastResponse;
+import com.gk.daas.data.model.server.MockData;
 import com.gk.daas.data.model.server.WeatherResponse;
 import com.gk.daas.data.network.connection.NetworkConnectionChecker;
 import com.gk.daas.data.network.connection.NoInternetException;
@@ -48,10 +55,12 @@ public class DataAccessControllerImplTest {
     private static final NoInternetException NO_INTERNET_EXCEPTION = new NoInternetException();
 
     private static final WeatherResponse WEATHER_RESPONSE = WeatherResponse.createFromTemp(18);
+    private static final WeatherResponse WEATHER_RESPONSE_2 = WeatherResponse.createFromTemp(44);
     private static final String CITY = "Berlin";
     private static final DataAccessError DATA_ACCESS_ERROR = DataAccessError.NO_OFFLINE_DATA;
     private static final Exception SOME_EXCEPTION = new Exception();
     private static final java.lang.Double TEMPERATURE = WEATHER_RESPONSE.main.temp;
+    private static final String CITY2 = "New York";
 
     @Mock
     OpenWeatherService weatherService;
@@ -169,31 +178,61 @@ public class DataAccessControllerImplTest {
     }
 
     @Test
-    // TODO Not working because of threading. Should call the uncommented verifications as well.
     public void testGetWeather_Retry() {
-        when(connectionChecker.checkNetwork()).thenReturn(Single.just(null), Single.just(null), Single.just(null));
-        when(weatherService.getWeather(CITY, INVALID_API_KEY)).thenReturn(Single.error(SOME_EXCEPTION), Single.error(SOME_EXCEPTION), Single.error(SOME_EXCEPTION));
+        when(connectionChecker.checkNetwork()).thenReturn(Single.just(null));
+        when(weatherService.getWeather(CITY, INVALID_API_KEY)).thenReturn(Single.error(SOME_EXCEPTION));
         when(errorInterpreter.interpret(SOME_EXCEPTION)).thenReturn(DATA_ACCESS_ERROR);
 
         underTest.getWeather(UseCase.RETRY, CITY);
 
-        InOrder o = inOrder(connectionChecker, weatherService, errorInterpreter, bus, taskCounter);
+        // Wait until retries complete.
+        sleep((Config.RETRY_COUNT + 1) * Config.RETRY_DELAY_SECONDS * 1000);
 
+        InOrder o = inOrder(connectionChecker, weatherService, errorInterpreter, bus, taskCounter);
         o.verify(connectionChecker).checkNetwork();
         o.verify(weatherService).getWeather(CITY, INVALID_API_KEY);
         o.verify(bus).post(isA(RetryEvent.class));
 
-        //        o.verify(connectionChecker).checkNetwork();
-        //        o.verify(weatherService).getWeather(CITY, INVALID_API_KEY);
-        //        o.verify(bus).post(isA(RetryEvent.class));
-        //
-        //        o.verify(connectionChecker).checkNetwork();
-        //        o.verify(weatherService).getWeather(CITY, INVALID_API_KEY);
-        //        o.verify(bus).post(isA(RetryEvent.class));
+        o.verify(weatherService).getWeather(CITY, INVALID_API_KEY);
+        o.verify(bus).post(isA(RetryEvent.class));
 
-        //        o.verify(errorInterpreter).interpret(SOME_EXCEPTION);
-        //        o.verify(bus).post(DATA_ACCESS_ERROR);
-        //        o.verify(taskCounter).taskFinished();
+        o.verify(weatherService).getWeather(CITY, INVALID_API_KEY);
+        o.verify(bus).post(isA(RetryEvent.class));
+
+        o.verify(errorInterpreter).interpret(SOME_EXCEPTION);
+        o.verify(bus).post(DATA_ACCESS_ERROR);
+        o.verify(taskCounter).taskFinished();
+        o.verifyNoMoreInteractions();
+    }
+
+    private void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testGetForecast_happyPath() {
+        when(weatherService.getWeather(CITY, API_KEY)).thenReturn(Single.just(WEATHER_RESPONSE));
+        when(weatherService.getWeather(CITY2, API_KEY)).thenReturn(Single.just(WEATHER_RESPONSE_2));
+        ForecastResponse forecastResponse = MockData.forecastResponse(CITY2, WEATHER_RESPONSE_2.main.temp);
+        when(weatherService.getForecast(CITY2, API_KEY)).thenReturn(Single.just(forecastResponse));
+        Forecast forecast = new Forecast(CITY2, new Temperature(WEATHER_RESPONSE_2.main.temp));
+        when(forecastConverter.convert(forecastResponse)).thenReturn(forecast);
+
+        underTest.getForecastForWarmerCity(CITY, CITY2);
+
+        InOrder o = inOrder(weatherService, bus, forecastConverter, taskCounter);
+        o.verify(weatherService).getWeather(CITY, API_KEY);
+        o.verify(weatherService).getWeather(CITY2, API_KEY);
+        o.verify(bus).postSticky(isA(GetForecastProgressEvent.class));
+        o.verify(weatherService).getForecast(CITY2, API_KEY);
+        o.verify(forecastConverter).convert(forecastResponse);
+        o.verify(bus).post(isA(GetForecastSuccessEvent.class));
+        o.verify(bus).postSticky(isA(GetForecastProgressEvent.class));
+        o.verify(taskCounter).taskFinished();
         o.verifyNoMoreInteractions();
     }
 }
