@@ -1,6 +1,6 @@
 package com.gk.daas.data.network;
 
-import com.gk.daas.Investigator;
+
 import com.gk.daas.bus.Bus;
 import com.gk.daas.core.Config;
 import com.gk.daas.data.access.DataAccessController;
@@ -12,6 +12,7 @@ import com.gk.daas.data.event.RetryEvent;
 import com.gk.daas.data.model.client.Forecast;
 import com.gk.daas.data.model.client.Temperature;
 import com.gk.daas.data.model.converter.ForecastConverter;
+import com.gk.daas.data.model.server.MockData;
 import com.gk.daas.data.model.server.WeatherResponse;
 import com.gk.daas.data.network.connection.NetworkConnectionChecker;
 import com.gk.daas.data.store.DataStore;
@@ -21,10 +22,10 @@ import com.gk.daas.log.LogFactory;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.Scheduler;
 import rx.Single;
 import rx.Subscription;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 import static com.gk.daas.data.network.OpenWeatherService.API_KEY;
 
@@ -41,12 +42,13 @@ public class DataAccessControllerImpl implements DataAccessController {
     private final TaskCounter taskCounter;
     private final ErrorInterpreter errorInterpreter;
     private final ForecastConverter forecastConverter;
+    private final Scheduler scheduler;
 
     private Subscription getTempWithOngoingHandlingSubscription;
     private Subscription getTempAllInOneSubscription;
     private Subscription cancellableSubscription;
 
-    public DataAccessControllerImpl(OpenWeatherService weatherService, LogFactory logFactory, Bus bus, NetworkConnectionChecker connectionChecker, DataStore dataStore, TaskCounter taskCounter, ErrorInterpreter errorInterpreter, ForecastConverter forecastConverter) {
+    public DataAccessControllerImpl(OpenWeatherService weatherService, LogFactory logFactory, Bus bus, NetworkConnectionChecker connectionChecker, DataStore dataStore, TaskCounter taskCounter, ErrorInterpreter errorInterpreter, ForecastConverter forecastConverter, Scheduler scheduler) {
         this.weatherService = weatherService;
         this.bus = bus;
         this.connectionChecker = connectionChecker;
@@ -55,6 +57,7 @@ public class DataAccessControllerImpl implements DataAccessController {
         this.errorInterpreter = errorInterpreter;
         this.forecastConverter = forecastConverter;
         this.log = logFactory.create(getClass());
+        this.scheduler = scheduler;
     }
 
     @Override
@@ -92,7 +95,7 @@ public class DataAccessControllerImpl implements DataAccessController {
         log.d(tag + "Starting, city: " + city);
 
         weatherService.getWeather(city, API_KEY)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(scheduler)
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;
@@ -107,9 +110,9 @@ public class DataAccessControllerImpl implements DataAccessController {
         log.d(tag + "Starting, city: " + city);
 
         connectionChecker.checkNetwork()
-                .flatMap(aVoid -> weatherService.getWeather(city, "an invalid api key"))
+                .flatMap(aVoid -> weatherService.getWeather(city, MockData.INVALID_API_KEY))
                 .toObservable().doOnUnsubscribe(taskCounter::taskFinished)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(scheduler)
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;
@@ -135,7 +138,7 @@ public class DataAccessControllerImpl implements DataAccessController {
 
         getTempWithOngoingHandlingSubscription = weatherService.getWeather(city, API_KEY)
                 .toObservable().doOnUnsubscribe(taskCounter::taskFinished)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(scheduler)
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;
@@ -163,7 +166,7 @@ public class DataAccessControllerImpl implements DataAccessController {
 
                 .doOnUnsubscribe(taskCounter::taskFinished)
 
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(scheduler)
 
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
@@ -188,7 +191,7 @@ public class DataAccessControllerImpl implements DataAccessController {
                 dataStore.getTemperatureAsObservable(city)
                         .map(WeatherResponse::createFromTemp)
                         .onErrorResumeNext(Observable.<WeatherResponse>empty())
-                        .subscribeOn(Schedulers.io()),
+                        .subscribeOn(scheduler),
 
                 weatherService.getWeather(city, API_KEY)
                         .doOnSuccess((WeatherResponse weatherResponse) -> {
@@ -196,15 +199,14 @@ public class DataAccessControllerImpl implements DataAccessController {
                             dataStore.saveAsync(city, weatherResponse.main.temp);
                         })
                         .toObservable()
-                        .subscribeOn(Schedulers.io()))
+                        .subscribeOn(scheduler))
 
                 .doOnUnsubscribe(taskCounter::taskFinished)
 
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(scheduler)
 
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
-                            Investigator.log(this);
                             double temp = weatherResponse.main.temp;
                             log.d(tag + "Temp retrieved (from server or local store), temp: " + temp);
                             bus.post(new GetTempSuccessEvent(new Temperature(temp)));
@@ -225,14 +227,14 @@ public class DataAccessControllerImpl implements DataAccessController {
         log.d(tag + "Starting, city: " + city);
 
         connectionChecker.checkNetwork()
-                .flatMap(aVoid -> weatherService.getWeather(city, "invalid api key"))
+                .flatMap(aVoid -> weatherService.getWeather(city, MockData.INVALID_API_KEY))
 
                 .toObservable()
                 .retryWhen(retryFunc(tag))
 
                 .doOnUnsubscribe(taskCounter::taskFinished)
 
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(scheduler)
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
                             double temp = weatherResponse.main.temp;
@@ -272,7 +274,7 @@ public class DataAccessControllerImpl implements DataAccessController {
 
                 .toObservable().doOnUnsubscribe(taskCounter::taskFinished)
 
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(scheduler)
 
                 .subscribe(
                         (WeatherResponse weatherResponse) -> {
@@ -317,7 +319,7 @@ public class DataAccessControllerImpl implements DataAccessController {
 
                         .doOnUnsubscribe(taskCounter::taskFinished)
 
-                        .subscribeOn(Schedulers.io())
+                        .subscribeOn(scheduler)
 
                         .subscribe(
                                 (WeatherResponse weatherResponse) -> {
@@ -339,8 +341,8 @@ public class DataAccessControllerImpl implements DataAccessController {
         bus.postSticky(GetForecastProgressEvent.FIRST_STAGE_STARTED);
 
         Single.zip(
-                weatherService.getWeather(city1, API_KEY).subscribeOn(Schedulers.io()),
-                weatherService.getWeather(city2, API_KEY).subscribeOn(Schedulers.io()),
+                weatherService.getWeather(city1, API_KEY).subscribeOn(scheduler),
+                weatherService.getWeather(city2, API_KEY).subscribeOn(scheduler),
                 (response1, response2) -> response1.main.temp > response2.main.temp ? city1 : city2)
 
                 .doOnSuccess(city -> bus.postSticky(GetForecastProgressEvent.SECOND_STAGE_STARTED))
@@ -352,7 +354,7 @@ public class DataAccessControllerImpl implements DataAccessController {
                 .toObservable()
                 .doOnUnsubscribe(taskCounter::taskFinished)
 
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(scheduler)
 
                 .subscribe(
                         (Forecast forecast) -> {

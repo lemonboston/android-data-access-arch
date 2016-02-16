@@ -10,12 +10,13 @@ import com.gk.daas.data.event.GetTempSuccessEvent;
 import com.gk.daas.di.Injector;
 import com.gk.daas.util.TemperatureFormatter;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.greenrobot.event.Subscribe;
-import de.greenrobot.event.ThreadMode;
 
 /**
  * @author Gabor_Keszthelyi
@@ -41,7 +42,7 @@ public class SecondActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @Subscribe(threadMode = ThreadMode.MainThread)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGetTempSuccess(GetTempSuccessEvent event) {
         resultText.setText(event.temperature.toString());
     }

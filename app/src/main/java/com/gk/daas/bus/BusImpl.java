@@ -3,7 +3,8 @@ package com.gk.daas.bus;
 import com.gk.daas.log.Log;
 import com.gk.daas.log.LogFactory;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * The implementation of {@link Bus}.

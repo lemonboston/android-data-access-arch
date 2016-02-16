@@ -27,12 +27,13 @@ import com.gk.daas.log.LogFactory;
 import com.gk.daas.log.LogFactoryImpl;
 import com.gk.daas.util.TemperatureFormatter;
 
+import org.greenrobot.eventbus.EventBus;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import de.greenrobot.event.EventBus;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.GsonConverterFactory;

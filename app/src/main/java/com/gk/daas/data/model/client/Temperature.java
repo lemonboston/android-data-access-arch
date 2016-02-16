@@ -10,7 +10,7 @@ import static com.gk.daas.util.TemperatureFormatter.convertAndFormatToFahrenheit
  */
 public class Temperature {
 
-    private final double temperatureInKelvin;
+    public final double temperatureInKelvin;
 
     public Temperature(double temperatureInKelvin) {
         this.temperatureInKelvin = temperatureInKelvin;
