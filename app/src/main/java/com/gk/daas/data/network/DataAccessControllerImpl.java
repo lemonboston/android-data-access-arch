@@ -228,7 +228,7 @@ public class DataAccessControllerImpl implements DataAccessController {
         log.d(tag + "Starting, city: " + city);
 
         connectionChecker.checkNetwork()
-                .flatMap(aVoid -> weatherService.getWeather(city, "invalid api key"))
+                .flatMap(aVoid -> weatherService.getWeather(city, MockData.INVALID_API_KEY))
 
                 .toObservable()
                 .retryWhen(retryFunc(tag))
