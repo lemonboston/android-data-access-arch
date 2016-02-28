@@ -34,6 +34,7 @@ So it can survive the configuration changes easily and also ensure to not keep a
 when it's not needed.  
 A Service also has more guarantees from the system that while it is running it won't be killed,
 which can be useful for some use-cases.
+(Note: It is also possible to simply use a singleton instead of the Service. That removes some complexity.)
 
 - - - - -
   
