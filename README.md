@@ -33,7 +33,7 @@ We can control the Service's lifecycle, so it can work as a 'temporary singleton
 So it can survive the configuration changes easily and also ensure to not keep a global singleton in memory
 when it's not needed.  
 A Service also has more guarantees from the system that while it is running it won't be killed,
-which can be useful for some use-cases.
+which can be useful for some use-cases.  
 (Note: It is also possible to simply use a singleton instead of the Service. That removes some complexity.)
 
 - - - - -
