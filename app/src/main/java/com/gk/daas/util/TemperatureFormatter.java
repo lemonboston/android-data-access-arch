@@ -3,7 +3,10 @@ package com.gk.daas.util;
 /**
  * @author Gabor_Keszthelyi
  */
-public class TemperatureFormatter {
+public final class TemperatureFormatter {
+
+    private TemperatureFormatter() {
+    }
 
     private static final String DEGREE = "\u00b0";
     private static final String DEGREE_CELSIUS = DEGREE + "C";

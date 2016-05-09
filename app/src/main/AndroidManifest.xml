@@ -26,10 +26,6 @@
             android:name="com.gk.daas.screen.second.SecondActivity"
             android:label="@string/SecondActivity_label" />
 
-        <service
-            android:name=".data.network.DataAccessService"
-            android:exported="false" />
-
         <receiver
             android:name="com.gk.daas.data.network.SyncSchedulerBroadcastReceiver"
             android:exported="false" />

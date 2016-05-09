@@ -6,12 +6,12 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.gk.daas.bus.Bus;
 import com.gk.daas.bus.BusImpl;
 import com.gk.daas.core.App;
-import com.gk.daas.data.access.DataAccessInitiator;
-import com.gk.daas.data.access.DataAccessInitiatorImpl;
+import com.gk.daas.data.access.DataAccessController;
+import com.gk.daas.data.model.converter.ForecastConverter;
+import com.gk.daas.data.network.DataAccessControllerImpl;
 import com.gk.daas.data.network.ErrorInterpreter;
 import com.gk.daas.data.network.ErrorInterpreterImpl;
 import com.gk.daas.data.network.MockWeatherService;
-import com.gk.daas.data.network.NetworkServiceIntentHelper;
 import com.gk.daas.data.network.OpenWeatherService;
 import com.gk.daas.data.network.RoutingWeatherService;
 import com.gk.daas.data.network.SyncScheduler;
@@ -25,7 +25,6 @@ import com.gk.daas.framework.access.Toaster;
 import com.gk.daas.framework.access.ToasterImpl;
 import com.gk.daas.log.LogFactory;
 import com.gk.daas.log.LogFactoryImpl;
-import com.gk.daas.util.TemperatureFormatter;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -39,6 +38,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
 import retrofit2.RxJavaCallAdapterFactory;
+import rx.schedulers.Schedulers;
 
 /**
  * @author Gabor_Keszthelyi
@@ -52,24 +52,25 @@ public class AppModule {
         this.app = app;
     }
 
+    @Singleton
     @Provides
-    public DataAccessInitiator provideDataAccess(NetworkServiceIntentHelper intentHelper) {
-        return new DataAccessInitiatorImpl(app, intentHelper);
+    DataAccessController provideDataAccessController(@Named(Name.ROUTER) OpenWeatherService weatherService, LogFactory logFactory, Bus bus, NetworkConnectionChecker connectionChecker, DataStore dataStore, ErrorInterpreter errorInterpreter, ForecastConverter forecastConverter) {
+        return new DataAccessControllerImpl(weatherService, logFactory, bus, connectionChecker, dataStore, errorInterpreter, forecastConverter, Schedulers.io());
     }
 
     @Provides
-    public NetworkServiceIntentHelper provideNetworkServiceIntentHelper() {
-        return new NetworkServiceIntentHelper();
-    }
-
-    @Provides
-    public NetworkConnectionChecker provideNetworkConnectionChecker() {
+    NetworkConnectionChecker provideNetworkConnectionChecker() {
         return new NetworkConnectionChecker(app.getSystemService(ConnectivityManager.class));
     }
 
     @Provides
-    public DataStore provideDataStore(LogFactory logFactory, Toaster toaster) {
+    DataStore provideDataStore(LogFactory logFactory, Toaster toaster) {
         return new DataStoreImpl(app, logFactory, toaster);
+    }
+
+    @Provides
+    ForecastConverter provideForecastConverter() {
+        return new ForecastConverter();
     }
 
     @Provides
@@ -139,27 +140,22 @@ public class AppModule {
     }
 
     @Provides
-    public Bus provideBus(LogFactory logFactory) {
+    Bus provideBus(LogFactory logFactory) {
         return new BusImpl(EventBus.getDefault(), logFactory);
     }
 
     @Provides
-    public SyncScheduler provideSyncScheduler(LogFactory logFactory, Toaster toaster) {
+    SyncScheduler provideSyncScheduler(LogFactory logFactory, Toaster toaster) {
         return new SyncSchedulerImpl(app, logFactory, toaster);
     }
 
     @Provides
-    public TemperatureFormatter provideTemperatureFormatter() {
-        return new TemperatureFormatter();
-    }
-
-    @Provides
-    public StringResAccess provideStringResAccess() {
+    StringResAccess provideStringResAccess() {
         return new StringResAccessImpl(app);
     }
 
     @Provides
-    public ErrorInterpreter provideErrorInterpreter(LogFactory logFactory) {
+    ErrorInterpreter provideErrorInterpreter(LogFactory logFactory) {
         return new ErrorInterpreterImpl(logFactory);
     }
 

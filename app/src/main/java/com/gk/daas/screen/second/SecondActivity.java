@@ -8,7 +8,6 @@ import com.gk.daas.bus.Bus;
 import com.gk.daas.core.BaseActivity;
 import com.gk.daas.data.event.GetTempSuccessEvent;
 import com.gk.daas.di.Injector;
-import com.gk.daas.util.TemperatureFormatter;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -28,9 +27,6 @@ public class SecondActivity extends BaseActivity {
 
     @Inject
     Bus bus;
-
-    @Inject
-    TemperatureFormatter temperatureFormatter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

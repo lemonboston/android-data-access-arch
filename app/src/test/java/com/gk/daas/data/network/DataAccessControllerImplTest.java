@@ -73,8 +73,6 @@ public class DataAccessControllerImplTest {
     @Mock
     DataStore dataStore;
     @Mock
-    TaskCounter taskCounter;
-    @Mock
     ErrorInterpreter errorInterpreter;
     @Mock
     ForecastConverter forecastConverter;
@@ -89,7 +87,7 @@ public class DataAccessControllerImplTest {
     @Before
     public void setup() {
         when(logFactory.create(DataAccessControllerImpl.class)).thenReturn(log);
-        underTest = new DataAccessControllerImpl(weatherService, logFactory, bus, connectionChecker, dataStore, taskCounter, errorInterpreter, forecastConverter, scheduler);
+        underTest = new DataAccessControllerImpl(weatherService, logFactory, bus, connectionChecker, dataStore, errorInterpreter, forecastConverter, scheduler);
     }
 
     @Test
@@ -101,7 +99,6 @@ public class DataAccessControllerImplTest {
         ArgumentCaptor<GetTempSuccessEvent> event = forClass(GetTempSuccessEvent.class);
         verify(bus).post(event.capture());
         assertEquals(event.getValue().temperature.temperatureInKelvin, WEATHER_RESPONSE.main.temp, 0.00001);
-        verify(taskCounter).taskFinished();
     }
 
     @Test
@@ -114,7 +111,6 @@ public class DataAccessControllerImplTest {
         ArgumentCaptor<GetTempSuccessEvent> event = forClass(GetTempSuccessEvent.class);
         verify(bus).post(event.capture());
         assertEquals(event.getValue().temperature.temperatureInKelvin, WEATHER_RESPONSE.main.temp, 0.00001);
-        verify(taskCounter).taskFinished();
     }
 
     @Test
@@ -125,8 +121,7 @@ public class DataAccessControllerImplTest {
         underTest.getWeather(UseCase.ERROR_HANDLING, CITY);
 
         verify(bus).post(DATA_ACCESS_ERROR);
-        verify(taskCounter).taskFinished();
-        verifyNoMoreInteractions(bus, taskCounter);
+        verifyNoMoreInteractions(bus);
         verifyZeroInteractions(weatherService);
     }
 
@@ -140,8 +135,7 @@ public class DataAccessControllerImplTest {
 
         verify(weatherService).getWeather(CITY, INVALID_API_KEY);
         verify(bus).post(DATA_ACCESS_ERROR);
-        verify(taskCounter).taskFinished();
-        verifyNoMoreInteractions(bus, weatherService, taskCounter);
+        verifyNoMoreInteractions(bus, weatherService);
     }
 
     @Test
@@ -150,12 +144,11 @@ public class DataAccessControllerImplTest {
 
         underTest.getWeather(UseCase.OFFLINE_STORAGE, CITY);
 
-        InOrder o = inOrder(weatherService, dataStore, bus, taskCounter);
+        InOrder o = inOrder(weatherService, dataStore, bus);
         o.verify(weatherService).getWeather(CITY, API_KEY);
         o.verify(dataStore).saveAsync(CITY, WEATHER_RESPONSE.main.temp);
         ArgumentCaptor<GetTempSuccessEvent> event = forClass(GetTempSuccessEvent.class);
         o.verify(bus).post(event.capture());
-        o.verify(taskCounter).taskFinished();
         assertEquals(event.getValue().temperature.temperatureInKelvin, WEATHER_RESPONSE.main.temp, 0.00001);
         o.verifyNoMoreInteractions();
     }
@@ -167,12 +160,11 @@ public class DataAccessControllerImplTest {
 
         underTest.getWeather(UseCase.OFFLINE_STORAGE, CITY);
 
-        InOrder o = inOrder(weatherService, dataStore, bus, taskCounter);
+        InOrder o = inOrder(weatherService, dataStore, bus);
         o.verify(weatherService).getWeather(CITY, API_KEY);
         o.verify(dataStore).getTemperatureAsObservable(CITY);
         ArgumentCaptor<GetTempSuccessEvent> event = forClass(GetTempSuccessEvent.class);
         o.verify(bus).post(event.capture());
-        o.verify(taskCounter).taskFinished();
         assertEquals(event.getValue().temperature.temperatureInKelvin, WEATHER_RESPONSE.main.temp, 0.00001);
         o.verifyNoMoreInteractions();
     }
@@ -188,7 +180,7 @@ public class DataAccessControllerImplTest {
         // Wait until retries complete.
         sleep((Config.RETRY_COUNT + 1) * Config.RETRY_DELAY_SECONDS * 1000);
 
-        InOrder o = inOrder(connectionChecker, weatherService, errorInterpreter, bus, taskCounter);
+        InOrder o = inOrder(connectionChecker, weatherService, errorInterpreter, bus);
         o.verify(connectionChecker).checkNetwork();
         o.verify(weatherService).getWeather(CITY, INVALID_API_KEY);
         o.verify(bus).post(isA(RetryEvent.class));
@@ -201,7 +193,6 @@ public class DataAccessControllerImplTest {
 
         o.verify(errorInterpreter).interpret(SOME_EXCEPTION);
         o.verify(bus).post(DATA_ACCESS_ERROR);
-        o.verify(taskCounter).taskFinished();
         o.verifyNoMoreInteractions();
     }
 
@@ -224,7 +215,7 @@ public class DataAccessControllerImplTest {
 
         underTest.getForecastForWarmerCity(CITY, CITY2);
 
-        InOrder o = inOrder(weatherService, bus, forecastConverter, taskCounter);
+        InOrder o = inOrder(weatherService, bus, forecastConverter);
         o.verify(weatherService).getWeather(CITY, API_KEY);
         o.verify(weatherService).getWeather(CITY2, API_KEY);
         o.verify(bus).postSticky(isA(GetForecastProgressEvent.class));
@@ -232,7 +223,6 @@ public class DataAccessControllerImplTest {
         o.verify(forecastConverter).convert(forecastResponse);
         o.verify(bus).post(isA(GetForecastSuccessEvent.class));
         o.verify(bus).postSticky(isA(GetForecastProgressEvent.class));
-        o.verify(taskCounter).taskFinished();
         o.verifyNoMoreInteractions();
     }
 }

@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.gk.daas.data.access.DataAccessInitiator;
+import com.gk.daas.data.access.DataAccessController;
 import com.gk.daas.di.Injector;
 import com.gk.daas.log.Log;
 import com.gk.daas.log.LogFactory;
@@ -20,7 +20,7 @@ public class SyncSchedulerBroadcastReceiver extends BroadcastReceiver {
     SyncScheduler syncScheduler;
 
     @Inject
-    DataAccessInitiator dataAccessInitiator;
+    DataAccessController dataAccessController;
 
     @Inject
     LogFactory logFactory;
@@ -35,7 +35,9 @@ public class SyncSchedulerBroadcastReceiver extends BroadcastReceiver {
         log.d("Sync broadcast received");
         syncScheduler.scheduleNext(intent);
         String city = intent.getStringExtra(SyncSchedulerImpl.KEY_CITY);
-        dataAccessInitiator.getWeather(UseCase.OFFLINE_STORAGE, city);
+
+        // TODO Should be in a Service or used with GcmNetworkManager or with JobScheduler normally.
+        dataAccessController.getWeather(UseCase.OFFLINE_STORAGE, city);
     }
 
 }
