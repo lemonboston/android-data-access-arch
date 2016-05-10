@@ -78,4 +78,4 @@ EventBus in particular has some useful features (threading, sticky events) over 
     - Cache the network responses according to their _Cache-Control_ headers
     - _Implementation_:  
     Retrofit backed by OkHttp can take care of the caching, just has to be configured.  
-    (Need to be un-commented in code to enable it.)
+    (Can be switched on in Config class.)

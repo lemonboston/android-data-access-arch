@@ -1,18 +1,25 @@
 package com.gk.daas.network_module.di;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.gk.daas.app_module.core.App;
+import com.gk.daas.app_module.core.Config;
 import com.gk.daas.app_module.di.Name;
 import com.gk.daas.app_module.log.LogFactory;
 import com.gk.daas.network_module.service.MockWeatherService;
 import com.gk.daas.network_module.service.OpenWeatherService;
 import com.gk.daas.network_module.service.RoutingWeatherService;
 
+import java.io.File;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
@@ -25,34 +32,43 @@ import retrofit2.RxJavaCallAdapterFactory;
 @Module
 public class NetworkModule {
 
+    private final App app;
+
+    public NetworkModule(App app) {
+        this.app = app;
+    }
+
     @Singleton
     @Provides
     OkHttpClient provideOkHttpClient() {
+        OkHttpClient.Builder client = new OkHttpClient.Builder();
+
         HttpLoggingInterceptor logger = new HttpLoggingInterceptor();
         logger.setLevel(HttpLoggingInterceptor.Level.BODY);
+        client.addInterceptor(logger);
 
-        /** Uncomment below for HTTP Cache simulation **/
+        if (Config.Cache.HTTP_CACHE_ENABLED) {
+            // https://github.com/square/okhttp/wiki/Interceptors
+            // http://stackoverflow.com/questions/23429046/can-retrofit-with-okhttp-use-cache-data-when-offline
 
-        //         File httpCacheDirectory = new File(app.getCacheDir(), Config.Cache.CACHE_SUB_DIR);
-        //         Cache cache = new Cache(httpCacheDirectory, Config.Cache.CACHE_MAX_SIZE);
+            client.addNetworkInterceptor((Interceptor.Chain chain) -> {
+                Response response = chain.proceed(chain.request());
+                return response.newBuilder()
+                        .header("Cache-Control", "private, max-age=" + Config.Cache.MAX_AGE_SECONDS)
+                        .build();
+            });
 
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(logger)
-                .addNetworkInterceptor(new StethoInterceptor())
+            File httpCacheDirectory = new File(app.getCacheDir(), Config.Cache.CACHE_SUB_DIR);
+            Cache cache = new Cache(httpCacheDirectory, Config.Cache.CACHE_MAX_SIZE);
+            client.cache(cache);
 
-                //                        TODO maybe try add to config the max-age string so it could be changed dynamically
-                // https://github.com/square/okhttp/wiki/Interceptors
-                // http://stackoverflow.com/questions/23429046/can-retrofit-with-okhttp-use-cache-data-when-offline
-                //                         .addNetworkInterceptor((Interceptor.Chain chain) -> {
-                //                             Response response = chain.proceed(chain.request());
-                //                             return response.newBuilder()
-                //                                     .header("Cache-Control", "private, max-age=20")
-                //                                     .build();
-                //                         })
-                //                                        .cache(cache)
-                .build();
+        }
 
-        return client;
+        if (Config.ENABLE_STETHO) {
+            client.addNetworkInterceptor(new StethoInterceptor());
+        }
+
+        return client.build();
     }
 
     @Provides

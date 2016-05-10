@@ -5,6 +5,7 @@ import com.gk.daas.app_module.core.BaseActivity;
 import com.gk.daas.app_module.screen.main.MainActivity;
 import com.gk.daas.app_module.screen.second.SecondActivity;
 import com.gk.daas.app_module.sync.SyncSchedulerBroadcastReceiver;
+import com.gk.daas.network_module.di.NetworkModule;
 
 /**
  * @author Gabor_Keszthelyi
@@ -19,6 +20,7 @@ public class Injector {
             instance = DaggerAppComponent
                     .builder()
                     .appModule(new AppModule(app))
+                    .networkModule(new NetworkModule(app))
                     .build();
         }
 
