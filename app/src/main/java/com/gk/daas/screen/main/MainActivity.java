@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import com.gk.daas.R;
 import com.gk.daas.bus.Bus;
 import com.gk.daas.core.BaseActivity;
-import com.gk.daas.data.access.DataAccessInitiator;
+import com.gk.daas.data.access.DataAccessController;
 import com.gk.daas.data.event.DoubleLoadFinishEvent;
 import com.gk.daas.data.event.GetForecastProgressEvent;
 import com.gk.daas.data.event.GetForecastSuccessEvent;
@@ -25,7 +25,6 @@ import com.gk.daas.dialog.ProgressDialog;
 import com.gk.daas.dialog.ServiceSelectorDialog;
 import com.gk.daas.screen.ErrorTranslator;
 import com.gk.daas.screen.second.SecondActivity;
-import com.gk.daas.util.TemperatureFormatter;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -39,13 +38,10 @@ import javax.inject.Inject;
 public class MainActivity extends BaseActivity {
 
     @Inject
-    DataAccessInitiator dataAccessInitiator;
+    DataAccessController dataAccessController;
 
     @Inject
     Bus bus;
-
-    @Inject
-    TemperatureFormatter temperatureFormatter;
 
     @Inject
     ErrorTranslator errorTranslator;
@@ -207,19 +203,19 @@ public class MainActivity extends BaseActivity {
                 case RETRY:
                 case COMBINED:
                     view.showProgressBar();
-                    dataAccessInitiator.getWeather(currentUseCase, city);
+                    dataAccessController.getWeather(currentUseCase, city);
                     break;
                 case DOUBLE_LOAD:
                     view.showRefreshingIndicator();
-                    dataAccessInitiator.getWeather(currentUseCase, city);
+                    dataAccessController.getWeather(currentUseCase, city);
                     break;
                 case CANCELLABLE:
-                    dataAccessInitiator.getWeather(currentUseCase, city);
-                    runOnUiThread(dataAccessInitiator::cancelCall); // almost immediately requesting cancel as well to test (see logs)
+                    dataAccessController.getWeather(currentUseCase, city);
+                    runOnUiThread(dataAccessController::cancelCall); // almost immediately requesting cancel as well to test (see logs)
                     break;
                 case PARALLEL_AND_CHAINED:
                     String city2 = view.getCity2();
-                    dataAccessInitiator.getForecastForWarmerCity(city, city2);
+                    dataAccessController.getForecastForWarmerCity(city, city2);
                     break;
                 case SYNC:
                     syncScheduler.startSyncing(city);

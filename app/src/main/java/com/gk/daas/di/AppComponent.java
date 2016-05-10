@@ -1,9 +1,8 @@
 package com.gk.daas.di;
 
 import com.gk.daas.bus.Bus;
-import com.gk.daas.data.access.DataAccessInitiator;
+import com.gk.daas.data.access.DataAccessController;
 import com.gk.daas.data.network.ErrorInterpreter;
-import com.gk.daas.data.network.NetworkServiceIntentHelper;
 import com.gk.daas.data.network.OpenWeatherService;
 import com.gk.daas.data.network.SyncScheduler;
 import com.gk.daas.data.network.SyncSchedulerBroadcastReceiver;
@@ -13,7 +12,6 @@ import com.gk.daas.framework.access.StringResAccess;
 import com.gk.daas.framework.access.Toaster;
 import com.gk.daas.log.LogFactory;
 import com.gk.daas.screen.second.SecondActivity;
-import com.gk.daas.util.TemperatureFormatter;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -35,13 +33,9 @@ public interface AppComponent {
 
     LogFactory getLogFactory();
 
-    DataAccessInitiator getDataAccess();
-
-    NetworkServiceIntentHelper getNetworkServiceIntentHelper();
+    DataAccessController getDataAccessController();
 
     Bus getBus();
-
-    TemperatureFormatter getTemperatureFormatter();
 
     Toaster getToaster();
 

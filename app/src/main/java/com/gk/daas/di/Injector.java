@@ -2,7 +2,6 @@ package com.gk.daas.di;
 
 import com.gk.daas.core.App;
 import com.gk.daas.core.BaseActivity;
-import com.gk.daas.data.network.DataAccessService;
 import com.gk.daas.data.network.SyncSchedulerBroadcastReceiver;
 import com.gk.daas.screen.main.MainActivity;
 import com.gk.daas.screen.second.SecondActivity;
@@ -46,14 +45,6 @@ public class Injector {
 
     public static void satisfy(SyncSchedulerBroadcastReceiver syncSchedulerBroadcastReceiver) {
         AppComponentHolder.getInstance().satisfy(syncSchedulerBroadcastReceiver);
-    }
-
-    public static void satisfy(DataAccessService dataAccessService) {
-        DaggerServiceComponent.builder()
-                .appComponent(AppComponentHolder.getInstance())
-                .serviceModule(new ServiceModule())
-                .build()
-                .satisfy(dataAccessService);
     }
 
     private static ActivityComponent createActivityComponent(BaseActivity activity) {
