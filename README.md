@@ -1,7 +1,6 @@
-# RRES (Retrofit-RxJava-EventBus-Service) Architecture Demo App #
+# Networking / Data Access architecture demo app using Retrofit-RxJava-EventBus #
 
-Android sample app for showing the implementation of the 
-__Networking / Data Access architecture__ described below using concrete use-cases.  
+Android sample app for showing the implementation of the architecture described below using concrete use-cases.  
 
 - - - - -
   
@@ -9,7 +8,6 @@ __Networking / Data Access architecture__ described below using concrete use-cas
 __Retrofit__ with __RxJava__ for handling the REST API calls.  
 __EventBus__ to deliver the results and updates back to the presentation layer.  
 Rx features to handle errors, chained or parallel calls, fallback to offline store, and more.  
-The whole component is placed in a __Android Service__ which starts on-demand and stops after some idle time when there are no more ongoing tasks.
   
 ##### Why them? #####
 - __Retrofit__  
@@ -28,13 +26,6 @@ and let the interested UI controller(s) listen to them independently from the in
 It allows us to separate the data access layer more easily without the need and difficulties of keeping
 the direct callback references to the presentation layer.    
 EventBus in particular has some useful features (threading, sticky events) over using for example the built-in BroadcastReceiver.
-- __Android Service__   
-We can control the Service's lifecycle, so it can work as a 'temporary singleton' while the network calls are executing.
-So it can survive the configuration changes easily and also ensure to not keep a global singleton in memory
-when it's not needed.  
-A Service also has more guarantees from the system that while it is running it won't be killed,
-which can be useful for some use-cases.  
-(Note: It is also possible to simply use a singleton instead of the Service. That removes some complexity.)
 
 - - - - -
   
@@ -81,8 +72,7 @@ which can be useful for some use-cases.
     Progress update events can be sent to the presentation layer at any point in Rx chain.
 - Background sync
     - Scheduled __background data sync__ with server. Even when the app is not running or used by the user.
-    - _Implementation_:  
-    The Service used for on-demand data access can be started up for syncing too.  
+    - _Implementation_:      
     (Scheduling is implemented simply with AlarmManager in this PoC but JobScheduler or GcmNetworkManager is a better solution in a real app).
 - HTTP Cache
     - Cache the network responses according to their _Cache-Control_ headers
