@@ -10,7 +10,7 @@ import com.gk.daas.network_module.data.ForecastResponse;
 public class ForecastConverter {
 
     public Forecast convert(ForecastResponse response) {
-        // Note: no validation in this PoC
+        // Note: no validation, unit testing, etc. in this PoC
         String city = response.city.name;
         double lastTemp = response.list.get(response.list.size() - 1).main.temp;
         return new Forecast(city, new Temperature(lastTemp));

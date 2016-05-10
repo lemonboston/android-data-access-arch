@@ -93,6 +93,7 @@
                     android:layout_below="@id/Button_Execute"
                     android:layout_marginTop="@dimen/distance_default"
                     android:text="@string/OtherScreenButton"
+                    tools:visibility="visible"
                     android:visibility="gone"/>
 
                 <TextView

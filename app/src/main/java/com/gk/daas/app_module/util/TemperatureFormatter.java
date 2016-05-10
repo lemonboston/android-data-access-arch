@@ -5,12 +5,12 @@ package com.gk.daas.app_module.util;
  */
 public final class TemperatureFormatter {
 
-    private TemperatureFormatter() {
-    }
-
     private static final String DEGREE = "\u00b0";
     private static final String DEGREE_CELSIUS = DEGREE + "C";
     private static final String DEGREE_FAHRENHEIT = DEGREE + "F";
+
+    private TemperatureFormatter() {
+    }
 
     public static String convertAndFormatToCelsius(double tempInKelvin) {
         return formatWithDegreeSign(kelvinToCelsius(tempInKelvin), DEGREE_CELSIUS);
