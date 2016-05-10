@@ -7,7 +7,6 @@ import com.gk.daas.network_module.data.ForecastResponse;
 import com.gk.daas.network_module.data.MockData;
 import com.gk.daas.network_module.data.WeatherResponse;
 
-import retrofit2.http.Query;
 import rx.Single;
 import rx.SingleSubscriber;
 
@@ -23,7 +22,7 @@ public class MockWeatherService implements OpenWeatherService {
     }
 
     @Override
-    public Single<WeatherResponse> getWeather(@Query("q") String queryString, @Query("appid") String apiKey) {
+    public Single<WeatherResponse> getWeather(String queryString, String apiKey) {
         return Single.create(new Single.OnSubscribe<WeatherResponse>() {
             @Override
             public void call(SingleSubscriber<? super WeatherResponse> singleSubscriber) {
@@ -35,7 +34,7 @@ public class MockWeatherService implements OpenWeatherService {
     }
 
     @Override
-    public Single<ForecastResponse> getForecast(@Query("q") String queryString, @Query("appid") String apiKey) {
+    public Single<ForecastResponse> getForecast(String queryString, String apiKey) {
         return Single.create(new Single.OnSubscribe<ForecastResponse>() {
             @Override
             public void call(SingleSubscriber<? super ForecastResponse> singleSubscriber) {
