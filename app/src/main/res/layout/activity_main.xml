@@ -75,7 +75,7 @@
                     android:layout_marginTop="@dimen/distance_default"
                     tools:text="@string/GetTemp_Button"/>
 
-                <com.gk.daas.widget.KeepVisibilityProgressBar
+                <com.gk.daas.app_module.widget.KeepVisibilityProgressBar
                     android:id="@+id/MiniProgressBar"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -196,7 +196,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.gk.daas.widget.KeepVisibilityProgressBar
+    <com.gk.daas.app_module.widget.KeepVisibilityProgressBar
         android:id="@+id/ProgressBar"
         android:layout_width="64dp"
         android:layout_height="64dp"
