@@ -1,26 +1,23 @@
 # Networking / Data Access architecture demo app using Retrofit-RxJava-EventBus #
 
-Android sample app for showing the implementation of the architecture described below using concrete use-cases.  
+This is an Android sample app for a possible approach to the Networking and Data Access architecture illustrated with concrete use-case implementations.  
 
-- - - - -
-  
-## Architecture ##
+The libraries used:  
 __Retrofit__ with __RxJava__ for handling the REST API calls.  
-__EventBus__ to deliver the results and updates back to the presentation layer.  
+__EventBus__ to deliver the results and updates back from the data access layer to the presentation layer.  
 Rx features to handle errors, chained or parallel calls, fallback to offline store, and more.  
   
 ##### Why them? #####
 - __Retrofit__  
 Provides a simple, declarative way to create the REST API client as a Java interface, 
 while it is also highly configurable through the underlying OkHttp client.  
-Supports RxJava return values.
+And it supports RxJava return values.
 - __RxJava__  
 Makes it easier to combine calls or execute custom processing chains without keeping states.  
 Makes threading simple and declarative.
 - __EventBus__  
-I believe for data access the decoupling of the publishers and subscribers by using an event bus
-as middleman instead of using the more direct connection with callbacks and the observer pattern
-can give some benefits and thus be a better approach.  
+I think that for data access, the decoupling of the publishers and subscribers by using an event bus
+as middleman has benefits and can be a better approach over using the more direct connection with callbacks and the observer pattern.  
 It gives the flexibility to send any kind of result, error, or progress update from any part of the processing chain
 and let the interested UI controller(s) listen to them independently from the initiator and from each other.  
 It allows us to separate the data access layer more easily without the need and difficulties of keeping
